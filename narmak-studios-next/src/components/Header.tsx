@@ -6,6 +6,16 @@ import { Icons } from './Icons';
 import { servicesCardData } from '@/data/services';
 import { useRef } from 'react';
 
+// Add slugMap for correct service slugs
+const slugMap = [
+  'brand-and-marketing-animation',
+  'entertainment-and-original-ip',
+  'pre-to-post-production-a-la-carte-or-full-stack',
+  'creative-strategy-and-consulting',
+  'support-and-collateral',
+  'graphic-design-subscription'
+];
+
 interface HeaderProps {
   onHomepage?: boolean;
 }
@@ -65,12 +75,12 @@ export default function Header({ }: HeaderProps) {
             <Link href="/services" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
               Services {Icons.chevronDown}
             </Link>
-            <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-64 border-t-8 border-transparent">
-              {servicesCardData.map(service => (
+            <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-64 border-t-8 border-transparent max-h-96 overflow-y-auto text-base md:text-sm">
+              {servicesCardData.map((service, idx) => (
                 <Link
                   key={service.title}
-                  href={`/services/${encodeURIComponent(service.title.toLowerCase().replace(/\s+/g, '-'))}`}
-                  className="block px-4 py-2 hover:bg-neon-accent/20 whitespace-normal text-sm"
+                  href={`/services/${slugMap[idx]}`}
+                  className="block px-4 py-3 hover:bg-neon-accent/20 whitespace-normal text-base md:text-sm rounded transition-colors"
                 >
                   {service.title}
                 </Link>
@@ -120,8 +130,13 @@ export default function Header({ }: HeaderProps) {
         </button>
         {/* Sidebar drawer */}
         {sidebarOpen && (
-          <div className="fixed inset-0 z-50 bg-black/60 flex">
-            <div ref={sidebarRef} className="w-72 max-w-full bg-charcoal h-full shadow-xl p-6 flex flex-col gap-6 animate-slide-in-left relative">
+          <div className="fixed inset-0 z-50 bg-black/60 flex justify-end" onClick={() => setSidebarOpen(false)}>
+            <div
+              ref={sidebarRef}
+              className="w-full max-w-xs sm:max-w-sm bg-charcoal h-full shadow-2xl p-5 sm:p-8 flex flex-col gap-5 sm:gap-7 animate-slide-in-right relative overflow-y-auto text-lg sm:text-xl font-semibold text-off-white"
+              style={{ minWidth: '80vw', maxWidth: 420, boxShadow: '0 0 24px 0 rgba(0,0,0,0.5)' }}
+              onClick={e => e.stopPropagation()}
+            >
               <button
                 className="absolute top-4 right-4 p-2 text-off-white"
                 aria-label="Close menu"
@@ -129,33 +144,33 @@ export default function Header({ }: HeaderProps) {
               >
                 <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
-              <Link href="/" className="font-display text-2xl font-bold text-off-white mb-6" onClick={() => setSidebarOpen(false)}>
+              <Link href="/" className="font-display text-3xl font-bold text-off-white mb-8 mt-2 tracking-tight" onClick={() => setSidebarOpen(false)}>
                 Studio Narmak
               </Link>
-              <div className="flex flex-col gap-2">
-                <div>
-                  <Link href="/work" className="flex items-center gap-2 py-2 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+              <div className="flex flex-col gap-4 sm:gap-5">
+                <div className="border-b border-off-white/10 pb-2 mb-2">
+                  <Link href="/work" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => setSidebarOpen(false)}>
                     Work
                   </Link>
                   <div className="pl-4 flex flex-col">
-                    <Link href="/portfolio/creative" className="py-1 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                    <Link href="/portfolio/creative" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => setSidebarOpen(false)}>
                       Creative
                     </Link>
-                    <Link href="/portfolio/originals" className="py-1 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                    <Link href="/portfolio/originals" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => setSidebarOpen(false)}>
                       Originals
                     </Link>
                   </div>
                 </div>
-                <div>
-                  <Link href="/services" className="flex items-center gap-2 py-2 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                <div className="border-b border-off-white/10 pb-2 mb-2">
+                  <Link href="/services" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => setSidebarOpen(false)}>
                     Services
                   </Link>
                   <div className="pl-4 flex flex-col">
-                    {servicesCardData.map(service => (
+                    {servicesCardData.map((service, idx) => (
                       <Link
                         key={service.title}
-                        href={`/services/${encodeURIComponent(service.title.toLowerCase().replace(/\s+/g, '-'))}`}
-                        className="py-1 px-2 rounded hover:bg-neon-accent/10 text-sm"
+                        href={`/services/${slugMap[idx]}`}
+                        className="py-2 px-3 rounded hover:bg-neon-accent/10 text-base sm:text-lg transition-colors"
                         onClick={() => setSidebarOpen(false)}
                       >
                         {service.title}
@@ -163,36 +178,36 @@ export default function Header({ }: HeaderProps) {
                     ))}
                   </div>
                 </div>
-                <div>
-                  <Link href="/resources" className="flex items-center gap-2 py-2 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                <div className="border-b border-off-white/10 pb-2 mb-2">
+                  <Link href="/resources" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => setSidebarOpen(false)}>
                     Resources
                   </Link>
                   <div className="pl-4 flex flex-col">
-                    <Link href="/journal" className="py-1 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                    <Link href="/journal" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => setSidebarOpen(false)}>
                       Journal
                     </Link>
-                    <Link href="/careers" className="py-1 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                    <Link href="/careers" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => setSidebarOpen(false)}>
                       Careers
                     </Link>
                   </div>
                 </div>
-                <div>
-                  <Link href="/about" className="flex items-center gap-2 py-2 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                <div className="border-b border-off-white/10 pb-2 mb-2">
+                  <Link href="/about" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => setSidebarOpen(false)}>
                     Studio
                   </Link>
                   <div className="pl-4 flex flex-col">
-                    <Link href="/about" className="py-1 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                    <Link href="/about" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => setSidebarOpen(false)}>
                       About
                     </Link>
-                    <Link href="/process" className="py-1 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                    <Link href="/process" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => setSidebarOpen(false)}>
                       Process
                     </Link>
-                    <Link href="/testimonials" className="py-1 px-2 rounded hover:bg-neon-accent/10" onClick={() => setSidebarOpen(false)}>
+                    <Link href="/testimonials" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => setSidebarOpen(false)}>
                       People Love Us
                     </Link>
                   </div>
                 </div>
-                <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-2 px-5 rounded-lg mt-4 text-center hover:scale-105 transition-transform duration-300" onClick={() => setSidebarOpen(false)}>
+                <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-4 text-center hover:scale-105 transition-transform duration-300 text-lg sm:text-xl" onClick={() => setSidebarOpen(false)}>
                   Get a Quote
                 </Link>
               </div>

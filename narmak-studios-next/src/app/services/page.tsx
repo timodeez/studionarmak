@@ -24,21 +24,21 @@ const slugMap = [
 export default function ServicesPage() {
   return (
     <div className="pt-20 min-h-screen bg-charcoal text-off-white">
-      <div className="container mx-auto px-4 py-20 md:py-28">
-        <h1 className="text-5xl md:text-6xl font-display text-center mb-10 bg-gradient-to-r from-neon-accent to-gradient-end text-transparent bg-clip-text drop-shadow-lg">Our Services</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div className="container mx-auto px-2 sm:px-4 py-12 sm:py-20 md:py-28">
+        <h1 className="text-4xl xs:text-5xl md:text-6xl font-display text-center mb-8 sm:mb-10 bg-gradient-to-r from-neon-accent to-gradient-end text-transparent bg-clip-text drop-shadow-lg font-bold tracking-tight">Our Services</h1>
+        <div className="grid grid-cols-1 gap-4 sm:gap-8 max-w-4xl mx-auto">
           {servicesCardData.map((service, idx) => (
             <Link
               key={service.title}
               href={`/services/${slugMap[idx]}`}
-              className="relative rounded-3xl overflow-hidden shadow-2xl border border-off-white/10 bg-[#18181b] transition-all duration-300 cursor-pointer flex flex-col h-full hover:scale-105 focus:scale-105 z-10"
+              className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-off-white/10 bg-[#18181b] transition-all duration-300 cursor-pointer flex flex-col h-full hover:scale-105 focus:scale-105 z-10 px-4 py-6 sm:px-8 sm:py-10 mb-2"
               tabIndex={0}
             >
               {/* Top accent bar */}
               <div className="h-1 w-full bg-gradient-to-r from-neon-accent to-gradient-end rounded-t-2xl mb-4" />
-              <div className="p-8 md:p-10 flex flex-col flex-1">
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-neon-accent mb-4 drop-shadow">{service.title}</h2>
-                <div className="text-off-white/90 text-lg font-semibold mb-6 min-h-[2.5em]">
+              <div className="flex flex-col flex-1">
+                <h2 className="text-xl xs:text-2xl md:text-3xl font-display font-bold text-neon-accent mb-3 sm:mb-4 drop-shadow tracking-tight leading-tight">{service.title}</h2>
+                <div className="text-off-white/90 text-base xs:text-lg font-semibold mb-4 sm:mb-6 min-h-[2.5em]">
                   {tldrSummaries[idx]}
                 </div>
               </div>
