@@ -81,7 +81,7 @@ export default function IndividualServicePage({ params }: { params: { slug: stri
           <div className="text-center">
             <div className="bg-gradient-to-r from-neon-accent to-gradient-end p-8 rounded-2xl">
               <h3 className="text-2xl font-display text-charcoal mb-4">Ready to Get Started?</h3>
-              <p className="text-charcoal/80 mb-6">Let's discuss your project and see how we can bring your vision to life.</p>
+              <p className="text-charcoal/80 mb-6">Let&apos;s discuss your project and see how we can bring your vision to life.</p>
               <Link href="/get-a-quote" className="inline-block bg-charcoal text-off-white font-display font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
                 Get a Quote
               </Link>

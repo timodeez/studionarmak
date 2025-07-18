@@ -42,6 +42,7 @@ export default function ResponsiveVideo({
     
     const checkConnection = () => {
       if ('connection' in navigator) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const connection = (navigator as any).connection;
         const isSlow = connection.effectiveType === 'slow-2g' || 
                       connection.effectiveType === '2g' || 
