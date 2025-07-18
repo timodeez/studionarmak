@@ -21,6 +21,32 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   font-feature-settings: "rlig" 1, "calt" 1;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  /* Ensure proper touch targets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve text readability on mobile */
+  h1 {
+    line-height: 1.2;
+  }
+  
+  h2 {
+    line-height: 1.3;
+  }
+  
+  /* Better spacing for mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 /* Custom scrollbar */
@@ -74,6 +100,12 @@ body {
   display: block; 
 }
 
+/* Mobile menu animations */
+.mobile-menu-container {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Smooth scrolling */
 html { 
   scroll-behavior: smooth; 
 }
@@ -86,4 +118,28 @@ video {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Prevent zoom on input focus on iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select, textarea, input[type="text"], input[type="password"],
+  input[type="datetime"], input[type="datetime-local"],
+  input[type="date"], input[type="month"], input[type="time"],
+  input[type="week"], input[type="number"], input[type="email"],
+  input[type="url"], input[type="search"], input[type="tel"],
+  input[type="color"] {
+    font-size: 16px;
+  }
+}
+
+/* Improve mobile performance */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Better mobile grid spacing */
+@media (max-width: 640px) {
+  .grid {
+    gap: 1rem;
+  }
 }

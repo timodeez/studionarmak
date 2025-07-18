@@ -89,10 +89,10 @@ export default function HomePage() {
         
         <div className="relative z-10 container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
           <div className="md:w-3/5">
-            <h1 className="text-4xl md:text-6xl font-display font-semibold text-off-white drop-shadow-lg">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-semibold text-off-white drop-shadow-lg leading-tight">
               We create animated worlds for brands and our own original stories.
             </h1>
-            <h2 className="text-2xl md:text-3xl font-sans mt-6 text-off-white/80 flex justify-center md:justify-start items-baseline gap-2 h-10">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-sans mt-6 text-off-white/80 flex flex-wrap justify-center md:justify-start items-baseline gap-2 min-h-10">
               <span>We are a</span>
               <div className="relative h-10 overflow-hidden">
                 <span className={`text-neon-accent inline-block whitespace-nowrap ${wordState.animationClass}`}>
@@ -139,7 +139,7 @@ export default function HomePage() {
               transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
             }}
           >
-            <p className="text-5xl md:text-6xl font-display text-neon-accent">
+            <p className="text-4xl sm:text-5xl md:text-6xl font-display text-neon-accent">
               {views.toLocaleString()}+
             </p>
             <p className="mt-2 text-off-white/70">Video Views</p>
@@ -151,7 +151,7 @@ export default function HomePage() {
               transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
             }}
           >
-            <p className="text-5xl md:text-6xl font-display text-neon-accent">
+            <p className="text-4xl sm:text-5xl md:text-6xl font-display text-neon-accent">
               {subs.toLocaleString()}+
             </p>
             <p className="mt-2 text-off-white/70">Subscribers</p>
@@ -163,7 +163,7 @@ export default function HomePage() {
               transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
             }}
           >
-            <p className="text-5xl md:text-6xl font-display text-neon-accent">
+            <p className="text-4xl sm:text-5xl md:text-6xl font-display text-neon-accent">
               {Math.floor(projects)}+
             </p>
             <p className="mt-2 text-off-white/70">Projects Delivered</p>
@@ -173,7 +173,7 @@ export default function HomePage() {
 
       <AnimatedSection id="fork" customClass="py-20 md:py-28 bg-charcoal">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-display mb-4">Two Studios, One Vision.</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display mb-4">Two Studios, One Vision.</h2>
           <p className="text-lg text-off-white/70 max-w-3xl mx-auto mb-12">
             We partner with visionary brands to move their audience, and we craft original worlds that move our own.
           </p>
@@ -220,7 +220,7 @@ export default function HomePage() {
 
       <AnimatedSection customClass="bg-[#141416] pt-20 md:pt-28">
         <div id="creative-work" className="container mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-display text-center mb-4">Client Work</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-center mb-4">Client Work</h2>
           <p className="text-lg text-off-white/70 text-center max-w-3xl mx-auto mb-12">
             Products become characters. Messages become moments.
           </p>
@@ -266,10 +266,10 @@ export default function HomePage() {
         </div>
         
         <div className="container mx-auto px-4 text-center mt-24">
-          <h2 className="text-3xl font-display text-off-white/80 mb-10">Trusted by Visionary Partners</h2>
+          <h2 className="text-2xl sm:text-3xl font-display text-off-white/80 mb-10">Trusted by Visionary Partners</h2>
           <div className="flex flex-col items-center gap-8">
-            {/* Top row -5logos */}
-            <div className="grid grid-cols-5 gap-8">
+            {/* Mobile: Single column grid, Tablet: 2-3 columns, Desktop: Original layout */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8 w-full max-w-6xl">
               {clientLogos.slice(0, 5).map((logo, index) => (
                 <div key={index} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity">
                   <Image
@@ -279,15 +279,15 @@ export default function HomePage() {
                     height={logo.name === 'Extra' ? 180 : 128}
                     className={
                       logo.name === 'Extra'
-                        ? 'max-h-40 max-w-[300px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
-                        : 'max-h-32 max-w-[220px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
+                        ? 'max-h-24 sm:max-h-32 lg:max-h-40 max-w-[150px] sm:max-w-[200px] lg:max-w-[300px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
+                        : 'max-h-20 sm:max-h-24 lg:max-h-32 max-w-[120px] sm:max-w-[160px] lg:max-w-[220px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
                     }
                   />
                 </div>
               ))}
             </div>
-            {/* Bottom row -4logos */}
-            <div className="grid grid-cols-4 gap-8">
+            {/* Bottom row - responsive grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 w-full max-w-5xl">
               {clientLogos.slice(5, 9).map((logo, index) => (
                 <div key={index + 5} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity">
                   <Image
@@ -295,7 +295,7 @@ export default function HomePage() {
                     alt={logo.name}
                     width={220}
                     height={128}
-                    className="max-h-32 max-w-[220px] w-auto h-auto object-contain mx-auto drop-shadow-lg"
+                    className="max-h-20 sm:max-h-24 lg:max-h-32 max-w-[120px] sm:max-w-[160px] lg:max-w-[220px] w-auto h-auto object-contain mx-auto drop-shadow-lg"
                   />
                 </div>
               ))}
@@ -315,7 +315,7 @@ export default function HomePage() {
 
       <AnimatedSection id="originals" customClass="bg-charcoal py-20 md:py-28">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-display text-center mb-12">Narmak Originals</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-center mb-12">Narmak Originals</h2>
           <div className="flex flex-col items-center gap-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl">
               {originalsPortfolio.slice(0, 3).map((item, index) => (
@@ -356,7 +356,7 @@ export default function HomePage() {
 
       <AnimatedSection id="about" customClass="py-20 md:py-28 bg-[#141416]">
         <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className="text-4xl md:text-5xl font-display mb-6">The Flywheel of Creativity.</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display mb-6">The Flywheel of Creativity.</h2>
           <p className="text-lg text-off-white/80 leading-relaxed">
             Our studio is built on a simple, powerful idea: commerce and art are not enemies; they are partners. The revenue from our agency work provides the financial freedom and stability to pursue our passion projects. In turn, our original content serves as our most authentic advertisement, attracting ambitious clients who want more than just a service—they want our unique voice. Each side fuels the other, creating a perpetual motion machine of innovation and imagination.
           </p>
