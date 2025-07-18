@@ -268,9 +268,9 @@ export default function HomePage() {
         <div className="container mx-auto px-4 text-center mt-24">
           <h2 className="text-3xl font-display text-off-white/80 mb-10">Trusted by Visionary Partners</h2>
           <div className="flex flex-col items-center gap-8">
-            {/* Top row -5logos */}
-            <div className="grid grid-cols-5 gap-8">
-              {clientLogos.slice(0, 5).map((logo, index) => (
+            {/* Responsive grid for all logos */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 w-full max-w-5xl">
+              {clientLogos.map((logo, index) => (
                 <div key={index} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity">
                   <Image
                     src={logo.img}
@@ -282,20 +282,6 @@ export default function HomePage() {
                         ? 'max-h-40 max-w-[300px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
                         : 'max-h-32 max-w-[220px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
                     }
-                  />
-                </div>
-              ))}
-            </div>
-            {/* Bottom row -4logos */}
-            <div className="grid grid-cols-4 gap-8">
-              {clientLogos.slice(5, 9).map((logo, index) => (
-                <div key={index + 5} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity">
-                  <Image
-                    src={logo.img}
-                    alt={logo.name}
-                    width={220}
-                    height={128}
-                    className="max-h-32 max-w-[220px] w-auto h-auto object-contain mx-auto drop-shadow-lg"
                   />
                 </div>
               ))}
