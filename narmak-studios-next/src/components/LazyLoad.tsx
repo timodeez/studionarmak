@@ -31,12 +31,12 @@ export default function LazyLoad({
       { threshold, rootMargin }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      const currentRef = ref.current;
       if (currentRef) {
         observer.unobserve(currentRef);
       }

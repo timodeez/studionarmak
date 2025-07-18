@@ -46,12 +46,12 @@ export default function OptimizedVideo({
       { threshold: 0.1 }
     );
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
+    const currentRef = videoRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      const currentRef = videoRef.current;
       if (currentRef) {
         observer.unobserve(currentRef);
       }

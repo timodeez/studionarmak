@@ -14,7 +14,7 @@ export default function TestimonialsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {testimonials.map(item => (
             <div key={item.name} className="bg-[#1a1a1c] border border-off-white/10 rounded-lg p-8">
-              <p className="text-xl text-off-white leading-relaxed">"{item.quote}"</p>
+              <p className="text-xl text-off-white leading-relaxed">&quot;{item.quote}&quot;</p>
               <p className="mt-6 font-semibold text-off-white">{item.name}</p>
               <p className="text-off-white/50">{item.title}</p>
             </div>

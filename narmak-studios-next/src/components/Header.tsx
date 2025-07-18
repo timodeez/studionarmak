@@ -9,7 +9,7 @@ interface HeaderProps {
   onHomepage?: boolean;
 }
 
-export default function Header({ onHomepage }: HeaderProps) {
+export default function Header({ }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {

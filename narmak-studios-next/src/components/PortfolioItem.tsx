@@ -9,6 +9,7 @@ interface PortfolioItemProps {
   title: string;
   client?: string;
   type?: string;
+  description?: string;
   mediaUrl: string;
   staticImg: string;
   services?: string[];
@@ -27,11 +28,12 @@ export default function PortfolioItem({
   title,
   client,
   type,
+  description: _description,
   mediaUrl,
   staticImg,
-  services = [],
-  caseStudy,
-  href,
+  services: _services,
+  caseStudy: _caseStudy,
+  href: _href,
   priority = false
 }: PortfolioItemProps) {
   const [isLoaded, setIsLoaded] = useState(false);

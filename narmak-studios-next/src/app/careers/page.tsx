@@ -77,7 +77,7 @@ export default function CareersPage() {
   useEffect(() => {
     const draft = localStorage.getItem('careersFormDraft');
     if (draft) setForm(f => ({ ...f, ...JSON.parse(draft) }));
-  }, []);
+  }, [form]);
 
   const errors = validate(form);
   const allValid = Object.values(errors).every(Boolean);
@@ -146,7 +146,7 @@ export default function CareersPage() {
 
       {/* Culture Snapshot */}
       <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-        {culturePillars.map((pillar, i) => (
+        {culturePillars.map((pillar) => (
           <div
             key={pillar.title}
             className="relative bg-gradient-to-br from-[#232325]/80 to-[#18181b]/90 backdrop-blur-md rounded-3xl p-10 flex flex-col items-center shadow-xl border border-[#232325] transition-transform duration-300 hover:scale-105 hover:shadow-2xl group"

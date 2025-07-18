@@ -42,11 +42,13 @@ export default function ResponsiveVideo({
     
     const checkConnection = () => {
       if ('connection' in navigator) {
-        const connection = (navigator as any).connection;
-        const isSlow = connection.effectiveType === 'slow-2g' || 
-                      connection.effectiveType === '2g' || 
-                      connection.effectiveType === '3g';
-        setConnectionSpeed(isSlow ? 'slow' : 'fast');
+        const connection = (navigator as Navigator & { connection?: { effectiveType: string } }).connection;
+        if (connection) {
+          const isSlow = connection.effectiveType === 'slow-2g' || 
+                        connection.effectiveType === '2g' || 
+                        connection.effectiveType === '3g';
+          setConnectionSpeed(isSlow ? 'slow' : 'fast');
+        }
       }
     };
 

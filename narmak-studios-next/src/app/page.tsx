@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icons } from '@/components/Icons';
 import AnimatedSection from '@/components/AnimatedSection';
-import ResponsiveVideo from '@/components/ResponsiveVideo';
+
 import OptimizedImage from '@/components/OptimizedImage';
 import LazyLoad from '@/components/LazyLoad';
 import PortfolioItem from '@/components/PortfolioItem';
@@ -39,13 +39,14 @@ export default function HomePage() {
       { threshold: 0.5 }
     );
 
-    if (statsRef.current) {
-      observer.observe(statsRef.current);
+    const currentRef = statsRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (statsRef.current) {
-        observer.unobserve(statsRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -54,7 +55,7 @@ export default function HomePage() {
   const subs = useAnimatedCounter(2500000, isStatsVisible);
   const projects = useAnimatedCounter(130, isStatsVisible);
 
-  const words = ['animation', 'talent', 'graphic', 'marketing', 'creative', 'dream'];
+  const words = useMemo(() => ['animation', 'talent', 'graphic', 'marketing', 'creative', 'dream'], []);
   const [wordState, setWordState] = useState({ text: words[0], animationClass: 'animate-slide-down-in' });
   const currentIndexRef = useRef(0);
 
@@ -67,7 +68,7 @@ export default function HomePage() {
       }, 400);
     }, 2200);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [words]);
 
   return (
     <>
