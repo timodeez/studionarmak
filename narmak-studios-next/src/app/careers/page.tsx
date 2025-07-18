@@ -63,7 +63,6 @@ function validate(form: typeof initialForm) {
 export default function CareersPage() {
   const [form, setForm] = useState(initialForm);
   const [touched, setTouched] = useState<{[k: string]: boolean}>({});
-  const [submitted, setSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [saving, setSaving] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -77,17 +76,33 @@ export default function CareersPage() {
   }, [form]);
   useEffect(() => {
     const draft = localStorage.getItem('careersFormDraft');
-    if (draft) setForm({ ...form, ...JSON.parse(draft) });
+    if (draft) setForm(f => ({ ...f, ...JSON.parse(draft) }));
   }, []);
 
   const errors = validate(form);
   const allValid = Object.values(errors).every(Boolean);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    const { name, value, type, checked, files } = e.target;
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const input = e.target as HTMLInputElement;
+      setForm(f => ({
+        ...f,
+        [name]: input.checked
+      }));
+      return;
+    }
+    if (type === 'file') {
+      const input = e.target as HTMLInputElement;
+      setForm(f => ({
+        ...f,
+        [name]: input.files && input.files.length > 0 ? input.files[0] : null
+      }));
+      return;
+    }
     setForm(f => ({
       ...f,
-      [name]: type === 'checkbox' ? checked : type === 'file' ? (files ? files[0] : null) : value
+      [name]: value
     }));
   }
   function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
@@ -95,7 +110,6 @@ export default function CareersPage() {
   }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
     setTouched({ name: true, email: true, location: true, portfolio: true, discipline: true, why: true, consent: true, portfolioFile: true });
     if (allValid) {
       setSaving(true);
@@ -156,50 +170,50 @@ export default function CareersPage() {
           <div className="relative">
             <input type="text" name="name" id="name" value={form.name} onChange={handleChange} onBlur={handleBlur} className={`peer w-full bg-transparent border-b-2 py-3 px-2 text-lg text-[#EAEAEA] focus:outline-none focus:border-neon-accent transition placeholder-transparent ${touched.name && !errors.name ? 'border-green-500' : touched.name && !form.name ? 'border-red-500' : 'border-[#444]'}`} placeholder="Full name" aria-label="Full name" required />
             <label htmlFor="name" className="absolute left-2 top-3 text-[#aaa] text-lg transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-focus:-top-5 peer-focus:text-sm peer-focus:text-neon-accent peer-focus:bg-[#18181b] px-1 bg-[#18181b]">Full name</label>
-            {touched.name && errors.name && <span className="absolute right-2 top-4 text-green-500 text-xl">✅</span>} 
-            {touched.name && !errors.name && <span className="absolute right-2 top-4 text-red-500 text-xl">❌</span>}
+            {touched.name && errors.name && <span className="absolute right-2 top-4 text-green-500 text-xl">&#x2705;</span>} 
+            {touched.name && !errors.name && <span className="absolute right-2 top-4 text-red-500 text-xl">&#x274c;</span>}
           </div>
           {/* Email */}
           <div className="relative">
             <input type="email" name="email" id="email" value={form.email} onChange={handleChange} onBlur={handleBlur} className={`peer w-full bg-transparent border-b-2 py-3 px-2 text-lg text-[#EAEAEA] focus:outline-none focus:border-neon-accent transition placeholder-transparent ${touched.email && !errors.email ? 'border-green-500' : touched.email && !form.email ? 'border-red-500' : 'border-[#444]'}`} placeholder="Email" aria-label="Email" required />
             <label htmlFor="email" className="absolute left-2 top-3 text-[#aaa] text-lg transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-focus:-top-5 peer-focus:text-sm peer-focus:text-neon-accent peer-focus:bg-[#18181b] px-1 bg-[#18181b]">Email</label>
-            {touched.email && errors.email && <span className="absolute right-2 top-4 text-green-500 text-xl">✅</span>} 
-            {touched.email && !errors.email && <span className="absolute right-2 top-4 text-red-500 text-xl">❌</span>}
+            {touched.email && errors.email && <span className="absolute right-2 top-4 text-green-500 text-xl">&#x2705;</span>} 
+            {touched.email && !errors.email && <span className="absolute right-2 top-4 text-red-500 text-xl">&#x274c;</span>}
           </div>
           {/* Location / timezone */}
           <div className="relative">
             <select name="location" id="location" value={form.location} onChange={handleChange} onBlur={handleBlur} className={`peer w-full bg-[#232325] text-off-white font-semibold border-b-2 py-3 px-2 text-lg focus:outline-none focus:border-neon-accent transition ${touched.location && !errors.location ? 'border-green-500' : touched.location && !form.location ? 'border-red-500' : 'border-[#444]'}`} required aria-label="Location / timezone">
               <option value="" disabled>Location / timezone</option>
-              {timezones.map(tz => <option key={tz} value={tz}>{tz}</option>)}
+              {timezones.map((tz, i) => <option key={tz + i} value={tz}>{tz}</option>)}
             </select>
             <label htmlFor="location" className="absolute left-2 top-3 text-[#aaa] text-lg transition-all peer-focus:-top-5 peer-focus:text-sm peer-focus:text-neon-accent peer-focus:bg-[#18181b] px-1 bg-[#18181b]">Location / timezone</label>
-            {touched.location && errors.location && <span className="absolute right-2 top-4 text-green-500 text-xl">✅</span>} 
-            {touched.location && !errors.location && <span className="absolute right-2 top-4 text-red-500 text-xl">❌</span>}
+            {touched.location && errors.location && <span className="absolute right-2 top-4 text-green-500 text-xl">&#x2705;</span>} 
+            {touched.location && !errors.location && <span className="absolute right-2 top-4 text-red-500 text-xl">&#x274c;</span>}
           </div>
           {/* Portfolio / reel URL */}
           <div className="relative">
             <input type="url" name="portfolio" id="portfolio" value={form.portfolio} onChange={handleChange} onBlur={handleBlur} className={`peer w-full bg-transparent border-b-2 py-3 px-2 text-lg text-[#EAEAEA] focus:outline-none focus:border-neon-accent transition placeholder-transparent ${touched.portfolio && !errors.portfolio ? 'border-green-500' : touched.portfolio && !form.portfolio ? 'border-red-500' : 'border-[#444]'}`} placeholder="Portfolio / reel URL" aria-label="Portfolio / reel URL" required />
             <label htmlFor="portfolio" className="absolute left-2 top-3 text-[#aaa] text-lg transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-focus:-top-5 peer-focus:text-sm peer-focus:text-neon-accent peer-focus:bg-[#18181b] px-1 bg-[#18181b]">Portfolio / reel URL</label>
-            {touched.portfolio && errors.portfolio && <span className="absolute right-2 top-4 text-green-500 text-xl">✅</span>} 
-            {touched.portfolio && !errors.portfolio && <span className="absolute right-2 top-4 text-red-500 text-xl">❌</span>}
+            {touched.portfolio && errors.portfolio && <span className="absolute right-2 top-4 text-green-500 text-xl">&#x2705;</span>} 
+            {touched.portfolio && !errors.portfolio && <span className="absolute right-2 top-4 text-red-500 text-xl">&#x274c;</span>}
           </div>
           {/* Primary discipline */}
           <div className="relative">
             <select name="discipline" id="discipline" value={form.discipline} onChange={handleChange} onBlur={handleBlur} className={`peer w-full bg-[#232325] text-off-white font-semibold border-b-2 py-3 px-2 text-lg focus:outline-none focus:border-neon-accent transition ${touched.discipline && !errors.discipline ? 'border-green-500' : touched.discipline && !form.discipline ? 'border-red-500' : 'border-[#444]'}`} required aria-label="Primary discipline">
               <option value="" disabled>Primary discipline</option>
-              {disciplines.map(d => <option key={d} value={d}>{d}</option>)}
+              {disciplines.map((d, i) => <option key={d + i} value={d}>{d}</option>)}
             </select>
             <label htmlFor="discipline" className="absolute left-2 top-3 text-[#aaa] text-lg transition-all peer-focus:-top-5 peer-focus:text-sm peer-focus:text-neon-accent peer-focus:bg-[#18181b] px-1 bg-[#18181b]">Primary discipline</label>
-            {touched.discipline && errors.discipline && <span className="absolute right-2 top-4 text-green-500 text-xl">✅</span>} 
-            {touched.discipline && !errors.discipline && <span className="absolute right-2 top-4 text-red-500 text-xl">❌</span>}
+            {touched.discipline && errors.discipline && <span className="absolute right-2 top-4 text-green-500 text-xl">&#x2705;</span>} 
+            {touched.discipline && !errors.discipline && <span className="absolute right-2 top-4 text-red-500 text-xl">&#x274c;</span>}
           </div>
           {/* What drew you to us? */}
           <div className="relative">
             <textarea name="why" id="why" value={form.why} onChange={handleChange} onBlur={handleBlur} maxLength={400} className={`peer w-full bg-transparent border-b-2 py-3 px-2 text-lg text-[#EAEAEA] focus:outline-none focus:border-neon-accent transition placeholder-transparent resize-none ${touched.why && !errors.why ? 'border-green-500' : touched.why && !form.why ? 'border-red-500' : 'border-[#444]'}`} placeholder="What drew you to us? (400 chars)" aria-label="What drew you to us?" required />
             <label htmlFor="why" className="absolute left-2 top-3 text-[#aaa] text-lg transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-focus:-top-5 peer-focus:text-sm peer-focus:text-neon-accent peer-focus:bg-[#18181b] px-1 bg-[#18181b]">What drew you to us? (400 chars)</label>
             <span className="absolute right-2 bottom-2 text-xs text-off-white/40">{form.why.length}/400</span>
-            {touched.why && errors.why && <span className="absolute right-2 top-4 text-green-500 text-xl">✅</span>} 
-            {touched.why && !errors.why && <span className="absolute right-2 top-4 text-red-500 text-xl">❌</span>}
+            {touched.why && errors.why && <span className="absolute right-2 top-4 text-green-500 text-xl">&#x2705;</span>} 
+            {touched.why && !errors.why && <span className="absolute right-2 top-4 text-red-500 text-xl">&#x274c;</span>}
           </div>
           {/* LinkedIn / social (optional) */}
           <div className="relative">
@@ -215,8 +229,8 @@ export default function CareersPage() {
           <div className="flex items-center gap-3 mt-2">
             <input type="checkbox" name="consent" id="consent" checked={form.consent} onChange={handleChange} onBlur={handleBlur} className="accent-neon-accent w-5 h-5 focus:ring-2 focus:ring-neon-accent" required />
             <label htmlFor="consent" className="text-off-white/80 text-sm">I consent to my data being processed for recruitment purposes (GDPR/CCPA).</label>
-            {touched.consent && errors.consent && <span className="text-green-500 text-xl">✅</span>} 
-            {touched.consent && !errors.consent && <span className="text-red-500 text-xl">❌</span>}
+            {touched.consent && errors.consent && <span className="text-green-500 text-xl">&#x2705;</span>} 
+            {touched.consent && !errors.consent && <span className="text-red-500 text-xl">&#x274c;</span>}
           </div>
         </div>
         <button type="submit" className="mt-8 w-full bg-neon-accent text-charcoal font-bold py-3 rounded-lg shadow hover:bg-gradient-to-r hover:from-neon-accent hover:to-gradient-end transition focus:ring-2 focus:ring-neon-accent text-lg" disabled={saving}>
