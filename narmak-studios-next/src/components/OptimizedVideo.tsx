@@ -51,8 +51,9 @@ export default function OptimizedVideo({
     }
 
     return () => {
-      if (videoRef.current) {
-        observer.unobserve(videoRef.current);
+      const currentRef = videoRef.current;
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [autoPlay]);

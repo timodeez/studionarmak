@@ -12,18 +12,6 @@ const tldrSummaries = [
   'Unlimited design tasks, one flat monthly fee. Limited spots.'
 ];
 
-// Improved slugify to match the dynamic route
-function slugify(str: string) {
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // remove accents
-    .replace(/[^\w\s-]/g, '') // remove non-word chars
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-}
-
 const slugMap = [
   'brand-and-marketing-animation',
   'entertainment-and-original-ip',

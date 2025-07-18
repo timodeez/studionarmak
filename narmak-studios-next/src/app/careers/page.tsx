@@ -83,17 +83,17 @@ export default function CareersPage() {
   const errors = validate(form);
   const allValid = Object.values(errors).every(Boolean);
 
-  function handleChange(e: any) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value, type, checked, files } = e.target;
     setForm(f => ({
       ...f,
-      [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
+      [name]: type === 'checkbox' ? checked : type === 'file' ? (files ? files[0] : null) : value
     }));
   }
-  function handleBlur(e: any) {
+  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setTouched(t => ({ ...t, [e.target.name]: true }));
   }
-  function handleSubmit(e: any) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitted(true);
     setTouched({ name: true, email: true, location: true, portfolio: true, discipline: true, why: true, consent: true, portfolioFile: true });

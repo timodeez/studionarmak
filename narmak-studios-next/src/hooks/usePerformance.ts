@@ -34,7 +34,7 @@ export function usePerformance() {
     }
   }, []);
 
-  const trackInteraction = useCallback((action: string, value?: any) => {
+  const trackInteraction = useCallback((action: string, value?: unknown) => {
     if (typeof window !== 'undefined') {
       const event = {
         action,

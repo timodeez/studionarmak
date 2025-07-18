@@ -8,7 +8,7 @@ export default function TestimonialsPage() {
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-5xl font-display mb-4">People Love Us</h1>
           <p className="text-lg text-off-white/70 mb-12">
-            We're proud to partner with amazing clients. Here's what some of them have to say about our work.
+            We&apos;re proud to partner with amazing clients. Here&apos;s what some of them have to say about our work.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">

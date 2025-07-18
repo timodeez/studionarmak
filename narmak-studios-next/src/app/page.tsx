@@ -54,7 +54,6 @@ export default function HomePage() {
   const subs = useAnimatedCounter(2500000, isStatsVisible);
   const projects = useAnimatedCounter(130, isStatsVisible);
 
-  const extendedLogos = [...clientLogos, ...clientLogos];
   const words = ['animation', 'talent', 'graphic', 'marketing', 'creative', 'dream'];
   const [wordState, setWordState] = useState({ text: words[0], animationClass: 'animate-slide-down-in' });
   const currentIndexRef = useRef(0);
@@ -305,7 +304,7 @@ export default function HomePage() {
         
         <div className="container mx-auto px-4 max-w-4xl mt-24 text-center">
           <p className="text-3xl font-display text-off-white leading-snug">
-            "{testimonials[0].quote}"
+            &quot;{testimonials[0].quote}&quot;
           </p>
           <p className="mt-4 text-off-white/70 font-semibold">
             {testimonials[0].name}, <span className="text-off-white/50 font-normal">{testimonials[0].title}</span>

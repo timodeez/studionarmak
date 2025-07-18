@@ -22,7 +22,7 @@ export default function IndividualServicePage({ params }: { params: { slug: stri
       <div className="pt-20 min-h-screen bg-charcoal text-off-white">
         <div className="container mx-auto px-4 py-20 md:py-28 text-center">
           <h1 className="text-5xl font-display mb-6">Service Not Found</h1>
-          <p className="text-lg text-off-white/70 mb-8">The service you're looking for doesn't exist.</p>
+          <p className="text-lg text-off-white/70 mb-8">The service you&apos;re looking for doesn&apos;t exist.</p>
           <Link href="/services" className="inline-flex items-center text-neon-accent hover:text-gradient-end transition-colors">
             <span className="mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>

@@ -9,7 +9,6 @@ interface PortfolioItemProps {
   title: string;
   client?: string;
   type?: string;
-  description: string;
   mediaUrl: string;
   staticImg: string;
   services?: string[];
@@ -28,7 +27,6 @@ export default function PortfolioItem({
   title,
   client,
   type,
-  description,
   mediaUrl,
   staticImg,
   services = [],
@@ -36,7 +34,6 @@ export default function PortfolioItem({
   href,
   priority = false
 }: PortfolioItemProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   
   const optimizedMediaUrl = getOptimizedMediaUrl(mediaUrl);
@@ -46,8 +43,6 @@ export default function PortfolioItem({
     <div
       className="group relative overflow-hidden rounded-lg transition-all duration-700 ease-out bg-[#18181b] shadow-lg"
       style={{ height: '280px', minWidth: '0' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Media Content */}
       <div className="relative w-full h-full">
