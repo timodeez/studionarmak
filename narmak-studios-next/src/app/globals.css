@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0F0F10;
+  --foreground: #F5F5F7;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-display: 'Inter', sans-serif;
+  --color-charcoal: #0F0F10;
+  --color-off-white: #F5F5F7;
+  --color-neon-accent: #FF4F4F;
+  --color-gradient-end: #FFB84F;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Custom scrollbar */
+.scrollbar-thin { 
+  scrollbar-width: thin; 
+  scrollbar-color: #FF4F4F #1a1a1c; 
+}
+.scrollbar-thin::-webkit-scrollbar { 
+  height: 8px; 
+}
+.scrollbar-thin::-webkit-scrollbar-track { 
+  background: #1a1a1c; 
+  border-radius: 10px; 
+}
+.scrollbar-thin::-webkit-scrollbar-thumb { 
+  background-color: #FF4F4F; 
+  border-radius: 10px; 
+  border: 2px solid #1a1a1c; 
+}
+
+/* Marquee animation */
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-scroll { 
+  animation: scroll 25s linear infinite; 
+}
+
+/* Hero text animation */
+@keyframes slideDownOut { 
+  from { transform: translateY(0); opacity: 1; } 
+  to { transform: translateY(100%); opacity: 0; } 
+}
+@keyframes slideDownIn { 
+  from { transform: translateY(-100%); opacity: 0; } 
+  to { transform: translateY(0); opacity: 1; } 
+}
+.animate-slide-down-out { 
+  animation: slideDownOut 0.4s ease-in forwards; 
+}
+.animate-slide-down-in { 
+  animation: slideDownIn 0.4s ease-in forwards; 
+}
+
+/* Header Dropdown */
+.group .dropdown-menu { 
+  display: none; 
+}
+.group:hover .dropdown-menu { 
+  display: block; 
+}
+
+html { 
+  scroll-behavior: smooth; 
+}
+
+/* Video quality improvements */
+video {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Video Optimization Guide</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    .step { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    code { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <h1>🎬 Video Optimization Guide</h1>
+  
+  <div class="step">
+    <h3>Step 1: Install FFmpeg</h3>
+    <p>Download and install FFmpeg from <a href="https://ffmpeg.org/download.html">https://ffmpeg.org/download.html</a></p>
+  </div>
+  
+  <div class="step">
+    <h3>Step 2: Run Video Optimization</h3>
+    <p>Execute the PowerShell script:</p>
+    <code>powershell -ExecutionPolicy Bypass -File optimize-videos.ps1</code>
+  </div>
+  
+  <div class="step">
+    <h3>Step 3: Expected Results</h3>
+    <p>The script will create optimized versions of your videos:</p>
+    <ul>
+      <li><strong>Web versions:</strong> 720p, 2Mbps, ~5-10MB each</li>
+      <li><strong>Mobile versions:</strong> 480p, 1Mbps, ~2-5MB each</li>
+    </ul>
+  </div>
+  
+  <div class="step">
+    <h3>Step 4: Update Video URLs</h3>
+    <p>Update the <code>gifToMp4Map</code> in <code>src/utils/gifToMp4.ts</code> to point to your optimized videos.</p>
+  </div>
+  
+  <h2>Current Video Files:</h2>
+  <ul>
+    <li>genshin-impact.mp4 - <em>Placeholder (needs optimization)</em></li><li>gfuel-dbz.mp4 - <em>Placeholder (needs optimization)</em></li><li>nordvpn.mp4 - <em>Placeholder (needs optimization)</em></li><li>black-clover.mp4 - <em>Placeholder (needs optimization)</em></li><li>shrekfest.mp4 - <em>Placeholder (needs optimization)</em></li><li>suponjibobu-anime.mp4 - <em>Placeholder (needs optimization)</em></li><li>attack-on-ogre.mp4 - <em>Placeholder (needs optimization)</em></li><li>shaggy-v-scooby.mp4 - <em>Placeholder (needs optimization)</em></li><li>anime-openings.mp4 - <em>Placeholder (needs optimization)</em></li><li>naruto-i-guess.mp4 - <em>Placeholder (needs optimization)</em></li>
+  </ul>
+  
+  <p><strong>Note:</strong> These are placeholder files. Replace them with actual optimized videos for production.</p>
+</body>
+</html>
