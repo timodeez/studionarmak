@@ -26,8 +26,19 @@ export default function Header({ }: HeaderProps) {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    let ticking = false;
+    
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -51,7 +62,7 @@ export default function Header({ }: HeaderProps) {
   }, [sidebarOpen]);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-charcoal/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${isScrolled ? 'bg-charcoal/95 shadow-lg' : 'bg-transparent'}`} style={{ pointerEvents: 'auto' }}>
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <Link href="/" className="font-display text-2xl font-bold text-off-white">
           Studio Narmak
@@ -130,7 +141,7 @@ export default function Header({ }: HeaderProps) {
         </button>
         {/* Sidebar drawer */}
         {sidebarOpen && (
-          <div className="fixed inset-0 z-50 bg-black/60 flex justify-end" onClick={() => setSidebarOpen(false)}>
+          <div className="fixed inset-0 z-[9999] bg-black/60 flex justify-end" onClick={() => setSidebarOpen(false)}>
             <div
               ref={sidebarRef}
               className="w-full max-w-xs sm:max-w-sm bg-charcoal h-full shadow-2xl p-5 sm:p-8 flex flex-col gap-5 sm:gap-7 animate-slide-in-right relative overflow-y-auto text-lg sm:text-xl font-semibold text-off-white"

@@ -16,11 +16,20 @@
   --color-gradient-end: #FFB84F;
 }
 
+/* Optimize for performance */
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   font-feature-settings: "rlig" 1, "calt" 1;
+  /* Optimize for performance */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Custom scrollbar */
@@ -46,8 +55,10 @@ body {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+/* Performance optimizations for animations */
 .animate-scroll { 
   animation: scroll 25s linear infinite; 
+  will-change: transform;
 }
 
 /* Hero text animation */
@@ -61,9 +72,11 @@ body {
 }
 .animate-slide-down-out { 
   animation: slideDownOut 0.4s ease-in forwards; 
+  will-change: transform, opacity;
 }
 .animate-slide-down-in { 
   animation: slideDownIn 0.4s ease-in forwards; 
+  will-change: transform, opacity;
 }
 
 /* Header Dropdown */
@@ -75,7 +88,7 @@ body {
 }
 
 html { 
-  scroll-behavior: smooth; 
+  /* Remove smooth scrolling for better performance */
 }
 
 /* Video quality improvements */
@@ -86,4 +99,15 @@ video {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+  /* Additional performance optimizations */
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+}
+
+/* Optimize fixed elements */
+header {
+  will-change: background-color;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
