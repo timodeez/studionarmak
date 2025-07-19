@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 
 interface AnimatedSectionProps {
   children: React.ReactNode;
@@ -18,12 +18,22 @@ export default function AnimatedSection({
   const ref = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+    const entry = entries[0];
+    if (entry.isIntersecting && !isVisible) {
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    }
+  }, [isVisible]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold }
+      handleIntersection,
+      { 
+        threshold,
+        rootMargin: '50px 0px -50px 0px' // Start animation slightly before element comes into view
+      }
     );
     
     const currentRef = ref.current;
@@ -32,15 +42,19 @@ export default function AnimatedSection({
     return () => {
       if (currentRef) observer.unobserve(currentRef);
     };
-  }, [ref, threshold]);
+  }, [handleIntersection, threshold]);
 
   return (
     <section 
       id={id} 
       ref={ref} 
-      className={`transition-all duration-1000 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      className={`transition-all duration-700 ease-out will-change-transform ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       } ${customClass}`}
+      style={{
+        transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+        opacity: isVisible ? 1 : 0
+      }}
     >
       {children}
     </section>

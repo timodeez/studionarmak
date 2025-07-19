@@ -266,22 +266,24 @@ export default function HomePage() {
         </div>
         
         <div className="container mx-auto px-4 text-center mt-24">
-          <h2 className="text-3xl font-display text-off-white/80 mb-10">Trusted by Visionary Partners</h2>
-          <div className="flex flex-col items-center gap-8">
-            {/* Responsive grid for all logos */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 w-full max-w-5xl">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-display text-off-white/70 mb-4 font-medium tracking-wide">
+              Trusted by visionary partners
+            </h2>
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16 mt-8 md:mt-12">
               {clientLogos.map((logo, index) => (
-                <div key={index} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity">
+                <div 
+                  key={index} 
+                  className="flex items-center justify-center opacity-60 hover:opacity-100 transition-all duration-300 ease-out transform hover:scale-105"
+                  style={{ minHeight: '60px' }}
+                >
                   <Image
                     src={logo.img}
                     alt={logo.name}
-                    width={logo.name === 'Extra' ? 300 : 220}
-                    height={logo.name === 'Extra' ? 180 : 128}
-                    className={
-                      logo.name === 'Extra'
-                        ? 'max-h-40 max-w-[300px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
-                        : 'max-h-32 max-w-[220px] w-auto h-auto object-contain mx-auto drop-shadow-lg'
-                    }
+                    width={120}
+                    height={60}
+                    className="max-h-[60px] max-w-[120px] w-auto h-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    loading="lazy"
                   />
                 </div>
               ))}
