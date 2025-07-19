@@ -15,7 +15,7 @@ export const servicesCardData = [
       "Ongoing audience-building content",
       "Trade-show loops, concert backdrops, projection-mapped sets"
     ],
-    why: "Because your story deserves to stand out. We help you connect with your audience, build trust, and make your brand unforgettable—whether you’re launching a product, growing a community, or inspiring action."
+    why: "Explainers, product launches, commercials, event visuals & branded entertainment that convert and stick."
   },
   {
     title: "Entertainment & Original IP",
@@ -32,10 +32,10 @@ export const servicesCardData = [
       "For buyers, festivals, or crowdfunding",
       "Character art, NFTs, plushies, apparel"
     ],
-    why: "Because you want to experience new worlds, stories, and characters that inspire and entertain. Our original content is made for fans like you—by creators who love animation as much as you do."
+    why: "Original shorts, series & music videos that build fandom and long‑tail engagement."
   },
   {
-    title: "Pre to Post Production (à-la-carte or full stack)",
+    title: "Pre to Post Production (À‑La‑Carte or Full Stack)",
     deliver: [
       "concept and script workshops",
       "Storyboards + animatics",
@@ -47,10 +47,10 @@ export const servicesCardData = [
     ],
     useCases: [
       "Teams without in-house animation staff",
-      "Campaigns that can’t afford hand-off delays",
+      "Campaigns that can't afford hand-off delays",
       "Brands demanding one-voice quality control from first sketch to final export"
     ],
-    why: "One partner, one pipeline, zero creative drift. By keeping pre‑production, production and finishing under a single roof we lock vision early, catch problems while they’re cheap, and deliver a master file that’s ready for every screen—without the telephone‑game revisions that burn budget and morale."
+    why: "Strategy, scripting, design, animation, edit, mix—plug in anywhere or let us run the whole thing."
   },
   {
     title: "Creative Strategy & Consulting",
@@ -62,10 +62,10 @@ export const servicesCardData = [
       "Budgeting & scheduling for animated projects"
     ],
     useCases: [],
-    why: "Get expert guidance for your creative journey. We help you plan, strategize, and grow—so you can reach your goals faster and with less stress."
+    why: "Positioning, story roadmaps, pitch polish. We help ideas grow - over 500 million views didn't come from thin air."
   },
   {
-    title: "Support & Collateral",
+    title: "Design & Collateral",
     deliver: [
       "Key art, posters, thumbnails, album covers",
       "Print & packaging design",
@@ -73,7 +73,7 @@ export const servicesCardData = [
       "Pitch-deck design + investor sizzle reels"
     ],
     useCases: [],
-    why: "Make your brand unforgettable at every touchpoint. We create the visuals and materials you need to connect with your audience and unlock new opportunities."
+    why: "Key art, pitch decks, merch, album covers—extend & own your visual identity."
   },
   {
     title: "Graphic Design Subscription",
@@ -96,6 +96,6 @@ export const servicesCardData = [
       "Product launches or campaign sprints that demand fresh assets every week",
       "Founders who prefer design, dev, and content under one roof"
     ],
-    why: "You get creative support on your terms. Our subscription keeps your projects moving, your brand consistent, and your life easier—no more juggling multiple vendors."
+    why: "Unlimited requests. Fast turnarounds. Flat monthly fee. Limited seats."
   }
 ]; 

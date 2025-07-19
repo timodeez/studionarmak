@@ -58,18 +58,16 @@ export default function PortfolioItem({
             onLoad={() => setIsLoaded(true)}
           />
         ) : (
-          staticImg ? (
-            <Image
-              src={staticImg}
-              alt={title}
-              width={400}
-              height={240}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              style={{ height: '100%', objectFit: 'cover' }}
-              priority={priority}
-              onLoad={() => setIsLoaded(true)}
-            />
-          ) : null
+          <Image
+            src={mediaUrl}
+            alt={title}
+            width={400}
+            height={240}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            style={{ height: '100%', objectFit: 'cover' }}
+            priority={priority}
+            onLoad={() => setIsLoaded(true)}
+          />
         )}
         
         {/* Loading State */}

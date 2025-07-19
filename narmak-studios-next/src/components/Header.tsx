@@ -12,7 +12,7 @@ const slugMap = [
   'entertainment-and-original-ip',
   'pre-to-post-production-a-la-carte-or-full-stack',
   'creative-strategy-and-consulting',
-  'support-and-collateral',
+      'design-and-collateral',
   'graphic-design-subscription'
 ];
 

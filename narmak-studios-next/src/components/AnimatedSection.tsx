@@ -9,6 +9,30 @@ interface AnimatedSectionProps {
   threshold?: number;
 }
 
+// Shared intersection observer for better performance
+let globalObserver: IntersectionObserver | null = null;
+const observedElements = new Map<HTMLElement, (isVisible: boolean) => void>();
+
+const getGlobalObserver = () => {
+  if (!globalObserver) {
+    globalObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const callback = observedElements.get(entry.target as HTMLElement);
+          if (callback) {
+            callback(entry.isIntersecting);
+          }
+        });
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '50px 0px -50px 0px'
+      }
+    );
+  }
+  return globalObserver;
+};
+
 export default function AnimatedSection({ 
   children, 
   customClass = '', 
@@ -18,9 +42,8 @@ export default function AnimatedSection({
   const ref = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
-    const entry = entries[0];
-    if (entry.isIntersecting && !isVisible) {
+  const handleVisibilityChange = useCallback((visible: boolean) => {
+    if (visible && !isVisible) {
       requestAnimationFrame(() => {
         setIsVisible(true);
       });
@@ -28,21 +51,21 @@ export default function AnimatedSection({
   }, [isVisible]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      handleIntersection,
-      { 
-        threshold,
-        rootMargin: '50px 0px -50px 0px' // Start animation slightly before element comes into view
-      }
-    );
-    
+    const observer = getGlobalObserver();
     const currentRef = ref.current;
-    if (currentRef) observer.observe(currentRef);
+    
+    if (currentRef) {
+      observedElements.set(currentRef, handleVisibilityChange);
+      observer.observe(currentRef);
+    }
     
     return () => {
-      if (currentRef) observer.unobserve(currentRef);
+      if (currentRef) {
+        observedElements.delete(currentRef);
+        observer.unobserve(currentRef);
+      }
     };
-  }, [handleIntersection, threshold]);
+  }, [handleVisibilityChange]);
 
   return (
     <section 

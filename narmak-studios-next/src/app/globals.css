@@ -140,7 +140,6 @@ html {
 
 body {
   -webkit-overflow-scrolling: touch;
-  overflow-x: hidden;
 }
 
 /* Optimize images for better performance */
