@@ -6,6 +6,14 @@ interface MobileOptimizerProps {
   children: React.ReactNode;
 }
 
+interface NavigatorWithBattery extends Navigator {
+  getBattery?: () => Promise<{ level: number }>;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: { effectiveType: string };
+}
+
 export default function MobileOptimizer({ children }: MobileOptimizerProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [isLowPowerMode, setIsLowPowerMode] = useState(false);
@@ -21,7 +29,7 @@ export default function MobileOptimizer({ children }: MobileOptimizerProps) {
     // Detect low power mode (iOS)
     const checkLowPowerMode = () => {
       if ('getBattery' in navigator) {
-        (navigator as { getBattery?: () => Promise<{ level: number }> }).getBattery?.().then((battery) => {
+        (navigator as NavigatorWithBattery).getBattery?.().then((battery) => {
           setIsLowPowerMode(battery.level < 0.2);
         });
       }
@@ -30,7 +38,7 @@ export default function MobileOptimizer({ children }: MobileOptimizerProps) {
     // Check network conditions
     const checkNetwork = () => {
       if ('connection' in navigator) {
-        const connection = (navigator as { connection?: { effectiveType: string } }).connection;
+        const connection = (navigator as NavigatorWithConnection).connection;
         if (connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g') {
           // Apply additional optimizations for slow networks
           document.body.classList.add('slow-network');

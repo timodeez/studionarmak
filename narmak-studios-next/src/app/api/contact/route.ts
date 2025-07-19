@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Contact form error:', error);
     return NextResponse.json(
       { error: 'Something went wrong. Please try again.' },

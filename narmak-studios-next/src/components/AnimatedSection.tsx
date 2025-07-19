@@ -6,7 +6,6 @@ interface AnimatedSectionProps {
   children: React.ReactNode;
   customClass?: string;
   id?: string;
-  threshold?: number;
 }
 
 // Shared intersection observer for better performance

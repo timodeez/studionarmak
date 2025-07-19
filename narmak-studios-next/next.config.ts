@@ -4,12 +4,14 @@ const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['@next/font'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+  
+  // Turbopack configuration (moved from experimental.turbo)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
@@ -152,13 +154,13 @@ const nextConfig: NextConfig = {
   //   if (!isServer) {
   //     const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
   //     config.plugins.push(
-  //       new BundleAnalyzerPlugin({
-  //         analyzerMode: 'static',
-  //         openAnalyzer: false,
-  //       })
-  //     );
-  //   }
-  //   return config;
+  //     new BundleAnalyzerPlugin({
+  //       analyzerMode: 'static',
+  //       openAnalyzer: false,
+  //     })
+  //   );
+  // }
+  // return config;
   // },
 };
 

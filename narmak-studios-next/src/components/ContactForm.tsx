@@ -209,14 +209,12 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
             className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white focus:outline-none focus:border-neon-accent transition-colors"
           >
             <option value="">Select budget range</option>
-            <option value="under-2.5k">Under $2,500</option>
-            <option value="2.5k-5k">$2,500 - $5,000</option>
+            <option value="under-5k">Under $5,000</option>
             <option value="5k-15k">$5,000 - $15,000</option>
             <option value="15k-50k">$15,000 - $50,000</option>
             <option value="50k-100k">$50,000 - $100,000</option>
-            <option value="100k-150k">$100,000 - $150,000</option>
-            <option value="150k-200k">$150,000 - $200,000</option>
-            <option value="over-200k">$200,000+</option>
+            <option value="over-100k">Over $100,000</option>
+            <option value="discuss">Let&apos;s discuss</option>
           </select>
         </div>
       </div>
@@ -237,57 +235,62 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
         />
       </div>
 
-      {/* File Upload Section */}
       <div>
         <label htmlFor="files" className="block text-sm font-medium text-off-white mb-2">
-          Upload Files (Optional)
+          Attach Files (Optional)
         </label>
-        <div className="space-y-4">
-          <div className="relative">
-            <input
-              type="file"
-              id="files"
-              name="files"
-              onChange={handleChange}
-              multiple
-              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.mp4,.mov,.avi,.zip,.rar"
-              className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white focus:outline-none focus:border-neon-accent transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-neon-accent file:text-charcoal hover:file:bg-neon-accent/90"
-            />
-            <p className="mt-2 text-xs text-off-white/60">
-              Accepted formats: PDF, DOC, DOCX, JPG, PNG, GIF, MP4, MOV, AVI, ZIP, RAR (Max 10MB per file)
-            </p>
-          </div>
-
-          {/* Display selected files */}
-          {formData.files.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-off-white">Selected Files:</p>
-              {formData.files.map((file, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-[#232325] rounded-lg border border-off-white/10">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-neon-accent">📎</span>
-                    <div>
-                      <p className="text-sm text-off-white font-medium">{file.name}</p>
-                      <p className="text-xs text-off-white/60">{formatFileSize(file.size)}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeFile(index)}
-                    className="text-red-400 hover:text-red-300 transition-colors"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <input
+          type="file"
+          id="files"
+          name="files"
+          multiple
+          onChange={handleChange}
+          className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-neon-accent file:text-charcoal hover:file:bg-neon-accent/80 file:cursor-pointer focus:outline-none focus:border-neon-accent transition-colors"
+          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.mp4,.mov,.avi"
+        />
+        <p className="text-sm text-off-white/60 mt-2">
+          Accepted formats: PDF, DOC, DOCX, JPG, PNG, GIF, MP4, MOV, AVI (Max 10MB per file)
+        </p>
       </div>
 
+      {/* File preview */}
+      {formData.files.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-off-white">Selected files:</p>
+          {formData.files.map((file, index) => (
+            <div key={index} className="flex items-center justify-between p-3 bg-charcoal/50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <span className="text-neon-accent">📎</span>
+                <div>
+                  <p className="text-sm text-off-white font-medium">{file.name}</p>
+                  <p className="text-xs text-off-white/60">{formatFileSize(file.size)}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => removeFile(index)}
+                className="text-red-400 hover:text-red-300 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Submit button */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-neon-accent text-charcoal font-bold py-4 px-6 rounded-lg hover:bg-neon-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      >
+        {isSubmitting ? 'Sending...' : 'Get a Quote'}
+      </button>
+
+      {/* Status messages */}
       {submitStatus === 'success' && (
         <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400">
-                      Thank you for your inquiry! We&apos;ll get back to you soon.
+          Thank you for your inquiry! We&apos;ll get back to you soon.
         </div>
       )}
 
@@ -296,14 +299,6 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           {errorMessage}
         </div>
       )}
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full bg-neon-accent text-charcoal font-display font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isSubmitting ? 'Sending...' : 'Get a Quote'}
-      </button>
     </form>
   );
 } 
