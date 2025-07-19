@@ -6,6 +6,18 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@next/font'],
   },
   
+  // ESLint configuration
+  eslint: {
+    ignoreDuringBuilds: false,
+    dirs: ['src'],
+  },
+
+  // Disable specific ESLint rules that are causing issues
+  typescript: {
+    ignoreBuildErrors: false,
+    tsconfigPath: './tsconfig.json',
+  },
+  
   // Turbopack configuration (moved from experimental.turbo)
   turbopack: {
     rules: {
