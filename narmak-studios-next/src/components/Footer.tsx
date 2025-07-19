@@ -22,7 +22,7 @@ export default function Footer() {
             <EmailSubscription 
               placeholder="Enter your email address"
               buttonText="Subscribe"
-              successMessage="Thanks for subscribing! We'll keep you updated."
+              successMessage="Thanks for subscribing! We&apos;ll keep you updated."
             />
           </div>
           

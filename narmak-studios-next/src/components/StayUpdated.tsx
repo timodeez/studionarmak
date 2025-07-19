@@ -17,7 +17,7 @@ export default function StayUpdated() {
             <EmailSubscription 
               placeholder="Enter your email address"
               buttonText="Subscribe for Updates"
-              successMessage="Thanks for subscribing! We'll keep you updated with the latest from Studio Narmak."
+              successMessage="Thanks for subscribing! We&apos;ll keep you updated with the latest from Studio Narmak."
             />
           </div>
           

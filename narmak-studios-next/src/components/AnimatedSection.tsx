@@ -36,8 +36,7 @@ const getGlobalObserver = () => {
 export default function AnimatedSection({ 
   children, 
   customClass = '', 
-  id = '', 
-  threshold = 0.1 
+  id = '' 
 }: AnimatedSectionProps) {
   const ref = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);

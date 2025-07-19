@@ -21,7 +21,7 @@ export default function MobileOptimizer({ children }: MobileOptimizerProps) {
     // Detect low power mode (iOS)
     const checkLowPowerMode = () => {
       if ('getBattery' in navigator) {
-        (navigator as any).getBattery().then((battery: any) => {
+        (navigator as { getBattery?: () => Promise<{ level: number }> }).getBattery?.().then((battery) => {
           setIsLowPowerMode(battery.level < 0.2);
         });
       }
@@ -30,8 +30,8 @@ export default function MobileOptimizer({ children }: MobileOptimizerProps) {
     // Check network conditions
     const checkNetwork = () => {
       if ('connection' in navigator) {
-        const connection = (navigator as any).connection;
-        if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+        const connection = (navigator as { connection?: { effectiveType: string } }).connection;
+        if (connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g') {
           // Apply additional optimizations for slow networks
           document.body.classList.add('slow-network');
         }

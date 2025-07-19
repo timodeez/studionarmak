@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 interface ContactFormProps {
-  onSubmit?: (data: any) => void;
+  onSubmit?: (data: { success: boolean; message: string; filesUploaded: number; submissionId: string }) => void;
 }
 
 export default function ContactForm({ onSubmit }: ContactFormProps) {
@@ -88,7 +88,7 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
         setSubmitStatus('error');
         setErrorMessage(result.error || 'Something went wrong');
       }
-    } catch (error) {
+    } catch (_error) {
       setSubmitStatus('error');
       setErrorMessage('Network error. Please try again.');
     } finally {
@@ -287,7 +287,7 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
 
       {submitStatus === 'success' && (
         <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400">
-          Thank you for your inquiry! We'll get back to you soon.
+                      Thank you for your inquiry! We&apos;ll get back to you soon.
         </div>
       )}
 

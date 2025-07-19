@@ -45,7 +45,7 @@ export default function EmailSubscription({
         setStatus('error');
         setMessage(result.error || 'Something went wrong');
       }
-    } catch (error) {
+    } catch (_error) {
       setStatus('error');
       setMessage('Network error. Please try again.');
     } finally {

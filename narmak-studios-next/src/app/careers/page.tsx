@@ -222,7 +222,7 @@ export default function CareersPage() {
         } else {
           setError(result.error || 'Something went wrong. Please try again.');
         }
-      } catch (error) {
+      } catch (_error) {
         setError('Network error. Please try again.');
       } finally {
         setSaving(false); // Hide loading state
@@ -241,7 +241,7 @@ export default function CareersPage() {
           <span role="img" aria-label="confetti" className="text-5xl">🎉</span>
         </div>
         <h1 className="text-4xl font-display mb-4">Got it—thanks for reaching out!</h1>
-        <p className="text-lg text-off-white/80 mb-6 max-w-xl">We'll shout when a project matches your skills. Meanwhile, enjoy our latest reel.</p>
+        <p className="text-lg text-off-white/80 mb-6 max-w-xl">We&apos;ll shout when a project matches your skills. Meanwhile, enjoy our latest reel.</p>
         <a href="/work" className="inline-block bg-neon-accent text-charcoal font-bold px-6 py-3 rounded-lg shadow hover:bg-gradient-to-r hover:from-neon-accent hover:to-gradient-end transition">See Our Work</a>
         <p className="mt-8 text-off-white/60">See you in the next storyboard!</p>
       </main>
@@ -258,7 +258,7 @@ export default function CareersPage() {
           ============================================================================ */}
       <header className="mb-12 text-center">
         <h1 className="text-5xl md:text-6xl font-display mb-4 text-[#EAEAEA]">Create the next frame with us.</h1>
-        <h2 className="text-2xl md:text-3xl text-[#EAEAEA] font-sans mb-6">We're always meeting storytellers, animators, designers and dreamers. If our work sparks yours, introduce yourself below.</h2>
+        <h2 className="text-2xl md:text-3xl text-[#EAEAEA] font-sans mb-6">We&apos;re always meeting storytellers, animators, designers and dreamers. If our work sparks yours, introduce yourself below.</h2>
         {/* No video/banner for now */}
       </header>
 

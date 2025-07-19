@@ -79,7 +79,7 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
       } else {
         setError(result.error || 'Failed to save blog post');
       }
-    } catch (error) {
+    } catch (_error) {
       setError('Network error. Please try again.');
     } finally {
       setIsSubmitting(false);

@@ -28,12 +28,8 @@ export default function PortfolioItem({
   title,
   client,
   type,
-  description: _description,
   mediaUrl,
   staticImg,
-  services: _services,
-  caseStudy: _caseStudy,
-  href: _href,
   priority = false
 }: PortfolioItemProps) {
   const [isLoaded, setIsLoaded] = useState(false);

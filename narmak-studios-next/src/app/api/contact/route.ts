@@ -16,7 +16,12 @@ export async function POST(request: NextRequest) {
     const message = formData.get('message') as string;
 
     // Extract files
-    const files: any[] = [];
+    const files: Array<{
+      name: string;
+      size: number;
+      type: string;
+      lastModified: number;
+    }> = [];
     for (let i = 0; i < 10; i++) { // Allow up to 10 files
       const file = formData.get(`file${i}`) as File;
       if (file && file.size > 0) {
@@ -80,11 +85,12 @@ export async function POST(request: NextRequest) {
         { status: 200 }
       );
       
-    } catch (dbError: any) {
+    } catch (dbError: unknown) {
+      const error = dbError as Error;
       console.error('Database error details:', {
-        message: dbError?.message || 'Unknown error',
-        stack: dbError?.stack || 'No stack trace',
-        name: dbError?.name || 'Unknown error type'
+        message: error?.message || 'Unknown error',
+        stack: error?.stack || 'No stack trace',
+        name: error?.name || 'Unknown error type'
       });
       
       // Fallback: log to console if database fails
