@@ -1,91 +1,49 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
 import Image from 'next/image';
-import ResponsiveVideo from './ResponsiveVideo';
-import { getOptimizedMediaUrl, shouldUseVideo } from '@/utils/gifToMp4';
 
 interface PortfolioItemProps {
   title: string;
-  client?: string;
-  type?: string;
-  mediaUrl: string;
-  staticImg: string;
-  priority?: boolean;
+  image: string;
+  category: string;
+  client: string;
+  year: string;
+  id: string;
 }
 
 export default function PortfolioItem({
   title,
+  image,
+  category,
   client,
-  type,
-  mediaUrl,
-  staticImg,
-  priority = false
+  year,
+  id
 }: PortfolioItemProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  
-  const optimizedMediaUrl = useMemo(() => getOptimizedMediaUrl(mediaUrl), [mediaUrl]);
-  const useVideo = useMemo(() => shouldUseVideo(mediaUrl), [mediaUrl]);
-
-  const handleLoad = useCallback(() => {
-    setIsLoaded(true);
-  }, []);
-
   return (
-    <div
-      className="group relative overflow-hidden rounded-lg transition-all duration-700 ease-out bg-[#18181b] shadow-lg"
-      style={{ height: '240px', minWidth: '0' }}
-    >
-      {/* Media Content */}
-      <div className="relative w-full h-full">
-        {useVideo ? (
-          <ResponsiveVideo
-            src={optimizedMediaUrl}
-            poster={staticImg}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            style={{ height: '100%', objectFit: 'cover' }}
-            preload="metadata"
-            onLoad={handleLoad}
-          />
-        ) : (
-          <Image
-            src={mediaUrl}
-            alt={title}
-            width={400}
-            height={240}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            style={{ height: '100%', objectFit: 'cover' }}
-            priority={priority}
-            onLoad={handleLoad}
-          />
-        )}
-        
-        {/* Loading State */}
-        {!isLoaded && (
-          <div className="absolute inset-0 bg-charcoal/20 animate-pulse flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-neon-accent border-t-transparent rounded-full animate-spin"></div>
+    <div className="group relative overflow-hidden rounded-lg">
+      <div className="aspect-w-16 aspect-h-9">
+        <Image
+          src={image}
+          alt={title}
+          width={640}
+          height={360}
+          className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <h3 className="text-2xl font-display text-white mb-2">{title}</h3>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="px-3 py-1 bg-white/10 rounded-full text-sm text-white">{category}</span>
+            <span className="px-3 py-1 bg-white/10 rounded-full text-sm text-white">{client}</span>
+            <span className="px-3 py-1 bg-white/10 rounded-full text-sm text-white">{year}</span>
           </div>
-        )}
-      </div>
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-      
-      {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4 text-left">
-        {client && (
-          <p className="text-neon-accent font-semibold text-xs sm:text-sm">{client}</p>
-        )}
-        {type && (
-          <p className="text-gradient-end font-semibold text-xs sm:text-sm">{type}</p>
-        )}
-        <h3 className="text-base sm:text-lg font-display text-white mt-1 leading-tight">{title}</h3>
-      </div>
-
-      {/* Hover Effect */}
-      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-        <div className="text-center text-white">
-          <p className="text-xs sm:text-sm opacity-80">Click to view</p>
+          <a
+            href={`/portfolio/${id}`}
+            className="inline-block px-6 py-2 bg-neon-accent text-charcoal font-semibold rounded-lg hover:bg-white transition-colors duration-300"
+          >
+            View Project
+          </a>
         </div>
       </div>
     </div>

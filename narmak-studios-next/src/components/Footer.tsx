@@ -20,8 +20,6 @@ export default function Footer() {
             <h4 className="text-lg font-semibold text-off-white mb-3">Stay Updated</h4>
             <p className="text-sm text-off-white/70 mb-4">Get the latest updates on our projects and insights.</p>
             <EmailSubscription 
-              placeholder="Enter your email address"
-              buttonText="Subscribe"
               successMessage="Thanks for subscribing! We&apos;ll keep you updated."
             />
           </div>

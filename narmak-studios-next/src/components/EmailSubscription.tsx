@@ -1,20 +1,13 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import clsx from 'clsx';
 
 interface EmailSubscriptionProps {
-  className?: string;
-  placeholder?: string;
-  buttonText?: string;
   successMessage?: string;
 }
 
-export default function EmailSubscription({
-  className = '',
-  placeholder = 'Enter your email for updates',
-  buttonText = 'Subscribe',
-  successMessage = 'Thanks for subscribing!'
+export default function EmailSubscription({ 
+  successMessage = 'Thanks for subscribing!' 
 }: EmailSubscriptionProps) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -36,7 +29,7 @@ export default function EmailSubscription({
         body: JSON.stringify({ email }),
       });
 
-      const result = await response.json() as { error?: string, message?: string};
+      const result = await response.json() as { error?: string, message?: string };
 
       if (response.ok) {
         setStatus('success');
@@ -53,34 +46,34 @@ export default function EmailSubscription({
   }, [email, successMessage]);
 
   return (
-    <div className={clsx('w-full max-w-md', className)}>
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value)
-          }}
-          placeholder={placeholder}
-          required
-          className="flex-1 px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors disabled:opacity-50"
-          disabled={status === 'loading'}
-        />
+    <div className="w-full max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        <div className="relative">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            placeholder="Enter your email"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
         <button
           type="submit"
-          disabled={status === 'loading' || status === 'success'}
-          className="px-6 py-3 bg-neon-accent text-charcoal font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          disabled={status === 'loading'}
+          className={`w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            status === 'loading' ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
-          {status === 'loading' ? 'Subscribing...' : buttonText}
+          {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
         </button>
       </form>
-      
-      {status === 'success' && (
-        <p className="mt-2 text-green-400 text-sm">{message}</p>
-      )}
-      
-      {status === 'error' && (
-        <p className="mt-2 text-red-400 text-sm">{message}</p>
+      {message && (
+        <p className={`mt-2 text-sm ${status === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+          {message}
+        </p>
       )}
     </div>
   );

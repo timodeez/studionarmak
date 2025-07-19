@@ -239,7 +239,7 @@ export default function CareersPage() {
         <div className="mb-6 animate-bounce">
           <span role="img" aria-label="confetti" className="text-5xl">🎉</span>
         </div>
-        <h1 className="text-4xl font-display mb-4">Got it—thanks for reaching out!</h1>
+        <h1 className="text-4xl font-display mb-4">Got it&mdash;thanks for reaching out!</h1>
         <p className="text-lg text-off-white/80 mb-6 max-w-xl">We&apos;ll shout when a project matches your skills. Meanwhile, enjoy our latest reel.</p>
         <a href="/work" className="inline-block bg-neon-accent text-charcoal font-bold px-6 py-3 rounded-lg shadow hover:bg-gradient-to-r hover:from-neon-accent hover:to-gradient-end transition">See Our Work</a>
         <p className="mt-8 text-off-white/60">See you in the next storyboard!</p>

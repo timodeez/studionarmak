@@ -26,6 +26,10 @@ interface ContactFormProps {
   onSubmit?: (data: SubmitResult) => void;
 }
 
+interface FormEvent extends React.FormEvent<HTMLFormElement> {
+  target: HTMLFormElement;
+}
+
 export default function ContactForm({ onSubmit }: ContactFormProps) {
   const [formData, setFormData] = useState<FormState>({
     name: '',
@@ -62,7 +66,7 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
     }));
   }, []);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');

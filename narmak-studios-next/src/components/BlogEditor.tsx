@@ -76,6 +76,16 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
         const result = await response.json() as BlogPost & { error?: string };
 
         if (response.ok) {
+          setFormData({
+            title: '',
+            slug: '',
+            excerpt: '',
+            content: '',
+            featured_image: '',
+            author: '',
+            published: false,
+            tags: []
+          });
           if (onSave) {
             onSave(result);
           }

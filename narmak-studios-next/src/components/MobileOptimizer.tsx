@@ -7,28 +7,28 @@ interface MobileOptimizerProps {
 }
 
 // Type definitions for non-standard browser APIs
-interface NavigatorWithBattery extends Navigator {
-  getBattery?: () => Promise<BatteryManager>;
-}
-
-interface BatteryManager {
+interface BatteryManager extends EventTarget {
   level: number;
   charging: boolean;
   chargingTime: number;
   dischargingTime: number;
-  addEventListener: (type: string, listener: (ev: Event) => void) => void;
-  removeEventListener: (type: string, listener: (ev: Event) => void) => void;
 }
 
-interface NavigatorWithConnection extends Navigator {
-  connection?: NetworkInformation;
-}
-
-interface NetworkInformation {
+interface NetworkInformation extends EventTarget {
   effectiveType: string;
   downlink: number;
   rtt: number;
   saveData: boolean;
+  addEventListener: (type: string, listener: EventListener) => void;
+  removeEventListener: (type: string, listener: EventListener) => void;
+}
+
+interface NavigatorWithBattery extends Navigator {
+  getBattery?: () => Promise<BatteryManager>;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
 }
 
 export default function MobileOptimizer({ children }: MobileOptimizerProps) {
@@ -48,14 +48,21 @@ export default function MobileOptimizer({ children }: MobileOptimizerProps) {
   const checkLowPowerMode = useCallback(async () => {
     if ("getBattery" in navigator) {
       try {
-        const battery = await (
-          navigator as NavigatorWithBattery
-        ).getBattery?.();
+        const battery = await (navigator as NavigatorWithBattery).getBattery?.();
         if (battery) {
+          const handleBatteryChange = () => {
+            setIsLowPowerMode(battery.level < 0.2 && !battery.charging);
+          };
+          battery.addEventListener('levelchange', handleBatteryChange);
+          battery.addEventListener('chargingchange', handleBatteryChange);
           setIsLowPowerMode(battery.level < 0.2 && !battery.charging);
         }
       } catch (error) {
-        console.error("Could not access battery status:", error);
+        if (error instanceof Error) {
+          console.error("Could not access battery status:", error.message);
+        } else {
+          console.error("Could not access battery status:", error);
+        }
       }
     }
   }, []);
@@ -63,10 +70,18 @@ export default function MobileOptimizer({ children }: MobileOptimizerProps) {
   const checkNetwork = useCallback(() => {
     const connection = (navigator as NavigatorWithConnection).connection;
     if (connection) {
-      setIsSlowNetwork(
-        connection.saveData ||
+      const handleNetworkChange = () => {
+        setIsSlowNetwork(
+          connection.saveData ||
           /2g|slow-2g/.test(connection.effectiveType) ||
           connection.rtt > 800
+        );
+      };
+      connection.addEventListener('change', handleNetworkChange);
+      setIsSlowNetwork(
+        connection.saveData ||
+        /2g|slow-2g/.test(connection.effectiveType) ||
+        connection.rtt > 800
       );
     }
   }, []);

@@ -12,6 +12,15 @@ interface ContactSubmissionPayload {
   files?: FileInfo[];
 }
 
+interface SubmitResult {
+  success: boolean;
+  message: string;
+  filesUploaded: number;
+  submissionId: string;
+  error?: string;
+  note?: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Parse FormData instead of JSON
@@ -87,7 +96,7 @@ export async function POST(request: NextRequest) {
           message: 'Thank you for your inquiry! We\'ll get back to you soon.',
           filesUploaded: files.length,
           submissionId: savedSubmission.id
-        },
+        } as SubmitResult,
         { status: 200 }
       );
       
@@ -122,14 +131,14 @@ export async function POST(request: NextRequest) {
           filesUploaded: files.length,
           submissionId: `fallback-${Date.now()}`,
           note: 'Saved locally (database connection issue)'
-        },
+        } as SubmitResult,
         { status: 200 }
       );
     }
 
   } catch (error: unknown) {
     if (error instanceof Error) {
-    console.error('Contact form error:', error.message);
+      console.error('Contact form error:', error.message);
     } else {
       console.error('An unknown error occurred:', error);
     }

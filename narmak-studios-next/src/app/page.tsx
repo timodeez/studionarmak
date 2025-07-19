@@ -280,9 +280,10 @@ export default function HomePage() {
                       <PortfolioItem
                         title={item.title}
                         client={item.client}
-                        mediaUrl={item.mediaUrl}
-                        staticImg={item.staticImg}
-                        priority={index === 0}
+                        category={item.services[0]}
+                        year="2024"
+                        image={item.staticImg}
+                        id={item.id.toString()}
                       />
                     </Link>
                   </LazyLoad>
@@ -295,8 +296,10 @@ export default function HomePage() {
                       <PortfolioItem
                         title={item.title}
                         client={item.client}
-                        mediaUrl={item.mediaUrl}
-                        staticImg={item.staticImg}
+                        category={item.services[0]}
+                        year="2024"
+                        image={item.staticImg}
+                        id={item.id.toString()}
                       />
                     </Link>
                   </LazyLoad>
@@ -357,10 +360,11 @@ export default function HomePage() {
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
                       <PortfolioItem
                         title={item.title}
-                        type={item.type}
-                        mediaUrl={item.mediaUrl}
-                        staticImg={item.homeImg}
-                        priority={index === 0}
+                        client="Narmak Originals"
+                        category={item.type}
+                        year="2024"
+                        image={item.homeImg}
+                        id={item.id.toString()}
                       />
                     </Link>
                   </LazyLoad>
@@ -372,9 +376,11 @@ export default function HomePage() {
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
                       <PortfolioItem
                         title={item.title}
-                        type={item.type}
-                        mediaUrl={item.mediaUrl}
-                        staticImg={item.homeImg}
+                        client="Narmak Originals"
+                        category={item.type}
+                        year="2024"
+                        image={item.homeImg}
+                        id={item.id.toString()}
                       />
                     </Link>
                   </LazyLoad>

@@ -14,9 +14,7 @@ export default function StayUpdated() {
           </p>
           
           <div className="max-w-md mx-auto">
-            <EmailSubscription 
-              placeholder="Enter your email address"
-              buttonText="Subscribe for Updates"
+            <EmailSubscription
               successMessage="Thanks for subscribing! We&apos;ll keep you updated with the latest from Studio Narmak."
             />
           </div>
