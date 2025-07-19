@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 
 interface SplashScreenProps {
@@ -11,29 +11,32 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    // Show splash for minimum 2 seconds
-    const timer = setTimeout(() => {
-      setIsAnimating(true);
-      
-      // Fade out animation
+  const handleComplete = useCallback(() => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsVisible(false);
       setTimeout(() => {
-        setIsVisible(false);
-        setTimeout(() => {
-          onComplete();
-        }, 500); // Wait for fade out to complete
-      }, 300);
-    }, 2000);
-
-    return () => clearTimeout(timer);
+        onComplete();
+      }, 500);
+    }, 300);
   }, [onComplete]);
+
+  useEffect(() => {
+    const timer = setTimeout(handleComplete, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [handleComplete]);
+
+  const containerClassName = useMemo(() => `fixed inset-0 z-50 bg-charcoal flex items-center justify-center transition-opacity duration-500 ${
+    isAnimating ? 'opacity-0' : 'opacity-100'
+  }`, [isAnimating]);
 
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed inset-0 z-50 bg-charcoal flex items-center justify-center transition-opacity duration-500 ${
-      isAnimating ? 'opacity-0' : 'opacity-100'
-    }`}>
+    <div className={containerClassName}>
       <div className="text-center">
         {/* Logo */}
         <div className="mb-8 animate-pulse">

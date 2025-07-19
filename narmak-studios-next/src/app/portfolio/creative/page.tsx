@@ -1,41 +1,49 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import AnimatedSection from '@/components/AnimatedSection';
-import { creativePortfolio } from '@/data/creativePortfolio';
+import { creativePortfolio as portfolioData } from '@/data/creativePortfolio';
 
 export default function CreativePage() {
-  useEffect(() => {
+  const creativePortfolio = useMemo(() => portfolioData, []);
+
+  const handleScrollToHash = useCallback(() => {
     if (typeof window !== 'undefined' && window.location.hash) {
       const id = window.location.hash.replace('#', '');
       const el = document.getElementById(id);
       if (el) {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           const headerOffset = 80;
           const elRect = el.getBoundingClientRect();
           const absoluteElementTop = elRect.top + window.pageYOffset;
           const elHeight = elRect.height;
           const windowHeight = window.innerHeight;
           // Special handling for last two items
-          const isLastTwo = creativePortfolio.length >= 2 && (
-            id === `creative-${creativePortfolio[creativePortfolio.length - 1].id}` ||
-            id === `creative-${creativePortfolio[creativePortfolio.length - 2].id}`
-          );
+          const isLastItem = id === `creative-${creativePortfolio[creativePortfolio.length - 1].id}`;
+          const isSecondLastItem = creativePortfolio.length > 1 && id === `creative-${creativePortfolio[creativePortfolio.length - 2].id}`;
+
           let scrollTo;
           if (elHeight > windowHeight) {
             scrollTo = absoluteElementTop - headerOffset;
-          } else if (isLastTwo) {
+          } else if (isLastItem || isSecondLastItem) {
             // Center perfectly even if not a full row
-            scrollTo = absoluteElementTop - ((windowHeight - elHeight) / 2);
+            scrollTo = absoluteElementTop - (windowHeight - elHeight) / 2;
           } else {
-            scrollTo = absoluteElementTop - (windowHeight / 2) + (elHeight / 2);
+            scrollTo = absoluteElementTop - windowHeight / 2 + elHeight / 2;
           }
           window.scrollTo({ top: scrollTo, behavior: 'smooth' });
         }, 200);
+        return () => {
+          clearTimeout(timeoutId);
+        };
       }
     }
-  }, []);
+  }, [creativePortfolio]);
+  
+  useEffect(() => {
+    handleScrollToHash();
+  }, [handleScrollToHash]);
 
   return (
     <div className="pt-20">
@@ -65,6 +73,7 @@ export default function CreativePage() {
                     width={800}
                     height={600}
                     className="rounded-lg shadow-2xl w-full object-cover" 
+                    priority={index < 2} // Prioritize loading for the first two images
                   />
                 </div>
                 <div className="w-full md:w-2/5">
@@ -78,6 +87,7 @@ export default function CreativePage() {
                       </span>
                     ))}
                   </div>
+                  {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   {item.caseStudy && (
                     <div className="mt-6 bg-white/5 backdrop-blur rounded-xl shadow-lg px-6 py-6">
                       <h4 className="text-xl font-display text-neon-accent mb-2">{item.caseStudy.title}</h4>

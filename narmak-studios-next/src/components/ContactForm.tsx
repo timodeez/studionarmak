@@ -1,13 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+
+// Define the structure of the form data
+interface FormState {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  projectType: string;
+  budget: string;
+  message: string;
+  files: File[];
+}
+
+// Define the shape of the data passed to the onSubmit callback
+interface SubmitResult {
+  success: boolean;
+  message: string;
+  filesUploaded: number;
+  submissionId: string;
+}
 
 interface ContactFormProps {
-  onSubmit?: (data: { success: boolean; message: string; filesUploaded: number; submissionId: string }) => void;
+  onSubmit?: (data: SubmitResult) => void;
 }
 
 export default function ContactForm({ onSubmit }: ContactFormProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormState>({
     name: '',
     email: '',
     company: '',
@@ -15,20 +35,20 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
     projectType: '',
     budget: '',
     message: '',
-    files: [] as File[]
+    files: []
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
     if (type === 'file') {
       const input = e.target as HTMLInputElement;
       if (input.files) {
         const fileList = Array.from(input.files);
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           files: fileList
         }));
@@ -36,13 +56,13 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
       return;
     }
     
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
-  };
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
@@ -69,7 +89,7 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
         body: formDataToSend, // Send as FormData instead of JSON
       });
 
-      const result = await response.json();
+      const result = await response.json() as SubmitResult & { error?: string };
 
       if (response.ok) {
         setSubmitStatus('success');
@@ -83,36 +103,48 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           message: '',
           files: []
         });
-        if (onSubmit) onSubmit(result);
+        if (onSubmit) {
+          onSubmit(result);
+        }
       } else {
         setSubmitStatus('error');
-        setErrorMessage(result.error || 'Something went wrong');
+        setErrorMessage(result.error ?? 'Something went wrong');
       }
-    } catch (_error) {
+    } catch {
       setSubmitStatus('error');
       setErrorMessage('Network error. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData, onSubmit]);
 
-  const removeFile = (index: number) => {
-    setFormData(prev => ({
+  const removeFile = useCallback((index: number) => {
+    setFormData((prev) => ({
       ...prev,
       files: prev.files.filter((_, i) => i !== index)
     }));
-  };
+  }, []);
 
-  const formatFileSize = (bytes: number) => {
+  const formatFileSize = useCallback((bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {submitStatus === 'error' && (
+        <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+          <span className="font-medium">Error!</span> {errorMessage}
+        </div>
+      )}
+      {submitStatus === 'success' && (
+        <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+          <span className="font-medium">Success!</span> Your message has been sent. We&apos;ll get back to you shortly.
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-off-white mb-2">
@@ -123,7 +155,9 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             required
             className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
             placeholder="Your full name"
@@ -139,7 +173,9 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
             id="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             required
             className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
             placeholder="your@email.com"
@@ -155,7 +191,9 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
             id="company"
             name="company"
             value={formData.company}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
             placeholder="Your company name"
           />
@@ -170,7 +208,9 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
             id="phone"
             name="phone"
             value={formData.phone}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
             placeholder="Your phone number"
           />
@@ -184,7 +224,9 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
             id="projectType"
             name="projectType"
             value={formData.projectType}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white focus:outline-none focus:border-neon-accent transition-colors"
           >
             <option value="">Select project type</option>
@@ -205,7 +247,9 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
             id="budget"
             name="budget"
             value={formData.budget}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white focus:outline-none focus:border-neon-accent transition-colors"
           >
             <option value="">Select budget range</option>
@@ -227,7 +271,9 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           id="message"
           name="message"
           value={formData.message}
-          onChange={handleChange}
+          onChange={(e) => {
+            handleChange(e);
+          }}
           required
           rows={6}
           className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors resize-none"
@@ -244,61 +290,46 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           id="files"
           name="files"
           multiple
-          onChange={handleChange}
+          onChange={(e) => {
+            handleChange(e);
+          }}
           className="w-full px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-neon-accent file:text-charcoal hover:file:bg-neon-accent/80 file:cursor-pointer focus:outline-none focus:border-neon-accent transition-colors"
           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.mp4,.mov,.avi"
         />
-        <p className="text-sm text-off-white/60 mt-2">
-          Accepted formats: PDF, DOC, DOCX, JPG, PNG, GIF, MP4, MOV, AVI (Max 10MB per file)
-        </p>
+        {/* File preview section */}
+        {formData.files.length > 0 && (
+          <div className="mt-4 space-y-2">
+            {formData.files.map((file, index) => (
+              <div key={index} className="flex items-center justify-between bg-charcoal-light p-2 rounded-lg">
+                <div className="text-sm text-off-white truncate">
+                  <span className="font-semibold">{file.name}</span>
+                  <span className="text-off-white/60 ml-2">({formatFileSize(file.size)})</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    removeFile(index);
+                  }}
+                  className="text-red-400 hover:text-red-600"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* File preview */}
-      {formData.files.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-off-white">Selected files:</p>
-          {formData.files.map((file, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-charcoal/50 rounded-lg">
-              <div className="flex items-center space-x-3">
-                <span className="text-neon-accent">📎</span>
-                <div>
-                  <p className="text-sm text-off-white font-medium">{file.name}</p>
-                  <p className="text-xs text-off-white/60">{formatFileSize(file.size)}</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => removeFile(index)}
-                className="text-red-400 hover:text-red-300 transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Submit button */}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full bg-neon-accent text-charcoal font-bold py-4 px-6 rounded-lg hover:bg-neon-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-      >
-        {isSubmitting ? 'Sending...' : 'Get a Quote'}
-      </button>
-
-      {/* Status messages */}
-      {submitStatus === 'success' && (
-        <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400">
-          Thank you for your inquiry! We&apos;ll get back to you soon.
-        </div>
-      )}
-
-      {submitStatus === 'error' && (
-        <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400">
-          {errorMessage}
-        </div>
-      )}
+      {/* Submit button and status messages */}
+      <div className="text-center mt-6">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-neon-accent text-charcoal font-bold py-3 px-8 rounded-full hover:bg-gradient-to-r from-neon-accent to-purple-500 transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? 'Submitting...' : 'Send Inquiry'}
+        </button>
+      </div>
     </form>
   );
 } 

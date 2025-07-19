@@ -2,40 +2,48 @@
 
 import Image from 'next/image';
 import AnimatedSection from '@/components/AnimatedSection';
-import { originalsPortfolio } from '@/data/originalsPortfolio';
-import { useEffect } from 'react';
+import { originalsPortfolio as portfolioData } from '@/data/originalsPortfolio';
+import { useEffect, useCallback, useMemo } from 'react';
 
 export default function OriginalsPage() {
-  useEffect(() => {
+  const originalsPortfolio = useMemo(() => portfolioData, []);
+  
+  const handleScrollToHash = useCallback(() => {
     if (typeof window !== 'undefined' && window.location.hash) {
       const id = window.location.hash.replace('#', '');
       const el = document.getElementById(id);
       if (el) {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           const headerOffset = 80;
           const elRect = el.getBoundingClientRect();
           const absoluteElementTop = elRect.top + window.pageYOffset;
           const elHeight = elRect.height;
           const windowHeight = window.innerHeight;
           // Special handling for last two items
-          const isLastTwo = originalsPortfolio.length >= 2 && (
-            id === `originals-${originalsPortfolio[originalsPortfolio.length - 1].id}` ||
-            id === `originals-${originalsPortfolio[originalsPortfolio.length - 2].id}`
-          );
+          const isLastItem = id === `originals-${originalsPortfolio[originalsPortfolio.length - 1].id}`;
+          const isSecondLastItem = originalsPortfolio.length > 1 && id === `originals-${originalsPortfolio[originalsPortfolio.length - 2].id}`;
+
           let scrollTo;
           if (elHeight > windowHeight) {
             scrollTo = absoluteElementTop - headerOffset;
-          } else if (isLastTwo) {
+          } else if (isLastItem || isSecondLastItem) {
             // Center perfectly even if not a full row
-            scrollTo = absoluteElementTop - ((windowHeight - elHeight) / 2);
+            scrollTo = absoluteElementTop - (windowHeight - elHeight) / 2;
           } else {
-            scrollTo = absoluteElementTop - (windowHeight / 2) + (elHeight / 2);
+            scrollTo = absoluteElementTop - windowHeight / 2 + elHeight / 2;
           }
           window.scrollTo({ top: scrollTo, behavior: 'smooth' });
         }, 200);
+        return () => {
+          clearTimeout(timeoutId);
+        };
       }
     }
-  }, []);
+  }, [originalsPortfolio]);
+
+  useEffect(() => {
+    handleScrollToHash();
+  }, [handleScrollToHash]);
 
   return (
     <div className="pt-20">
@@ -64,7 +72,8 @@ export default function OriginalsPage() {
                     alt={item.title} 
                     width={800}
                     height={600}
-                    className="rounded-lg shadow-2xl w-full object-cover" 
+                    className="rounded-lg shadow-2xl w-full object-cover"
+                    priority={index < 2} // Prioritize loading for the first two images
                   />
                 </div>
                 <div className="w-full md:w-2/5">

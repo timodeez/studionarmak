@@ -95,8 +95,8 @@ export interface EmailSubscriber {
 
 // Get your Supabase credentials from environment variables
 // You need to add these to your .env.local file:
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
 
 // Create the Supabase client (this is your connection to the database)
 export const supabase = createClient(supabaseUrl, supabaseKey);
@@ -133,7 +133,7 @@ export const db = {
       .single();                    // Return just one record
     
     if (error) throw error;         // If something goes wrong, throw an error
-    return result;                  // Return the saved submission
+    return result as ContactSubmission;                  // Return the saved submission
   },
 
   // Get all contact form submissions (for admin dashboard)
@@ -144,7 +144,7 @@ export const db = {
       .order('created_at', { ascending: false }); // Newest first
     
     if (error) throw error;
-    return data;
+    return data as ContactSubmission[];
   },
 
   // ============================================================================
@@ -160,7 +160,7 @@ export const db = {
       .single();
     
     if (error) throw error;
-    return result;
+    return result as JobApplication;
   },
 
   // Get all job applications (for HR/admin review)
@@ -171,7 +171,7 @@ export const db = {
       .order('created_at', { ascending: false }); // Newest applications first
     
     if (error) throw error;
-    return data;
+    return data as JobApplication[];
   },
 
   // ============================================================================
@@ -187,11 +187,11 @@ export const db = {
       .single();
     
     if (error) throw error;
-    return result;
+    return result as BlogPost;
   },
 
   // Get all blog posts (published or all)
-  async getBlogPosts(published: boolean = true) {
+  async getBlogPosts(published = true) {
     const { data, error } = await supabase
       .from('blog_posts')
       .select('*')
@@ -199,7 +199,7 @@ export const db = {
       .order('published_at', { ascending: false }); // Newest posts first
     
     if (error) throw error;
-    return data;
+    return data as BlogPost[];
   },
 
   // Get a specific blog post by its URL slug
@@ -212,7 +212,7 @@ export const db = {
       .single();                    // Should be only one result
     
     if (error) throw error;
-    return data;
+    return data as BlogPost;
   },
 
   // Update an existing blog post
@@ -225,7 +225,7 @@ export const db = {
       .single();
     
     if (error) throw error;
-    return result;
+    return result as BlogPost;
   },
 
   // Delete a blog post
@@ -249,22 +249,19 @@ export const db = {
       .upsert([{ email, subscribed: true }], { onConflict: 'email' }) // Update if email already exists
       .select()
       .single();
-    
+      
     if (error) throw error;
-    return result;
+    return result as EmailSubscriber;
   },
 
   // Unsubscribe an email address
   async unsubscribeEmail(email: string) {
-    const { data: result, error } = await supabase
+    const { error } = await supabase
       .from('email_subscribers')
       .update({ subscribed: false }) // Mark as unsubscribed
-      .eq('email', email)
-      .select()
-      .single();
-    
+      .eq('email', email);
+      
     if (error) throw error;
-    return result;
   },
 
   // Get all active email subscribers
@@ -276,6 +273,6 @@ export const db = {
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data;
+    return data as EmailSubscriber[];
   }
 }; 

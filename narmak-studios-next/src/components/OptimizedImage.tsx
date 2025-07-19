@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 interface OptimizedImageProps {
   src: string;
@@ -11,8 +11,6 @@ interface OptimizedImageProps {
   className?: string;
   priority?: boolean;
   sizes?: string;
-  placeholder?: 'blur' | 'empty';
-  blurDataURL?: string;
 }
 
 export default function OptimizedImage({
@@ -22,11 +20,18 @@ export default function OptimizedImage({
   height,
   className = '',
   priority = false,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  placeholder = 'empty',
-  blurDataURL
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 }: OptimizedImageProps) {
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleLoadingComplete = useCallback(() => {
+    setIsLoading(false);
+  }, []);
+
+  const imageClassName = useMemo(() => `
+    duration-700 ease-in-out
+    ${isLoading ? 'scale-110 blur-2xl grayscale' : 'scale-100 blur-0 grayscale-0'}
+  `, [isLoading]);
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
@@ -35,15 +40,10 @@ export default function OptimizedImage({
         alt={alt}
         width={width}
         height={height}
-        className={`
-          duration-700 ease-in-out
-          ${isLoading ? 'scale-110 blur-2xl grayscale' : 'scale-100 blur-0 grayscale-0'}
-        `}
+        className={imageClassName}
         priority={priority}
         sizes={sizes}
-        placeholder={placeholder}
-        blurDataURL={blurDataURL}
-        onLoadingComplete={() => setIsLoading(false)}
+        onLoadingComplete={handleLoadingComplete}
         quality={85}
       />
     </div>

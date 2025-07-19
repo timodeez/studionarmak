@@ -1,5 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/database';
+import { db, FileInfo } from '@/lib/database';
+
+interface ContactSubmissionPayload {
+  name: string;
+  email: string;
+  company?: string;
+  phone?: string;
+  projectType?: string;
+  budget?: string;
+  message: string;
+  files?: FileInfo[];
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,20 +27,15 @@ export async function POST(request: NextRequest) {
     const message = formData.get('message') as string;
 
     // Extract files
-    const files: Array<{
-      name: string;
-      size: number;
-      type: string;
-      lastModified: number;
-    }> = [];
+    const files: FileInfo[] = [];
     for (let i = 0; i < 10; i++) { // Allow up to 10 files
-      const file = formData.get(`file${i}`) as File;
-      if (file && file.size > 0) {
+      const file = formData.get(`file${i}`);
+      if (file instanceof File && file.size > 0) {
         files.push({
           name: file.name,
           size: file.size,
           type: file.type,
-          lastModified: file.lastModified
+          lastModified: file.lastModified,
         });
       }
     }
@@ -54,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare data for database
-    const submissionData = {
+    const submissionData: ContactSubmissionPayload = {
       name,
       email,
       company: company || undefined,
@@ -86,12 +92,15 @@ export async function POST(request: NextRequest) {
       );
       
     } catch (dbError: unknown) {
-      const error = dbError as Error;
-      console.error('Database error details:', {
-        message: error?.message || 'Unknown error',
-        stack: error?.stack || 'No stack trace',
-        name: error?.name || 'Unknown error type'
-      });
+      if (dbError instanceof Error) {
+        console.error('Database error details:', {
+          message: dbError.message,
+          stack: dbError.stack,
+          name: dbError.name
+        });
+      } else {
+        console.error('An unknown database error occurred:', dbError);
+      }
       
       // Fallback: log to console if database fails
       console.log('New quote request received (fallback):', {
@@ -119,7 +128,11 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error: unknown) {
-    console.error('Contact form error:', error);
+    if (error instanceof Error) {
+    console.error('Contact form error:', error.message);
+    } else {
+      console.error('An unknown error occurred:', error);
+    }
     return NextResponse.json(
       { error: 'Something went wrong. Please try again.' },
       { status: 500 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import ResponsiveVideo from './ResponsiveVideo';
 import { getOptimizedMediaUrl, shouldUseVideo } from '@/utils/gifToMp4';
@@ -9,18 +9,8 @@ interface PortfolioItemProps {
   title: string;
   client?: string;
   type?: string;
-  description?: string;
   mediaUrl: string;
   staticImg: string;
-  services?: string[];
-  caseStudy?: {
-    title: string;
-    role: string;
-    challenge: string;
-    craft: string;
-    impact: string;
-  };
-  href: string;
   priority?: boolean;
 }
 
@@ -34,8 +24,12 @@ export default function PortfolioItem({
 }: PortfolioItemProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   
-  const optimizedMediaUrl = getOptimizedMediaUrl(mediaUrl);
-  const useVideo = shouldUseVideo(mediaUrl);
+  const optimizedMediaUrl = useMemo(() => getOptimizedMediaUrl(mediaUrl), [mediaUrl]);
+  const useVideo = useMemo(() => shouldUseVideo(mediaUrl), [mediaUrl]);
+
+  const handleLoad = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
 
   return (
     <div
@@ -51,7 +45,7 @@ export default function PortfolioItem({
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             style={{ height: '100%', objectFit: 'cover' }}
             preload="metadata"
-            onLoad={() => setIsLoaded(true)}
+            onLoad={handleLoad}
           />
         ) : (
           <Image
@@ -62,7 +56,7 @@ export default function PortfolioItem({
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             style={{ height: '100%', objectFit: 'cover' }}
             priority={priority}
-            onLoad={() => setIsLoaded(true)}
+            onLoad={handleLoad}
           />
         )}
         

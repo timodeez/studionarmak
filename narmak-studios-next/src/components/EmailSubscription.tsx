@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import clsx from 'clsx';
 
 interface EmailSubscriptionProps {
   className?: string;
@@ -16,14 +17,14 @@ export default function EmailSubscription({
   successMessage = 'Thanks for subscribing!'
 }: EmailSubscriptionProps) {
   const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setStatus('idle');
+    if (!email) return;
+
+    setStatus('loading');
     setMessage('');
 
     try {
@@ -35,41 +36,42 @@ export default function EmailSubscription({
         body: JSON.stringify({ email }),
       });
 
-      const result = await response.json();
+      const result = await response.json() as { error?: string, message?: string};
 
       if (response.ok) {
         setStatus('success');
-        setMessage(successMessage);
+        setMessage(result.message ?? successMessage);
         setEmail('');
       } else {
         setStatus('error');
-        setMessage(result.error || 'Something went wrong');
+        setMessage(result.error ?? 'Something went wrong');
       }
-    } catch (_error) {
+    } catch {
       setStatus('error');
       setMessage('Network error. Please try again.');
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  }, [email, successMessage]);
 
   return (
-    <div className={className}>
+    <div className={clsx('w-full max-w-md', className)}>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         <input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value)
+          }}
           placeholder={placeholder}
           required
-          className="flex-1 px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
+          className="flex-1 px-4 py-3 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors disabled:opacity-50"
+          disabled={status === 'loading'}
         />
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={status === 'loading' || status === 'success'}
           className="px-6 py-3 bg-neon-accent text-charcoal font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
         >
-          {isSubmitting ? 'Subscribing...' : buttonText}
+          {status === 'loading' ? 'Subscribing...' : buttonText}
         </button>
       </form>
       

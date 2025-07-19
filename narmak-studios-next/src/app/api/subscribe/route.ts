@@ -2,17 +2,30 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/database';
 import { sendEmail } from '@/lib/email';
 
+interface SubscriptionPayload {
+  email: string;
+}
+
 // POST - Subscribe to email updates
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { email } = body;
+    const { email } = (await request.json()) as SubscriptionPayload;
 
     // Validate email
     if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return NextResponse.json(
         { error: 'Valid email address is required' },
         { status: 400 }
+      );
+    }
+
+    // Check for duplicate subscriber
+    const subscribers = await db.getEmailSubscribers();
+    const existingSubscriber = subscribers.find(sub => sub.email === email);
+    if (existingSubscriber?.subscribed) {
+      return NextResponse.json(
+        { error: 'This email is already subscribed.' },
+        { status: 409 } // 409 Conflict
       );
     }
 
@@ -75,7 +88,6 @@ export async function DELETE(request: NextRequest) {
       { success: true, message: 'Successfully unsubscribed from updates.' },
       { status: 200 }
     );
-
   } catch (error) {
     console.error('Unsubscription error:', error);
     return NextResponse.json(

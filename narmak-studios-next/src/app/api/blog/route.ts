@@ -1,6 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/database';
 
+interface BlogPostPayload {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featured_image?: string;
+  author: string;
+  published?: boolean;
+  tags?: string[];
+}
+
 // GET - Get all published blog posts
 export async function GET(request: NextRequest) {
   try {
@@ -22,8 +33,17 @@ export async function GET(request: NextRequest) {
 // POST - Create new blog post
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { title, slug, excerpt, content, featured_image, author, published, tags } = body;
+    const body = (await request.json()) as BlogPostPayload;
+    const { 
+      title, 
+      slug, 
+      excerpt, 
+      content, 
+      featured_image, 
+      author, 
+      published, 
+      tags 
+    } = body;
 
     // Validate required fields
     if (!title || !slug || !excerpt || !content || !author) {
@@ -40,9 +60,9 @@ export async function POST(request: NextRequest) {
       content,
       featured_image,
       author,
-      published: published || false,
+      published: published ?? false,
       published_at: published ? new Date().toISOString() : undefined,
-      tags: tags || []
+      tags: tags ?? []
     });
 
     return NextResponse.json(post, { status: 201 });

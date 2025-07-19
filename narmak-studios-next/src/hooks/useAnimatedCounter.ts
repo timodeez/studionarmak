@@ -1,30 +1,44 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export function useAnimatedCounter(targetValue: number, isVisible: boolean) {
   const [currentValue, setCurrentValue] = useState(0);
+  const animationFrameRef = useRef<number | null>(null);
+
+  const step = useCallback((timestamp: number, startTime: number, duration: number) => {
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const nextValue = Math.floor(progress * targetValue);
+    setCurrentValue(nextValue);
+    
+    if (progress < 1) {
+      animationFrameRef.current = window.requestAnimationFrame((t) => {
+        step(t, startTime, duration);
+      });
+    } else {
+      setCurrentValue(targetValue);
+    }
+  }, [targetValue]);
 
   useEffect(() => {
     if (isVisible) {
-      let startTime: number | null = null;
       const duration = 2000;
-
-      const step = (timestamp: number) => {
-        if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / duration, 1);
-        setCurrentValue(progress * targetValue);
-        
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        } else {
-          setCurrentValue(targetValue);
-        }
+      let startTime: number | null = null;
+      
+      const startAnimation = (timestamp: number) => {
+        startTime ??= timestamp;
+        step(timestamp, startTime, duration);
       };
-
-      window.requestAnimationFrame(step);
+      
+      animationFrameRef.current = window.requestAnimationFrame(startAnimation);
     }
-  }, [targetValue, isVisible]);
+    
+    return () => {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [targetValue, isVisible, step]);
 
   return currentValue;
 } 

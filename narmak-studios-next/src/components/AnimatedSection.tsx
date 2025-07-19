@@ -10,72 +10,67 @@ interface AnimatedSectionProps {
 
 // Shared intersection observer for better performance
 let globalObserver: IntersectionObserver | null = null;
-const observedElements = new Map<HTMLElement, (isVisible: boolean) => void>();
+const observedElements = new Map<Element, (isVisible: boolean) => void>();
 
 const getGlobalObserver = () => {
-  if (!globalObserver) {
-    globalObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const callback = observedElements.get(entry.target as HTMLElement);
-          if (callback) {
-            callback(entry.isIntersecting);
-          }
-        });
-      },
-      { 
-        threshold: 0.1,
-        rootMargin: '50px 0px -50px 0px'
+  globalObserver ??= new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const callback = observedElements.get(entry.target);
+        callback?.(entry.isIntersecting);
       }
-    );
-  }
+    },
+    {
+      rootMargin: "0px 0px -10% 0px",
+      threshold: 0.1,
+    }
+  );
   return globalObserver;
 };
 
-export default function AnimatedSection({ 
-  children, 
-  customClass = '', 
-  id = '' 
+export default function AnimatedSection({
+  children,
+  customClass = "",
+  id = "",
 }: AnimatedSectionProps) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   const handleVisibilityChange = useCallback((visible: boolean) => {
-    if (visible && !isVisible) {
-      requestAnimationFrame(() => {
-        setIsVisible(true);
-      });
+    if (visible) {
+      setIsVisible(true);
     }
-  }, [isVisible]);
+  }, []);
 
   useEffect(() => {
     const observer = getGlobalObserver();
     const currentRef = ref.current;
-    
+
     if (currentRef) {
       observedElements.set(currentRef, handleVisibilityChange);
       observer.observe(currentRef);
     }
-    
+
     return () => {
       if (currentRef) {
         observedElements.delete(currentRef);
-        observer.unobserve(currentRef);
+        if (observedElements.size === 0 && globalObserver) {
+          globalObserver.disconnect();
+          globalObserver = null;
+        } else {
+          observer.unobserve(currentRef);
+        }
       }
     };
   }, [handleVisibilityChange]);
 
   return (
-    <section 
-      id={id} 
-      ref={ref} 
-      className={`transition-all duration-700 ease-out will-change-transform ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+    <section
+      id={id}
+      ref={ref}
+      className={`transition-opacity duration-1000 ease-out transform-gpu ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       } ${customClass}`}
-      style={{
-        transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-        opacity: isVisible ? 1 : 0
-      }}
     >
       {children}
     </section>

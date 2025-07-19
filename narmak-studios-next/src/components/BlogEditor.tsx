@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface BlogPost {
   id?: string;
@@ -40,56 +40,61 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
     }
   }, [post]);
 
-  const generateSlug = (title: string) => {
+  const generateSlug = useCallback((title: string) => {
     return title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
-  };
+  }, []);
 
-  const handleTitleChange = (title: string) => {
-    setFormData(prev => ({
+  const handleTitleChange = useCallback((title: string) => {
+    setFormData((prev) => ({
       ...prev,
       title,
       slug: generateSlug(title)
     }));
-  };
+  }, [generateSlug]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError('');
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      setError('');
 
-    try {
-      const url = post ? `/api/blog/${post.slug}` : '/api/blog';
-      const method = post ? 'PUT' : 'POST';
+      try {
+        const url = post ? `/api/blog/${post.slug}` : '/api/blog';
+        const method = post ? 'PUT' : 'POST';
 
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-      const result = await response.json();
+        const result = await response.json() as BlogPost & { error?: string };
 
-      if (response.ok) {
-        if (onSave) onSave(result);
-      } else {
-        setError(result.error || 'Failed to save blog post');
+        if (response.ok) {
+          if (onSave) {
+            onSave(result);
+          }
+        } else {
+          setError(result.error ?? 'Failed to save blog post');
+        }
+      } catch {
+        setError('Network error. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (_error) {
-      setError('Network error. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+    [formData, onSave, post]
+  );
 
-  const handleTagChange = (tags: string) => {
-    const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
-    setFormData(prev => ({ ...prev, tags: tagArray }));
-  };
+  const handleTagChange = useCallback((tags: string) => {
+    const tagArray = tags.split(',').map(tag => tag.trim()).filter(Boolean);
+    setFormData((prev) => ({ ...prev, tags: tagArray }));
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-charcoal rounded-lg">
@@ -112,7 +117,9 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
             <input
               type="text"
               value={formData.title}
-              onChange={(e) => handleTitleChange(e.target.value)}
+              onChange={(e) => {
+                handleTitleChange(e.target.value);
+              }}
               required
               className="w-full px-4 py-3 bg-[#232325] border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
               placeholder="Enter blog post title"
@@ -126,7 +133,9 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
             <input
               type="text"
               value={formData.slug}
-              onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
+              onChange={(e) => {
+                setFormData(prev => ({ ...prev, slug: e.target.value }));
+              }}
               required
               className="w-full px-4 py-3 bg-[#232325] border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
               placeholder="blog-post-slug"
@@ -140,7 +149,9 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
           </label>
           <textarea
             value={formData.excerpt}
-            onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
+            onChange={(e) => {
+              setFormData(prev => ({ ...prev, excerpt: e.target.value }));
+            }}
             required
             rows={3}
             className="w-full px-4 py-3 bg-[#232325] border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors resize-none"
@@ -154,7 +165,9 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
           </label>
           <textarea
             value={formData.content}
-            onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+            onChange={(e) => {
+              setFormData(prev => ({ ...prev, content: e.target.value }));
+            }}
             required
             rows={12}
             className="w-full px-4 py-3 bg-[#232325] border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors resize-none"
@@ -169,8 +182,10 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
             </label>
             <input
               type="url"
-              value={formData.featured_image}
-              onChange={(e) => setFormData(prev => ({ ...prev, featured_image: e.target.value }))}
+              value={formData.featured_image ?? ''}
+              onChange={(e) => {
+                setFormData(prev => ({ ...prev, featured_image: e.target.value }));
+              }}
               className="w-full px-4 py-3 bg-[#232325] border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
               placeholder="https://example.com/image.jpg"
             />
@@ -183,7 +198,9 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
             <input
               type="text"
               value={formData.author}
-              onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+              onChange={(e) => {
+                setFormData(prev => ({ ...prev, author: e.target.value }));
+              }}
               required
               className="w-full px-4 py-3 bg-[#232325] border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
               placeholder="Author name"
@@ -197,8 +214,10 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
           </label>
           <input
             type="text"
-            value={formData.tags?.join(', ') || ''}
-            onChange={(e) => handleTagChange(e.target.value)}
+            value={formData.tags?.join(', ') ?? ''}
+            onChange={(e) => {
+              handleTagChange(e.target.value);
+            }}
             className="w-full px-4 py-3 bg-[#232325] border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
             placeholder="animation, design, tips"
           />
@@ -209,7 +228,9 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
             type="checkbox"
             id="published"
             checked={formData.published}
-            onChange={(e) => setFormData(prev => ({ ...prev, published: e.target.checked }))}
+            onChange={(e) => {
+              setFormData(prev => ({ ...prev, published: e.target.checked }));
+            }}
             className="accent-neon-accent w-5 h-5 focus:ring-2 focus:ring-neon-accent"
           />
           <label htmlFor="published" className="text-off-white/80 text-sm">

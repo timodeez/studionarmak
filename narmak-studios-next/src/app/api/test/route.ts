@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 
-export async function GET() {
+interface TestData {
+  name: string;
+}
+
+export function GET() {
   return NextResponse.json({ 
     message: 'API is working!',
     timestamp: new Date().toISOString(),
@@ -14,8 +18,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    const name = formData.get('name') as string;
+    const { name } = await request.json() as TestData;
     
     return NextResponse.json({ 
       message: 'Test POST successful!',

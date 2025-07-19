@@ -62,7 +62,7 @@ export default async function IndividualServicePage({ params }: { params: Promis
                 ))}
               </ul>
             </div>
-            {serviceData.useCases && serviceData.useCases.length > 0 && (
+            {serviceData.useCases.length > 0 && (
               <div>
                 <h2 className="text-3xl font-display text-off-white mb-6">Ideal Use Cases</h2>
                 <ul className="space-y-4">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 
 interface ResponsiveVideoProps {
   src: string;
@@ -21,7 +21,6 @@ export default function ResponsiveVideo({
   mobileSrc,
   poster,
   className = '',
-  style,
   autoPlay = true,
   loop = true,
   muted = true,
@@ -31,41 +30,41 @@ export default function ResponsiveVideo({
 }: ResponsiveVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [connectionSpeed, setConnectionSpeed] = useState<'slow' | 'fast'>('fast');
 
-  // Detect mobile and connection speed
-  useEffect(() => {
-    const checkDevice = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    const checkConnection = () => {
-      if ('connection' in navigator) {
-        const connection = (navigator as Navigator & { connection?: { effectiveType: string } }).connection;
-        if (connection) {
-          const isSlow = connection.effectiveType === 'slow-2g' || 
-                        connection.effectiveType === '2g' || 
-                        connection.effectiveType === '3g';
-          setConnectionSpeed(isSlow ? 'slow' : 'fast');
-        }
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+  
+  const isMobile = useMemo(() => windowWidth <= 768, [windowWidth]);
+  const connectionSpeed = useMemo(() => {
+    if (typeof navigator !== 'undefined' && 'connection' in navigator) {
+      const connection = (navigator as Navigator & { connection?: { effectiveType: string } }).connection;
+      if (connection) {
+        const isSlow = connection.effectiveType === 'slow-2g' || 
+                      connection.effectiveType === '2g' || 
+                      connection.effectiveType === '3g';
+        return isSlow ? 'slow' : 'fast';
       }
-    };
-
-    checkDevice();
-    checkConnection();
-    
-    window.addEventListener('resize', checkDevice);
-    return () => window.removeEventListener('resize', checkDevice);
+    }
+    return 'fast';
   }, []);
 
-  const handleLoadedData = () => {
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handleLoadedData = useCallback(() => {
     setIsLoaded(true);
     onLoad?.();
-  };
+  }, [onLoad]);
 
   // Choose the best video source
-  const getVideoSrc = () => {
+  const getVideoSrc = useCallback(() => {
     // For slow connections, use mobile version if available
     if (connectionSpeed === 'slow' && mobileSrc) {
       return mobileSrc;
@@ -75,13 +74,12 @@ export default function ResponsiveVideo({
       return mobileSrc;
     }
     return src;
-  };
+  }, [connectionSpeed, isMobile, mobileSrc, src]);
 
   return (
     <video
       ref={videoRef}
       className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-      style={style}
       autoPlay={autoPlay}
       loop={loop}
       muted={muted}

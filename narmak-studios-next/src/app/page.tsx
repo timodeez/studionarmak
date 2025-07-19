@@ -65,7 +65,11 @@ export default function HomePage() {
       observer.observe(currentRef);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
   }, []);
 
   const views = useAnimatedCounter(500000000, isStatsVisible);
@@ -78,13 +82,15 @@ export default function HomePage() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setWordState(prev => ({ ...prev, animationClass: 'animate-slide-down-out' }));
+      setWordState((prev) => ({ ...prev, animationClass: 'animate-slide-down-out' }));
       setTimeout(() => {
         currentIndexRef.current = (currentIndexRef.current + 1) % words.length;
         setWordState({ text: words[currentIndexRef.current], animationClass: 'animate-slide-down-in' });
       }, 400);
     }, 2200);
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [words]);
 
   return (
@@ -274,12 +280,8 @@ export default function HomePage() {
                       <PortfolioItem
                         title={item.title}
                         client={item.client}
-                        description={item.description}
                         mediaUrl={item.mediaUrl}
                         staticImg={item.staticImg}
-                        services={item.services}
-                        caseStudy={item.caseStudy}
-                        href={`/portfolio/creative#creative-${item.id}`}
                         priority={index === 0}
                       />
                     </Link>
@@ -293,12 +295,8 @@ export default function HomePage() {
                       <PortfolioItem
                         title={item.title}
                         client={item.client}
-                        description={item.description}
                         mediaUrl={item.mediaUrl}
                         staticImg={item.staticImg}
-                        services={item.services}
-                        caseStudy={item.caseStudy}
-                        href={`/portfolio/creative#creative-${item.id}`}
                       />
                     </Link>
                   </LazyLoad>
@@ -360,10 +358,8 @@ export default function HomePage() {
                       <PortfolioItem
                         title={item.title}
                         type={item.type}
-                        description={item.description}
                         mediaUrl={item.mediaUrl}
                         staticImg={item.homeImg}
-                        href={`/portfolio/originals#originals-${item.id}`}
                         priority={index === 0}
                       />
                     </Link>
@@ -377,10 +373,8 @@ export default function HomePage() {
                       <PortfolioItem
                         title={item.title}
                         type={item.type}
-                        description={item.description}
                         mediaUrl={item.mediaUrl}
                         staticImg={item.homeImg}
-                        href={`/portfolio/originals#originals-${item.id}`}
                       />
                     </Link>
                   </LazyLoad>

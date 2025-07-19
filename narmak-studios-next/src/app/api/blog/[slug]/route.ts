@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/database';
 
+interface BlogPostUpdatePayload {
+  title?: string;
+  excerpt?: string;
+  content?: string;
+  featured_image?: string;
+  published?: boolean;
+  tags?: string[];
+}
+
 // GET - Get blog post by slug
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
@@ -34,19 +43,19 @@ export async function PUT(
 ) {
   try {
     const { slug } = await params;
-    const body = await request.json();
+    const body = await request.json() as BlogPostUpdatePayload;
     const { title, excerpt, content, featured_image, published, tags } = body;
 
     // First get the post to get its ID
     const existingPost = await db.getBlogPostBySlug(slug);
-    if (!existingPost) {
+    if (!existingPost?.id) {
       return NextResponse.json(
         { error: 'Blog post not found' },
         { status: 404 }
       );
     }
 
-    const updatedPost = await db.updateBlogPost(existingPost.id!, {
+    const updatedPost = await db.updateBlogPost(existingPost.id, {
       title,
       excerpt,
       content,
@@ -69,21 +78,21 @@ export async function PUT(
 
 // DELETE - Delete blog post
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug:string }> }
 ) {
   try {
     const { slug } = await params;
     // First get the post to get its ID
     const existingPost = await db.getBlogPostBySlug(slug);
-    if (!existingPost) {
+    if (!existingPost?.id) {
       return NextResponse.json(
         { error: 'Blog post not found' },
         { status: 404 }
       );
     }
 
-    await db.deleteBlogPost(existingPost.id!);
+    await db.deleteBlogPost(existingPost.id);
     
     return NextResponse.json({ success: true });
   } catch (error) {

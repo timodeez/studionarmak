@@ -5,17 +5,17 @@ import { useEffect, useCallback } from 'react';
 export function usePerformance() {
   const trackPageLoad = useCallback(() => {
     if (typeof window !== 'undefined' && 'performance' in window) {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
       const paint = performance.getEntriesByType('paint');
       
       const metrics = {
         // Navigation timing
-        domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
-        loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
+        domContentLoaded: (navigation?.domContentLoadedEventEnd ?? 0) - (navigation?.domContentLoadedEventStart ?? 0),
+        loadComplete: (navigation?.loadEventEnd ?? 0) - (navigation?.loadEventStart ?? 0),
         
         // Paint timing
-        firstPaint: paint.find(entry => entry.name === 'first-paint')?.startTime || 0,
-        firstContentfulPaint: paint.find(entry => entry.name === 'first-contentful-paint')?.startTime || 0,
+        firstPaint: paint.find(entry => entry.name === 'first-paint')?.startTime ?? 0,
+        firstContentfulPaint: paint.find(entry => entry.name === 'first-contentful-paint')?.startTime ?? 0,
         
         // Resource timing
         totalResources: performance.getEntriesByType('resource').length,
@@ -57,11 +57,16 @@ export function usePerformance() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Track initial page load
-      if (document.readyState === 'complete') {
+      const handleLoad = () => {
         trackPageLoad();
+      };
+      if (document.readyState === 'complete') {
+        handleLoad();
       } else {
-        window.addEventListener('load', trackPageLoad);
-        return () => window.removeEventListener('load', trackPageLoad);
+        window.addEventListener('load', handleLoad);
+        return () => {
+          window.removeEventListener('load', handleLoad);
+        };
       }
     }
   }, [trackPageLoad]);
@@ -78,15 +83,22 @@ export function usePerformance() {
       };
     }
 
-    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
     const paint = performance.getEntriesByType('paint');
+    const largestContentfulPaint = performance.getEntriesByType('largest-contentful-paint')[0];
     
-    const fcp = paint.find(entry => entry.name === 'first-contentful-paint')?.startTime || 0;
-    const lcp = performance.getEntriesByType('largest-contentful-paint')[0]?.startTime || 0;
+    const fcp = paint.find(entry => entry.name === 'first-contentful-paint')?.startTime ?? 0;
+    const lcp = largestContentfulPaint?.startTime ?? 0;
     const fid = 0; // Would need to be measured with event listeners
     const cls = 0; // Would need to be measured with LayoutShiftObserver
-    const ttfb = navigation?.responseStart - navigation?.requestStart || 0;
-    const loadTime = navigation?.loadEventEnd - navigation?.loadEventStart || 0;
+    
+    let ttfb = 0;
+    let loadTime = 0;
+
+    if (navigation) {
+      ttfb = navigation.responseStart - navigation.requestStart;
+      loadTime = navigation.loadEventEnd - navigation.loadEventStart;
+    }
 
     return {
       fcp: Math.round(fcp),

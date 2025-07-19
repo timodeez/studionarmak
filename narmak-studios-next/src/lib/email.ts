@@ -29,7 +29,7 @@ interface EmailData {
 // MAIN EMAIL SENDING FUNCTION
 // ============================================================================
 // This function actually sends emails using Resend
-export async function sendEmail(emailData: EmailData) {
+export function sendEmail(emailData: EmailData) {
   try {
     // ============================================================================
     // IMPORTANT: UNCOMMENT THIS SECTION AFTER SETTING UP RESEND
@@ -82,8 +82,7 @@ export async function sendEmail(emailData: EmailData) {
 // ============================================================================
 // These functions create nicely formatted emails for different purposes
 
-// Generate email for contact form submissions (Get a Quote page)
-export function generateContactEmail(data: {
+interface ContactEmailData {
   name: string;
   email: string;
   company?: string;
@@ -92,7 +91,10 @@ export function generateContactEmail(data: {
   budget?: string;
   message: string;
   files?: string[];
-}) {
+}
+
+// Generate email for contact form submissions (Get a Quote page)
+export function generateContactEmail(data: ContactEmailData) {
   return {
     // CHANGE THIS EMAIL ADDRESS to where you want to receive quote requests
     to: 'your-email@yourdomain.com', // ⚠️ UPDATE THIS TO YOUR EMAIL
@@ -124,7 +126,7 @@ export function generateContactEmail(data: {
         
         ${data.files && data.files.length > 0 ? `
         <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin-top: 0;">📎 Uploaded Files (${data.files.length})</h3>
+          <h3 style="margin-top: 0;">📎 Uploaded Files (${String(data.files.length)})</h3>
           <ul style="margin: 0; padding-left: 20px;">
             ${data.files.map(file => `<li>${file}</li>`).join('')}
           </ul>
@@ -144,8 +146,7 @@ export function generateContactEmail(data: {
   };
 }
 
-// Generate email for job applications (Careers page)
-export function generateApplicationEmail(data: {
+interface ApplicationEmailData {
   name: string;
   email: string;
   phone?: string;
@@ -154,7 +155,10 @@ export function generateApplicationEmail(data: {
   portfolio?: string;
   coverLetter: string;
   files?: string[];
-}) {
+}
+
+// Generate email for job applications (Careers page)
+export function generateApplicationEmail(data: ApplicationEmailData) {
   return {
     // CHANGE THIS EMAIL ADDRESS to where you want to receive job applications
     to: 'hr@yourdomain.com', // ⚠️ UPDATE THIS TO YOUR HR EMAIL
@@ -186,7 +190,7 @@ export function generateApplicationEmail(data: {
         
         ${data.files && data.files.length > 0 ? `
         <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin-top: 0;">📎 Uploaded Files (${data.files.length})</h3>
+          <h3 style="margin-top: 0;">📎 Uploaded Files (${String(data.files.length)})</h3>
           <ul style="margin: 0; padding-left: 20px;">
             ${data.files.map(file => `<li>${file}</li>`).join('')}
           </ul>
@@ -210,8 +214,12 @@ export function generateApplicationEmail(data: {
 // ADDITIONAL EMAIL TEMPLATES YOU CAN USE
 // ============================================================================
 
+interface WelcomeEmailData {
+  email: string;
+}
+
 // Welcome email for new subscribers
-export function generateWelcomeEmail(email: string) {
+export function generateWelcomeEmail({ email }: WelcomeEmailData) {
   return {
     to: email,
     subject: 'Welcome to Studio Narmak Updates!',
@@ -241,8 +249,14 @@ export function generateWelcomeEmail(email: string) {
   };
 }
 
+interface NewsletterEmailData {
+  subscribers: string[];
+  subject: string;
+  content: string;
+}
+
 // Newsletter template
-export function generateNewsletterEmail(subscribers: string[], subject: string, content: string) {
+export function generateNewsletterEmail({ subscribers, subject, content }: NewsletterEmailData) {
   return {
     to: subscribers.join(', '), // Send to all subscribers
     subject: subject,
