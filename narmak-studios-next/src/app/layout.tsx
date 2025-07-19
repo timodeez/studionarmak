@@ -4,7 +4,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PerformanceDashboard from "@/components/PerformanceDashboard";
-import BottomCTA from "@/components/BottomCTA";
+import ConditionalBottomCTA from "@/components/ConditionalBottomCTA";
+import MobileOptimizer from "@/components/MobileOptimizer";
+import SplashWrapper from "@/components/SplashWrapper";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
@@ -36,13 +38,17 @@ export default function RootLayout({
       <body
         className={`${ibmPlexSans.variable} ${inter.variable} bg-charcoal text-off-white font-sans antialiased`}
       >
-        <Header />
-        <main className="overflow-x-hidden">
-          {children}
-        </main>
-        <BottomCTA />
-        <Footer />
-        {process.env.NODE_ENV === 'development' && <PerformanceDashboard />}
+        <SplashWrapper>
+          <MobileOptimizer>
+            <Header />
+            <main>
+              {children}
+            </main>
+            <ConditionalBottomCTA />
+            <Footer />
+            {process.env.NODE_ENV === 'development' && <PerformanceDashboard />}
+          </MobileOptimizer>
+        </SplashWrapper>
       </body>
     </html>
   );
