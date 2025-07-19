@@ -2,6 +2,8 @@
 
 import { useEffect, useCallback } from 'react';
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 export function usePerformance() {
   const trackPageLoad = useCallback(() => {
     if (typeof window !== 'undefined' && 'performance' in window) {
@@ -96,8 +98,9 @@ export function usePerformance() {
     let loadTime = 0;
 
     if (navigation) {
-      ttfb = navigation.responseStart - navigation.requestStart;
-      loadTime = navigation.loadEventEnd - navigation.loadEventStart;
+      const { responseStart, requestStart, loadEventEnd, loadEventStart } = navigation;
+      ttfb = responseStart - requestStart;
+      loadTime = loadEventEnd - loadEventStart;
     }
 
     return {

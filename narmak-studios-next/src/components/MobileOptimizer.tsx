@@ -8,23 +8,27 @@ interface MobileOptimizerProps {
 
 // Type definitions for non-standard browser APIs
 interface NavigatorWithBattery extends Navigator {
-  getBattery?: () => Promise<{
-    level: number;
-    charging: boolean;
-    chargingTime: number;
-    dischargingTime: number;
-    addEventListener: (type: string, listener: EventListener) => void;
-    removeEventListener: (type: string, listener: EventListener) => void;
-  }>;
+  getBattery?: () => Promise<BatteryManager>;
+}
+
+interface BatteryManager {
+  level: number;
+  charging: boolean;
+  chargingTime: number;
+  dischargingTime: number;
+  addEventListener: (type: string, listener: (ev: Event) => void) => void;
+  removeEventListener: (type: string, listener: (ev: Event) => void) => void;
 }
 
 interface NavigatorWithConnection extends Navigator {
-  connection?: {
-    effectiveType: string;
-    downlink: number;
-    rtt: number;
-    saveData: boolean;
-  };
+  connection?: NetworkInformation;
+}
+
+interface NetworkInformation {
+  effectiveType: string;
+  downlink: number;
+  rtt: number;
+  saveData: boolean;
 }
 
 export default function MobileOptimizer({ children }: MobileOptimizerProps) {

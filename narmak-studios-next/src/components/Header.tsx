@@ -6,6 +6,8 @@ import { Icons } from './Icons';
 import { servicesCardData as servicesData } from '@/data/services';
 import { useRef } from 'react';
 
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+
 // Add slugMap for correct service slugs
 const slugMapData = [
   'brand-and-marketing-animation',

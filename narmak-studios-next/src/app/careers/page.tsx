@@ -95,7 +95,7 @@ export default function CareersPage() {
   const [touched, setTouched] = useState<Record<string, boolean>>({}); // Track which fields have been interacted with
   const [success, setSuccess] = useState(false);                    // Show success message after submission
   const [saving, setSaving] = useState(false);                      // Loading state during form submission
-  const [error, setError] = useState('');                          // Error message display
+  const [errorMessage, setErrorMessage] = useState('');            // Error message display
   const [hasLoadedDraft, setHasLoadedDraft] = useState(false);     // Prevent infinite loop in draft loading
   const formRef = useRef<HTMLFormElement>(null);                   // Reference to form element for validation
 
@@ -185,7 +185,7 @@ export default function CareersPage() {
     
     // Mark all fields as touched to show validation states
     setTouched({ name: true, email: true, location: true, portfolio: true, discipline: true, why: true, consent: true, portfolioFile: true });
-    setError(''); // Clear any previous errors
+    setErrorMessage(''); // Clear any previous errors
     
     // Only proceed if all required fields are valid
     if (allValid) {
@@ -219,10 +219,10 @@ export default function CareersPage() {
           setSuccess(true); // Show success message
           localStorage.removeItem('careersFormDraft'); // Clear saved draft after successful submission
         } else {
-          setError(result.error ?? 'Something went wrong. Please try again.');
+          setErrorMessage(result.error ?? 'Something went wrong. Please try again.');
         }
       } catch {
-        setError('Network error. Please try again.');
+        setErrorMessage('Network error. Please try again.');
       } finally {
         setSaving(false); // Hide loading state
       }
@@ -254,7 +254,7 @@ export default function CareersPage() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h1 className="text-5xl font-display mb-4">Join the <span className="text-neon-accent">Adventure</span></h1>
           <p className="text-lg text-off-white/70">
-            We&apos;re building a new kind of animation studio—one that balances client work with original stories.
+            We&apos;re building a new kind of animation studio&mdash;one that balances client work with original stories.
             Below are our three pillars of culture. If they resonate with you, we&apos;d love to see your work.
           </p>
         </div>
@@ -433,9 +433,9 @@ export default function CareersPage() {
                 </div>
               </div>
 
-              {error && (
+              {errorMessage && (
                 <div className="md:col-span-2 bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-lg">
-                  {error}
+                  {errorMessage}
                 </div>
               )}
 

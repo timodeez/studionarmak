@@ -32,7 +32,7 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
     tags: []
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (post) {
@@ -59,7 +59,7 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
     async (e: React.FormEvent) => {
       e.preventDefault();
       setIsSubmitting(true);
-      setError('');
+      setErrorMessage('');
 
       try {
         const url = post ? `/api/blog/${post.slug}` : '/api/blog';
@@ -80,10 +80,10 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
             onSave(result);
           }
         } else {
-          setError(result.error ?? 'Failed to save blog post');
+          setErrorMessage(result.error ?? 'Failed to save blog post');
         }
       } catch {
-        setError('Network error. Please try again.');
+        setErrorMessage('Network error. Please try again.');
       } finally {
         setIsSubmitting(false);
       }
@@ -102,9 +102,9 @@ export default function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) 
         {post ? 'Edit Blog Post' : 'Create New Blog Post'}
       </h2>
 
-      {error && (
+      {errorMessage && (
         <div className="mb-4 p-4 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400">
-          {error}
+          {errorMessage}
         </div>
       )}
 
