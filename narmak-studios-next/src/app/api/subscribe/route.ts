@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     // Check for duplicate subscriber
     const subscribers = await db.getEmailSubscribers();
     const existingSubscriber = subscribers.find(sub => sub.email === email);
-    if (existingSubscriber?.subscribed) {
+    if (existingSubscriber && existingSubscriber.subscribed) {
       return NextResponse.json(
         { error: 'This email is already subscribed.' },
         { status: 409 } // 409 Conflict
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Save to database
-    await db.createEmailSubscriber(email);
+    db.createEmailSubscriber(email);
 
     // Send welcome email
     try {

@@ -19,7 +19,7 @@ export async function GET(
     const { slug } = await params;
     const post = await db.getBlogPostBySlug(slug);
     
-    if (!post) {
+    if (post === null) {
       return NextResponse.json(
         { error: 'Blog post not found' },
         { status: 404 }
@@ -48,7 +48,7 @@ export async function PUT(
 
     // First get the post to get its ID
     const existingPost = await db.getBlogPostBySlug(slug);
-    if (!existingPost?.id) {
+    if (!existingPost || !existingPost.id) {
       return NextResponse.json(
         { error: 'Blog post not found' },
         { status: 404 }
@@ -85,7 +85,7 @@ export async function DELETE(
     const { slug } = await params;
     // First get the post to get its ID
     const existingPost = await db.getBlogPostBySlug(slug);
-    if (!existingPost?.id) {
+    if (!existingPost || !existingPost.id) {
       return NextResponse.json(
         { error: 'Blog post not found' },
         { status: 404 }

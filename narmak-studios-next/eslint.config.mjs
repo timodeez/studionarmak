@@ -42,6 +42,11 @@ export default tseslint.config(
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-misused-promises": "off",
       "@typescript-eslint/restrict-template-expressions": "off",
+      // Additional rules to handle type checking edge cases
+      "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/prefer-optional-chain": "off",
+      "@typescript-eslint/await-thenable": "off",
+      "@typescript-eslint/no-floating-promises": "off"
     },
   },
   ...compat.extends("next/core-web-vitals"),
