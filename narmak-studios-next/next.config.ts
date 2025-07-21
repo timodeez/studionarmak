@@ -156,7 +156,6 @@ const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['@next/font', '@vercel/speed-insights'],
-    optimizeCss: true,
     scrollRestoration: true,
   },
 
