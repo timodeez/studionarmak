@@ -43,48 +43,87 @@ export default function HomePage() {
     setIsVimeoModalOpen(true);
   };
 
-  // Handle video initialization after component mounts
+  // Handle video initialization and navigation handling
   useEffect(() => {
     if (!videoRef.current) return;
 
     const video = videoRef.current;
+    
+    // Reset video state on navigation
+    setIsVideoLoaded(false);
     video.style.opacity = '0';
-    video.autoplay = true;  // Enable autoplay
-
+    
     const playVideo = () => {
-      if (video.paused) {
+      if (video.paused && video.readyState >= 3) {
         video.play().catch((error) => {
           console.log('Video play error:', error);
         });
       }
     };
 
-    // For Safari, we need user interaction
+    // For Safari, we need user interaction - but check if we already had it
     const handleFirstInteraction = () => {
       setHasInteracted(true);
       playVideo();
     };
 
-    // Add these event listeners to the document
-    document.addEventListener('click', handleFirstInteraction, { once: true });
-    document.addEventListener('touchstart', handleFirstInteraction, { once: true });
-    document.addEventListener('scroll', handleFirstInteraction, { once: true });
+    // Try to play immediately if we've had interaction before
+    if (hasInteracted) {
+      playVideo();
+    }
+
+    // Add event listeners for first-time interaction
+    if (!hasInteracted) {
+      document.addEventListener('click', handleFirstInteraction, { once: true });
+      document.addEventListener('touchstart', handleFirstInteraction, { once: true });
+      document.addEventListener('scroll', handleFirstInteraction, { once: true });
+    }
+
+    // Force video to load
+    video.load();
 
     return () => {
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('touchstart', handleFirstInteraction);
-      document.removeEventListener('scroll', handleFirstInteraction);
+      if (!hasInteracted) {
+        document.removeEventListener('click', handleFirstInteraction);
+        document.removeEventListener('touchstart', handleFirstInteraction);
+        document.removeEventListener('scroll', handleFirstInteraction);
+      }
     };
-  }, []);
+  }, []); // Only run on mount
 
   // Try to play video when loaded or after interaction
   useEffect(() => {
-    if (!videoRef.current || !isVideoLoaded) return;
+    if (!videoRef.current) return;
 
     const video = videoRef.current;
-    if (hasInteracted) {
-      video.play().catch(console.error);
+    
+    const handleCanPlay = () => {
+      if (hasInteracted || video.muted) {
+        video.play().catch(console.error);
+      }
+    };
+
+    if (isVideoLoaded && (hasInteracted || video.muted)) {
+      handleCanPlay();
     }
+  }, [isVideoLoaded, hasInteracted]);
+
+  // Handle page visibility changes (when returning from another page/tab)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && videoRef.current && isVideoLoaded) {
+        const video = videoRef.current;
+        if (video.paused && (hasInteracted || video.muted)) {
+          video.play().catch(console.error);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [isVideoLoaded, hasInteracted]);
 
   // Optimized intersection observer for stats
@@ -145,13 +184,25 @@ export default function HomePage() {
           loop
           muted
           playsInline
-          preload="none"
+          preload="metadata"
           className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
           style={{ filter: "brightness(0.6)" }}
           onLoadedData={() => {
             if (videoRef.current) {
               videoRef.current.style.opacity = '1';
               setIsVideoLoaded(true);
+            }
+          }}
+          onCanPlay={() => {
+            if (videoRef.current && (hasInteracted || videoRef.current.muted)) {
+              videoRef.current.play().catch(console.error);
+            }
+          }}
+          onError={(e) => {
+            console.error('Video error:', e);
+            // Fallback: try to reload the video
+            if (videoRef.current) {
+              videoRef.current.load();
             }
           }}
           poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjMUExQTFDIi8+Cjwvc3ZnPgo="
