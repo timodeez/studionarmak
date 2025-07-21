@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 
 interface ResponsiveVideoProps {
   src: string;
@@ -25,56 +25,34 @@ export default function ResponsiveVideo({
   loop = true,
   muted = true,
   playsInline = true,
-  preload = 'metadata',
+  preload = 'auto',
   onLoad
 }: ResponsiveVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
-  
-  const isMobile = useMemo(() => windowWidth <= 768, [windowWidth]);
-  const connectionSpeed = useMemo(() => {
-    if (typeof navigator !== 'undefined' && 'connection' in navigator) {
-      const connection = (navigator as Navigator & { connection?: { effectiveType: string } }).connection;
-      if (connection) {
-        const isSlow = connection.effectiveType === 'slow-2g' || 
-                      connection.effectiveType === '2g' || 
-                      connection.effectiveType === '3g';
-        return isSlow ? 'slow' : 'fast';
-      }
-    }
-    return 'fast';
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const handleLoadedData = useCallback(() => {
     setIsLoaded(true);
     onLoad?.();
   }, [onLoad]);
 
-  // Choose the best video source
-  const getVideoSrc = useCallback(() => {
-    // For slow connections, use mobile version if available
-    if (connectionSpeed === 'slow' && mobileSrc) {
-      return mobileSrc;
-    }
-    // For mobile devices, use mobile version if available
-    if (isMobile && mobileSrc) {
-      return mobileSrc;
-    }
-    return src;
-  }, [connectionSpeed, isMobile, mobileSrc, src]);
+  // Simple autoplay handling
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleCanPlay = () => {
+      if (autoPlay && muted) {
+        video.play().catch(console.error);
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+    };
+  }, [autoPlay, muted]);
 
   return (
     <video
@@ -88,7 +66,18 @@ export default function ResponsiveVideo({
       poster={poster}
       onLoadedData={handleLoadedData}
     >
-      <source src={getVideoSrc()} type="video/mp4" />
+      {/* WebM versions for better compression */}
+      {mobileSrc && (
+        <source src={mobileSrc.replace('.mp4', '.webm')} media="(max-width: 768px)" type="video/webm" />
+      )}
+      <source src={src.replace('.mp4', '.webm')} type="video/webm" />
+      
+      {/* MP4 fallbacks */}
+      {mobileSrc && (
+        <source src={mobileSrc} media="(max-width: 768px)" type="video/mp4" />
+      )}
+      <source src={src} type="video/mp4" />
+      
       Your browser does not support the video tag.
     </video>
   );

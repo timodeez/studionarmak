@@ -3,86 +3,187 @@ const fs = require('fs');
 const path = require('path');
 
 const inputDir = path.join(__dirname, '../public');
-const outputDir = path.join(__dirname, '../public/optimized');
-
-// Create output directory if it doesn't exist
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
-}
+const outputDir = path.join(__dirname, '../public');
 
 // Video optimization settings
 const optimizationSettings = {
   web: {
-    codec: 'libx264',
-    crf: 28, // Higher CRF = smaller file, lower quality
-    preset: 'fast',
-    maxrate: '2M',
-    bufsize: '4M',
-    scale: '1280:720', // 720p for web
-    audio: 'aac',
-    audioBitrate: '128k'
+    mp4: {
+      codec: 'libx264',
+      crf: 23, // Better quality for hero video
+      preset: 'slow', // Better compression
+      maxrate: '1.5M',
+      bufsize: '3M',
+      scale: '1920:1080', // Full HD for web
+      audio: null, // No audio for hero video
+      movflags: '+faststart'
+    },
+    webm: {
+      codec: 'libvpx-vp9',
+      crf: 30,
+      preset: 'slow',
+      maxrate: '1M',
+      bufsize: '2M',
+      scale: '1920:1080',
+      audio: null,
+      deadline: 'good'
+    }
   },
   mobile: {
-    codec: 'libx264',
-    crf: 30,
-    preset: 'fast',
-    maxrate: '1M',
-    bufsize: '2M',
-    scale: '854:480', // 480p for mobile
-    audio: 'aac',
-    audioBitrate: '96k'
+    mp4: {
+      codec: 'libx264',
+      crf: 26,
+      preset: 'slow',
+      maxrate: '800k',
+      bufsize: '1.6M',
+      scale: '1280:720', // 720p for mobile
+      audio: null,
+      movflags: '+faststart'
+    },
+    webm: {
+      codec: 'libvpx-vp9',
+      crf: 33,
+      preset: 'slow',
+      maxrate: '600k',
+      bufsize: '1.2M',
+      scale: '1280:720',
+      audio: null,
+      deadline: 'good'
+    }
   }
 };
 
-function optimizeVideo(inputPath, outputPath, settings) {
-  const { codec, crf, preset, maxrate, bufsize, scale, audio, audioBitrate } = settings;
+function optimizeVideoMp4(inputPath, outputPath, settings) {
+  const { codec, crf, preset, maxrate, bufsize, scale, movflags } = settings;
   
-  const command = `ffmpeg -i "${inputPath}" -c:v ${codec} -crf ${crf} -preset ${preset} -maxrate ${maxrate} -bufsize ${bufsize} -vf scale=${scale} -c:a ${audio} -b:a ${audioBitrate} -movflags +faststart "${outputPath}"`;
+  let command = `ffmpeg -y -i "${inputPath}" -c:v ${codec} -crf ${crf} -preset ${preset} -maxrate ${maxrate} -bufsize ${bufsize} -vf scale=${scale}`;
+  
+  if (movflags) {
+    command += ` -movflags ${movflags}`;
+  }
+  
+  // Remove audio track completely for hero videos
+  command += ` -an "${outputPath}"`;
   
   return new Promise((resolve, reject) => {
+    console.log(`🎬 Processing MP4: ${path.basename(outputPath)}`);
     exec(command, (error, stdout, stderr) => {
       if (error) {
-        console.error(`Error optimizing video: ${error}`);
+        console.error(`Error optimizing MP4: ${error}`);
         reject(error);
         return;
       }
-      console.log(`✅ Optimized: ${path.basename(inputPath)}`);
+      console.log(`✅ MP4 Optimized: ${path.basename(outputPath)}`);
       resolve();
     });
   });
 }
 
-async function optimizeAllVideos() {
-  const videoFiles = fs.readdirSync(inputDir).filter(file => 
-    file.endsWith('.mp4') || file.endsWith('.mov') || file.endsWith('.avi')
-  );
+function optimizeVideoWebM(inputPath, outputPath, settings) {
+  const { codec, crf, maxrate, bufsize, scale, deadline } = settings;
   
-  console.log('🎬 Starting video optimization...');
+  let command = `ffmpeg -y -i "${inputPath}" -c:v ${codec} -crf ${crf} -b:v 0 -maxrate ${maxrate} -bufsize ${bufsize}`;
   
-  for (const file of videoFiles) {
-    const inputPath = path.join(inputDir, file);
-    const nameWithoutExt = path.parse(file).name;
-    
-    // Create web version
-    const webOutput = path.join(outputDir, `${nameWithoutExt}-web.mp4`);
-    await optimizeVideo(inputPath, webOutput, optimizationSettings.web);
-    
-    // Create mobile version
-    const mobileOutput = path.join(outputDir, `${nameWithoutExt}-mobile.mp4`);
-    await optimizeVideo(inputPath, mobileOutput, optimizationSettings.mobile);
-    
-    // Get file sizes
-    const originalSize = fs.statSync(inputPath).size / (1024 * 1024);
-    const webSize = fs.statSync(webOutput).size / (1024 * 1024);
-    const mobileSize = fs.statSync(mobileOutput).size / (1024 * 1024);
-    
-    console.log(`📊 ${file}:`);
-    console.log(`   Original: ${originalSize.toFixed(2)} MB`);
-    console.log(`   Web: ${webSize.toFixed(2)} MB (${((1 - webSize/originalSize) * 100).toFixed(1)}% smaller)`);
-    console.log(`   Mobile: ${mobileSize.toFixed(2)} MB (${((1 - mobileSize/originalSize) * 100).toFixed(1)}% smaller)`);
+  if (deadline) {
+    command += ` -deadline ${deadline}`;
   }
   
-  console.log('🎉 Video optimization complete!');
+  command += ` -vf scale=${scale} -an "${outputPath}"`;
+  
+  return new Promise((resolve, reject) => {
+    console.log(`🎬 Processing WebM: ${path.basename(outputPath)}`);
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error optimizing WebM: ${error}`);
+        reject(error);
+        return;
+      }
+      console.log(`✅ WebM Optimized: ${path.basename(outputPath)}`);
+      resolve();
+    });
+  });
 }
 
-optimizeAllVideos().catch(console.error); 
+async function optimizeHeroVideos() {
+  console.log('🎬 Starting hero video optimization...');
+  
+  // Check for existing hero video files
+  const existingFiles = ['website_reel_1-web.mp4', 'website_reel_1-mobile.mp4'];
+  
+  for (const filename of existingFiles) {
+    const inputPath = path.join(inputDir, filename);
+    
+    if (!fs.existsSync(inputPath)) {
+      console.log(`❌ File not found: ${filename}`);
+      continue;
+    }
+    
+    console.log(`\n📹 Processing: ${filename}`);
+    
+    try {
+      const baseName = path.parse(filename).name; // e.g., "website_reel_1-web" or "website_reel_1-mobile"
+      
+      // Only generate WebM files (the MP4 files already exist)
+      const webmOutput = path.join(inputDir, `${baseName}.webm`);
+      
+      // Determine which settings to use based on filename
+      const isWeb = filename.includes('-web');
+      const settings = isWeb ? optimizationSettings.web.webm : optimizationSettings.mobile.webm;
+      
+      // Generate WebM version
+      await optimizeVideoWebM(inputPath, webmOutput, settings);
+      
+      // Report file sizes
+      const originalSize = fs.statSync(inputPath).size / (1024 * 1024);
+      const webmSize = fs.statSync(webmOutput).size / (1024 * 1024);
+      
+      console.log(`\n📊 ${filename} WebM Generation Results:`);
+      console.log(`   Original MP4: ${originalSize.toFixed(2)} MB`);
+      console.log(`   New WebM: ${webmSize.toFixed(2)} MB (${((1 - webmSize/originalSize) * 100).toFixed(1)}% smaller)`);
+      
+    } catch (error) {
+      console.error(`Failed to process ${filename}:`, error);
+    }
+  }
+  
+  // Also optimize other portfolio videos if they're large
+  console.log('\n🎬 Checking other portfolio videos...');
+  const allMp4Files = fs.readdirSync(inputDir)
+    .filter(file => file.endsWith('.mp4') && !file.includes('website_reel_1'))
+    .filter(file => {
+      const stats = fs.statSync(path.join(inputDir, file));
+      return stats.size > 3 * 1024 * 1024; // > 3MB
+    });
+  
+  for (const file of allMp4Files) {
+    try {
+      const inputPath = path.join(inputDir, file);
+      const baseName = path.parse(file).name;
+      const webmOutput = path.join(inputDir, `${baseName}.webm`);
+      
+      // Skip if WebM already exists
+      if (fs.existsSync(webmOutput)) {
+        console.log(`⏭️  WebM already exists for ${file}`);
+        continue;
+      }
+      
+      console.log(`\n📹 Converting ${file} to WebM...`);
+      
+      // Use mobile settings for smaller portfolio videos
+      await optimizeVideoWebM(inputPath, webmOutput, optimizationSettings.mobile.webm);
+      
+      const originalSize = fs.statSync(inputPath).size / (1024 * 1024);
+      const webmSize = fs.statSync(webmOutput).size / (1024 * 1024);
+      
+      console.log(`✅ ${file}: ${originalSize.toFixed(2)} MB → ${webmSize.toFixed(2)} MB WebM (${((1 - webmSize/originalSize) * 100).toFixed(1)}% smaller)`);
+      
+    } catch (error) {
+      console.error(`Failed to convert ${file}:`, error);
+    }
+  }
+}
+
+// Run the optimization
+optimizeHeroVideos().then(() => {
+  console.log('🎉 Video optimization complete!');
+}).catch(console.error); 

@@ -1,153 +1,90 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable experimental features for better performance
-  experimental: {
-    optimizePackageImports: ['@next/font', '@vercel/speed-insights'],
-  },
+  // Enable React Strict Mode for better development experience
+  reactStrictMode: true,
   
-  // ESLint configuration
-  eslint: {
-    ignoreDuringBuilds: true, // Temporarily ignore ESLint during builds
-  },
+  // Enable SWC minification for better performance
+  swcMinify: true,
   
-  // Turbopack configuration (moved from experimental.turbo)
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
-  },
-  
-  // Image optimization
+  // Optimize images
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
-    domains: ['placehold.co'],
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year
   },
-  
-  // Compression
-  compress: true,
-  
-  // Performance optimizations
-  poweredByHeader: false,
-  
-  // Headers for caching and performance
+
+  // Video optimization headers
   async headers() {
     return [
       {
-        source: '/(.*)',
+        // Apply headers to video files
+        source: '/(.*\\.(mp4|webm|ogg|avi|mov))$',
         headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable', // 1 year cache
+          },
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
         ],
       },
       {
-        source: '/static/(.*)',
+        // Apply headers to image files
+        source: '/(.*\\.(jpg|jpeg|png|webp|avif|gif|svg))$',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/images/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/videos/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'Accept-Ranges',
-            value: 'bytes',
-          },
-        ],
-      },
-      {
-        source: '/LOGO/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable', // 1 year cache
           },
         ],
       },
     ];
   },
-  
-  // Webpack optimizations
+
+  // Compression
+  compress: true,
+
+  // Enable experimental features for better performance
+  experimental: {
+    optimizePackageImports: ['@next/font', '@vercel/speed-insights'],
+    optimizeCss: true,
+    scrollRestoration: true,
+  },
+
+  // Enable TypeScript and ESLint checking during builds
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  // Performance budgets
   webpack: (config, { dev, isServer }) => {
-    // Optimize bundle size
+    // Only apply optimizations in production
     if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            priority: 5,
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: {
+              minChunks: 1,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              priority: -10,
+              chunks: 'all',
+            },
           },
         },
-      };
-      
-      // Enable tree shaking
-      config.optimization.usedExports = true;
-      config.optimization.sideEffects = false;
-    }
-    
-    // Optimize for mobile
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
       };
     }
     

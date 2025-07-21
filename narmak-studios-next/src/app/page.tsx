@@ -36,7 +36,6 @@ export default function HomePage() {
   const statsRef = useRef<HTMLDivElement>(null);
   const [isStatsVisible, setIsStatsVisible] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const [isVimeoModalOpen, setIsVimeoModalOpen] = useState(false);
 
   const handlePlay = () => {
@@ -49,82 +48,47 @@ export default function HomePage() {
 
     const video = videoRef.current;
     
-    // Reset video state on navigation
-    setIsVideoLoaded(false);
-    video.style.opacity = '0';
-    
     const playVideo = () => {
-      if (video.paused && video.readyState >= 3) {
+      if (video.paused) {
         video.play().catch((error) => {
-          console.log('Video play error:', error);
+          console.log('Video autoplay blocked, user interaction required');
         });
       }
     };
 
-    // For Safari, we need user interaction - but check if we already had it
-    const handleFirstInteraction = () => {
-      setHasInteracted(true);
+    // Try to play when video can play
+    const handleCanPlay = () => {
       playVideo();
     };
 
-    // Try to play immediately if we've had interaction before
-    if (hasInteracted) {
+    // Handle loaded data
+    const handleLoadedData = () => {
+      setIsVideoLoaded(true);
+      video.style.opacity = '1';
       playVideo();
-    }
+    };
 
-    // Add event listeners for first-time interaction
-    if (!hasInteracted) {
-      document.addEventListener('click', handleFirstInteraction, { once: true });
-      document.addEventListener('touchstart', handleFirstInteraction, { once: true });
-      document.addEventListener('scroll', handleFirstInteraction, { once: true });
-    }
+    // Handle visibility changes (when returning from another page/tab)
+    const handleVisibilityChange = () => {
+      if (!document.hidden && video.readyState >= 3) {
+        playVideo();
+      }
+    };
 
-    // Force video to load
+    // Add event listeners
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('loadeddata', handleLoadedData);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Force load
     video.load();
 
     return () => {
-      if (!hasInteracted) {
-        document.removeEventListener('click', handleFirstInteraction);
-        document.removeEventListener('touchstart', handleFirstInteraction);
-        document.removeEventListener('scroll', handleFirstInteraction);
-      }
-    };
-  }, []); // Only run on mount
-
-  // Try to play video when loaded or after interaction
-  useEffect(() => {
-    if (!videoRef.current) return;
-
-    const video = videoRef.current;
-    
-    const handleCanPlay = () => {
-      if (hasInteracted || video.muted) {
-        video.play().catch(console.error);
-      }
-    };
-
-    if (isVideoLoaded && (hasInteracted || video.muted)) {
-      handleCanPlay();
-    }
-  }, [isVideoLoaded, hasInteracted]);
-
-  // Handle page visibility changes (when returning from another page/tab)
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && videoRef.current && isVideoLoaded) {
-        const video = videoRef.current;
-        if (video.paused && (hasInteracted || video.muted)) {
-          video.play().catch(console.error);
-        }
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('loadeddata', handleLoadedData);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [isVideoLoaded, hasInteracted]);
+  }, []); // Only run on mount
 
   // Optimized intersection observer for stats
   useEffect(() => {
@@ -184,9 +148,10 @@ export default function HomePage() {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
           style={{ filter: "brightness(0.6)" }}
+<<<<<<< HEAD
           onLoadedData={() => {
             if (videoRef.current) {
               videoRef.current.style.opacity = '1';
@@ -218,9 +183,17 @@ export default function HomePage() {
           {/* MP4 versions - Mobile version - smaller file, lower resolution */}
           <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
           {/* MP4 - Desktop version - higher quality */}
+=======
+          poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjMUExQTFDIi8+Cjwvc3ZnPgo="
+        >
+          {/* WebM versions for better compression */}
+          <source src="/website_reel_1-mobile.webm" media="(max-width: 768px)" type="video/webm" />
+          <source src="/website_reel_1-web.webm" media="(min-width: 769px)" type="video/webm" />
+          {/* Mobile version - smaller file, lower resolution */}
+          <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
+          {/* Desktop version - higher quality */}
+>>>>>>> cursor/optimize-website-speed-and-video-playback-bf7c
           <source src="/website_reel_1-web.mp4" media="(min-width: 769px)" type="video/mp4" />
-          {/* Final fallback */}
-          <source src="/website_reel_1-web.mp4" type="video/mp4" />
         </video>
 
         {/* Vimeo Modal */}
