@@ -10,7 +10,7 @@ export default function LockedOverlay({
   message = "We're working on something amazing! This section will be available soon." 
 }: LockedOverlayProps) {
   return (
-    <div className="fixed inset-0 z-40 bg-charcoal/95 backdrop-blur-sm flex items-center justify-center">
+    <div className="fixed inset-0 z-[99999] bg-charcoal/95 backdrop-blur-sm flex items-center justify-center">
       <div className="max-w-md mx-4 text-center">
         <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-8 shadow-2xl">
           {/* Lock Icon */}
