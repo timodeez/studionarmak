@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
-    optimizePackageImports: ['@next/font'],
+    optimizePackageImports: ['@next/font', '@vercel/speed-insights'],
   },
   
   // ESLint configuration

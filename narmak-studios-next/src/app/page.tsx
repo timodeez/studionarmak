@@ -199,7 +199,15 @@ export default function HomePage() {
             }
           }}
           onError={(e) => {
-            console.error('Video error:', e);
+            const videoElement = e.currentTarget;
+            console.error('Video error:', {
+              error: videoElement.error,
+              errorCode: videoElement.error?.code,
+              errorMessage: videoElement.error?.message,
+              src: videoElement.currentSrc,
+              readyState: videoElement.readyState,
+              networkState: videoElement.networkState
+            });
             // Fallback: try to reload the video
             if (videoRef.current) {
               videoRef.current.load();
@@ -207,12 +215,9 @@ export default function HomePage() {
           }}
           poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjMUExQTFDIi8+Cjwvc3ZnPgo="
         >
-          {/* WebM versions for better compression */}
-          <source src="/website_reel_1-mobile.webm" media="(max-width: 768px)" type="video/webm" />
-          <source src="/website_reel_1-web.webm" media="(min-width: 769px)" type="video/webm" />
-          {/* MP4 fallback - Mobile version - smaller file, lower resolution */}
+          {/* MP4 versions - Mobile version - smaller file, lower resolution */}
           <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
-          {/* MP4 fallback - Desktop version - higher quality */}
+          {/* MP4 - Desktop version - higher quality */}
           <source src="/website_reel_1-web.mp4" media="(min-width: 769px)" type="video/mp4" />
           {/* Final fallback */}
           <source src="/website_reel_1-web.mp4" type="video/mp4" />
