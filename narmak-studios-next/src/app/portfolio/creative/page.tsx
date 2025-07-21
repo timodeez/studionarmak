@@ -87,7 +87,7 @@ export default function CreativePage() {
                       </span>
                     ))}
                   </div>
-                  {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+        
                   {item.caseStudy && (
                     <div className="mt-6 bg-white/5 backdrop-blur rounded-xl shadow-lg px-6 py-6">
                       <h4 className="text-xl font-display text-neon-accent mb-2">{item.caseStudy.title}</h4>

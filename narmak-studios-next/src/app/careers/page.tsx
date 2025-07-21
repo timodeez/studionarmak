@@ -254,8 +254,8 @@ export default function CareersPage() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h1 className="text-5xl font-display mb-4">Join the <span className="text-neon-accent">Adventure</span></h1>
           <p className="text-lg text-off-white/70">
-            We're passionate about creating work that moves people and brands alike. Our team is made up of dreamers, 
-            storytellers, and craftspeople who pour their hearts into every frame. If that sounds like you, we'd love to see your work.
+            We&apos;re passionate about creating work that moves people and brands alike. Our team is made up of dreamers, 
+            storytellers, and craftspeople who pour their hearts into every frame. If that sounds like you, we&apos;d love to see your work.
           </p>
         </div>
 

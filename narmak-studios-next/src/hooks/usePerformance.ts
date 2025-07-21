@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback } from 'react';
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 
 export function usePerformance() {
   const trackPageLoad = useCallback(() => {
