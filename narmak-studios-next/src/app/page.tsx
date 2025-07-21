@@ -151,7 +151,6 @@ export default function HomePage() {
           preload="auto"
           className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
           style={{ filter: "brightness(0.6)" }}
-<<<<<<< HEAD
           onLoadedData={() => {
             if (videoRef.current) {
               videoRef.current.style.opacity = '1';
@@ -180,19 +179,12 @@ export default function HomePage() {
           }}
           poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjMUExQTFDIi8+Cjwvc3ZnPgo="
         >
-          {/* MP4 versions - Mobile version - smaller file, lower resolution */}
-          <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
-          {/* MP4 - Desktop version - higher quality */}
-=======
-          poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjMUExQTFDIi8+Cjwvc3ZnPgo="
-        >
           {/* WebM versions for better compression */}
           <source src="/website_reel_1-mobile.webm" media="(max-width: 768px)" type="video/webm" />
           <source src="/website_reel_1-web.webm" media="(min-width: 769px)" type="video/webm" />
-          {/* Mobile version - smaller file, lower resolution */}
+          {/* MP4 versions - Mobile version - smaller file, lower resolution */}
           <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
-          {/* Desktop version - higher quality */}
->>>>>>> cursor/optimize-website-speed-and-video-playback-bf7c
+          {/* MP4 - Desktop version - higher quality */}
           <source src="/website_reel_1-web.mp4" media="(min-width: 769px)" type="video/mp4" />
         </video>
 
