@@ -57,6 +57,7 @@ export default function OriginalsPage() {
         <div className="space-y-24">
           {originalsPortfolio.map((item, index) => {
             const isReversed = index % 2 !== 0;
+            const isVideo = item.mediaUrl.endsWith('.mp4');
             return (
               <div
                 key={item.id}
@@ -67,14 +68,38 @@ export default function OriginalsPage() {
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="w-full md:w-3/5">
-                  <Image 
-                    src={item.mediaUrl} 
-                    alt={item.title} 
-                    width={800}
-                    height={600}
-                    className="rounded-lg shadow-2xl w-full object-cover"
-                    priority={index < 2} // Prioritize loading for the first two images
-                  />
+                  {isVideo ? (
+                    <video 
+                      src={item.mediaUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="rounded-lg shadow-2xl w-full object-cover"
+                      onError={(e) => {
+                        console.error('Video load error:', item.mediaUrl);
+                        // Fallback to homeImg if video fails
+                        const video = e.currentTarget;
+                        if (item.homeImg) {
+                          video.style.display = 'none';
+                          const img = document.createElement('img');
+                          img.src = item.homeImg;
+                          img.className = video.className;
+                          img.alt = item.title;
+                          video.parentNode?.appendChild(img);
+                        }
+                      }}
+                    />
+                  ) : (
+                    <Image 
+                      src={item.mediaUrl} 
+                      alt={item.title} 
+                      width={800}
+                      height={600}
+                      className="rounded-lg shadow-2xl w-full object-cover"
+                      priority={index < 2}
+                    />
+                  )}
                 </div>
                 <div className="w-full md:w-2/5">
                   <p className="text-gradient-end font-semibold">{item.type}</p>
