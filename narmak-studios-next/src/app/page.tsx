@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect, useMemo, Suspense } from 'react';
+import { useState, useRef, useEffect, useMemo, Suspense, lazy } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icons } from '@/components/Icons';
 import AnimatedSection from '@/components/AnimatedSection';
 import OptimizedImage from '@/components/OptimizedImage';
 import LazyLoad from '@/components/LazyLoad';
-import PortfolioItem from '@/components/PortfolioItem';
 import VimeoModal from '@/components/VimeoModal';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { creativePortfolio } from '@/data/creativePortfolio';
@@ -15,9 +14,18 @@ import { originalsPortfolio } from '@/data/originalsPortfolio';
 import { clientLogos } from '@/data/clientLogos';
 import { testimonials } from '@/data/testimonials';
 
-// Lazy load heavy components
+// Dynamic imports for better code splitting
+const PortfolioItem = lazy(() => import('@/components/PortfolioItem'));
+
+// Lazy load heavy components with loading states
 const LazyPortfolioSection = ({ children }: { children: React.ReactNode }) => (
-  <Suspense fallback={<div className="h-96 bg-charcoal animate-pulse" />}>
+  <Suspense fallback={<div className="h-96 bg-charcoal animate-pulse rounded-lg" />}>
+    {children}
+  </Suspense>
+);
+
+const LazyStatsSection = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div className="h-32 bg-[#141416] animate-pulse" />}>
     {children}
   </Suspense>
 );
@@ -137,7 +145,7 @@ export default function HomePage() {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
           style={{ filter: "brightness(0.6)" }}
           onLoadedData={() => {
@@ -146,13 +154,17 @@ export default function HomePage() {
               setIsVideoLoaded(true);
             }
           }}
+          poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjMUExQTFDIi8+Cjwvc3ZnPgo="
         >
-          {/* Mobile version - smaller file, lower resolution */}
-          <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" />
-          {/* Desktop version - higher quality */}
-          <source src="/website_reel_1-web.mp4" media="(min-width: 769px)" />
-          {/* Fallback */}
-          <source src="/website_reel_1-web.mp4" />
+          {/* WebM versions for better compression */}
+          <source src="/website_reel_1-mobile.webm" media="(max-width: 768px)" type="video/webm" />
+          <source src="/website_reel_1-web.webm" media="(min-width: 769px)" type="video/webm" />
+          {/* MP4 fallback - Mobile version - smaller file, lower resolution */}
+          <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
+          {/* MP4 fallback - Desktop version - higher quality */}
+          <source src="/website_reel_1-web.mp4" media="(min-width: 769px)" type="video/mp4" />
+          {/* Final fallback */}
+          <source src="/website_reel_1-web.mp4" type="video/mp4" />
         </video>
 
         {/* Vimeo Modal */}
@@ -213,46 +225,48 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div ref={statsRef} className="bg-[#141416] py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-center">
-          <div 
-            className="transition-all duration-700" 
-            style={{ 
-              opacity: isStatsVisible ? 1 : 0, 
-              transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
-            }}
-          >
-            <p className="text-4xl sm:text-5xl md:text-6xl font-display text-neon-accent">
-              {views.toLocaleString()}+
-            </p>
-            <p className="mt-2 text-off-white/70 text-sm sm:text-base">Video Views</p>
-          </div>
-          <div 
-            className="transition-all duration-700 delay-200" 
-            style={{ 
-              opacity: isStatsVisible ? 1 : 0, 
-              transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
-            }}
-          >
-            <p className="text-4xl sm:text-5xl md:text-6xl font-display text-neon-accent">
-              {subs.toLocaleString()}+
-            </p>
-            <p className="mt-2 text-off-white/70 text-sm sm:text-base">Subscribers</p>
-          </div>
-          <div 
-            className="transition-all duration-700 delay-400" 
-            style={{ 
-              opacity: isStatsVisible ? 1 : 0, 
-              transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
-            }}
-          >
-            <p className="text-4xl sm:text-5xl md:text-6xl font-display text-neon-accent">
-              {Math.floor(projects)}+
-            </p>
-            <p className="mt-2 text-off-white/70 text-sm sm:text-base">Projects Delivered</p>
+      <LazyStatsSection>
+        <div ref={statsRef} className="bg-[#141416] py-12 sm:py-16">
+          <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-center">
+            <div 
+              className="transition-all duration-700" 
+              style={{ 
+                opacity: isStatsVisible ? 1 : 0, 
+                transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
+              }}
+            >
+              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display text-neon-accent">
+                {views.toLocaleString()}+
+              </p>
+              <p className="mt-2 text-off-white/70 text-xs sm:text-sm md:text-base">Video Views</p>
+            </div>
+            <div 
+              className="transition-all duration-700 delay-200" 
+              style={{ 
+                opacity: isStatsVisible ? 1 : 0, 
+                transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
+              }}
+            >
+              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display text-neon-accent">
+                {subs.toLocaleString()}+
+              </p>
+              <p className="mt-2 text-off-white/70 text-xs sm:text-sm md:text-base">Subscribers</p>
+            </div>
+            <div 
+              className="transition-all duration-700 delay-400" 
+              style={{ 
+                opacity: isStatsVisible ? 1 : 0, 
+                transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
+              }}
+            >
+              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display text-neon-accent">
+                {Math.floor(projects)}+
+              </p>
+              <p className="mt-2 text-off-white/70 text-xs sm:text-sm md:text-base">Projects Delivered</p>
+            </div>
           </div>
         </div>
-      </div>
+      </LazyStatsSection>
 
       <AnimatedSection id="fork" customClass="py-16 sm:py-20 md:py-28 bg-charcoal">
         <div className="container mx-auto px-4 sm:px-6 text-center">

@@ -76,6 +76,9 @@ export default function OptimizedVideo({
       poster={poster}
       onLoadedData={handleLoadedData}
     >
+      {/* WebM format for better compression */}
+      <source src={isInView ? src.replace('.mp4', '.webm') : ''} type="video/webm" />
+      {/* MP4 fallback */}
       <source src={isInView ? src : ''} type="video/mp4" />
     </video>
   );

@@ -7,6 +7,7 @@ import PerformanceDashboard from "@/components/PerformanceDashboard";
 import ConditionalBottomCTA from "@/components/ConditionalBottomCTA";
 import MobileOptimizer from "@/components/MobileOptimizer";
 import SplashWrapper from "@/components/SplashWrapper";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
@@ -33,7 +34,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Font links moved to _document.tsx */}
+        {/* Resource hints for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://player.vimeo.com" />
+        <link rel="dns-prefetch" href="https://vercel.com" />
+        {/* Preload critical resources */}
+        <link rel="preload" as="video" href="/website_reel_1-mobile.mp4" media="(max-width: 768px)" />
+        <link rel="preload" as="video" href="/website_reel_1-web.mp4" media="(min-width: 769px)" />
       </head>
       <body
         className={`${ibmPlexSans.variable} ${inter.variable} bg-charcoal text-off-white font-sans antialiased`}
@@ -47,6 +55,7 @@ export default function RootLayout({
             <ConditionalBottomCTA />
             <Footer />
             {process.env.NODE_ENV === 'development' && <PerformanceDashboard />}
+            <SpeedInsights />
           </MobileOptimizer>
         </SplashWrapper>
       </body>

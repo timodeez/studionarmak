@@ -73,15 +73,17 @@ export default function MobileOptimizer({ children }: MobileOptimizerProps) {
       const handleNetworkChange = () => {
         setIsSlowNetwork(
           connection.saveData ||
-          /2g|slow-2g/.test(connection.effectiveType) ||
-          connection.rtt > 800
+          /2g|slow-2g|3g/.test(connection.effectiveType) ||
+          connection.rtt > 600 ||
+          connection.downlink < 1.5
         );
       };
       connection.addEventListener('change', handleNetworkChange);
       setIsSlowNetwork(
         connection.saveData ||
-        /2g|slow-2g/.test(connection.effectiveType) ||
-        connection.rtt > 800
+        /2g|slow-2g|3g/.test(connection.effectiveType) ||
+        connection.rtt > 600 ||
+        connection.downlink < 1.5
       );
     }
   }, []);
