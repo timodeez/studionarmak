@@ -8,6 +8,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import OptimizedImage from '@/components/OptimizedImage';
 import LazyLoad from '@/components/LazyLoad';
 import PortfolioItem from '@/components/PortfolioItem';
+import VimeoModal from '@/components/VimeoModal';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { creativePortfolio } from '@/data/creativePortfolio';
 import { originalsPortfolio } from '@/data/originalsPortfolio';
@@ -26,27 +27,57 @@ export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const [isStatsVisible, setIsStatsVisible] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isVimeoModalOpen, setIsVimeoModalOpen] = useState(false);
 
   const handlePlay = () => {
-    setIsMuted(prevState => !prevState);
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-    }
+    setIsVimeoModalOpen(true);
   };
 
-  // Ensure video autoplays on mount
+  // Handle video initialization after component mounts
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Fallback: try to play again after a short delay
-        setTimeout(() => {
-          if (videoRef.current) {
-            videoRef.current.play().catch(console.error);
-          }
-        }, 100);
-      });
-    }
+    if (!videoRef.current) return;
+
+    const video = videoRef.current;
+    video.style.opacity = '0';
+    video.autoplay = true;  // Enable autoplay
+
+    const playVideo = () => {
+      if (video.paused) {
+        video.play().catch((error) => {
+          console.log('Video play error:', error);
+        });
+      }
+    };
+
+    // For Safari, we need user interaction
+    const handleFirstInteraction = () => {
+      setHasInteracted(true);
+      playVideo();
+    };
+
+    // Add these event listeners to the document
+    document.addEventListener('click', handleFirstInteraction, { once: true });
+    document.addEventListener('touchstart', handleFirstInteraction, { once: true });
+    document.addEventListener('scroll', handleFirstInteraction, { once: true });
+
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('touchstart', handleFirstInteraction);
+      document.removeEventListener('scroll', handleFirstInteraction);
+    };
   }, []);
+
+  // Try to play video when loaded or after interaction
+  useEffect(() => {
+    if (!videoRef.current || !isVideoLoaded) return;
+
+    const video = videoRef.current;
+    if (hasInteracted) {
+      video.play().catch(console.error);
+    }
+  }, [isVideoLoaded, hasInteracted]);
 
   // Optimized intersection observer for stats
   useEffect(() => {
@@ -109,18 +140,11 @@ export default function HomePage() {
           preload="metadata"
           className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
           style={{ filter: "brightness(0.6)" }}
-          onLoadedData={(e) => {
-            const video = e.target as HTMLVideoElement;
-            video.style.opacity = '1';
-          }}
-          onCanPlayThrough={(e) => {
-            const video = e.target as HTMLVideoElement;
-            video.play().catch(() => {
-              // Fallback: try to play again after a short delay
-              setTimeout(() => {
-                video.play().catch(console.error);
-              }, 100);
-            });
+          onLoadedData={() => {
+            if (videoRef.current) {
+              videoRef.current.style.opacity = '1';
+              setIsVideoLoaded(true);
+            }
           }}
         >
           {/* Mobile version - smaller file, lower resolution */}
@@ -130,6 +154,12 @@ export default function HomePage() {
           {/* Fallback */}
           <source src="/website_reel_1-web.mp4" />
         </video>
+
+        {/* Vimeo Modal */}
+        <VimeoModal 
+          isOpen={isVimeoModalOpen} 
+          onClose={() => setIsVimeoModalOpen(false)} 
+        />
         
         {/* Subtle overlay for text readability */}
         <div className="absolute inset-0 bg-black/20 z-[-5]"></div>
@@ -150,10 +180,10 @@ export default function HomePage() {
             </h2>
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4">
               <Link 
-                href="/portfolio/creative" 
+                href="/portfolio/campaign" 
                 className="w-full sm:w-auto text-center bg-off-white text-charcoal font-display font-semibold py-3 sm:py-3 px-6 sm:px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:bg-white text-base sm:text-lg"
               >
-                Creative
+                Campaign
               </Link>
               <Link 
                 href="/portfolio/originals" 
@@ -166,12 +196,18 @@ export default function HomePage() {
           <div className="mt-8 sm:mt-12 md:mt-0 flex flex-col items-center gap-3 sm:gap-4">
             <button 
               onClick={handlePlay} 
-              className="group w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-neon-accent/20 border-2 border-neon-accent flex items-center justify-center text-neon-accent transition-all duration-300 hover:bg-neon-accent hover:text-charcoal hover:scale-110"
+              className="group w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-red-600/20 border-2 border-red-600 flex items-center justify-center text-red-600 transition-all duration-300 hover:bg-red-600 hover:text-white hover:scale-110"
             >
-              {isMuted ? Icons.play : Icons.soundOn}
+              <svg 
+                className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
             </button>
             <span className="text-xs sm:text-sm font-semibold tracking-widest text-off-white/80">
-              Imagination in Motion
+              Watch Our Reel
             </span>
           </div>
         </div>
@@ -220,13 +256,13 @@ export default function HomePage() {
 
       <AnimatedSection id="fork" customClass="py-16 sm:py-20 md:py-28 bg-charcoal">
         <div className="container mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display mb-3 sm:mb-4">Two Studios, One Vision.</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display mb-3 sm:mb-4">Two Engines. One Drive.</h2>
           <p className="text-base sm:text-lg text-off-white/70 max-w-3xl mx-auto mb-8 sm:mb-12">
-            We partner with visionary brands to move their audience, and we craft original worlds that move our own.
+            A Dual-Engine Creative House: we partner with visionary brands to move their audience, and we craft original worlds to build our own.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <LazyLoad>
-              <Link href="/portfolio/creative" className="group relative block overflow-hidden rounded-lg">
+              <Link href="/portfolio/campaign" className="group relative block overflow-hidden rounded-lg">
                 <div className="aspect-[5/3] w-full">
                   <OptimizedImage 
                     src="/LOGO/3GIINDlogo.webp" 
@@ -238,7 +274,7 @@ export default function HomePage() {
                 </div>
                 <div className="absolute inset-0 bg-black/50"></div>
                 <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 text-left">
-                  <h3 className="text-2xl sm:text-3xl font-display text-white">Narmak Creative</h3>
+                  <h3 className="text-2xl sm:text-3xl font-display text-white">Narmak Campaigns</h3>
                   <p className="text-white/80 mt-1 sm:mt-2 text-sm sm:text-base">Animation for brands.</p>
                 </div>
               </Link>
@@ -317,7 +353,7 @@ export default function HomePage() {
                 {clientLogos.map((logo, index) => (
                   <div 
                     key={index} 
-                    className="flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 ease-out transform hover:scale-105"
+                    className="flex items-center justify-center transform hover:scale-105 transition-all duration-300 ease-out"
                     style={{ minHeight: '70px', maxHeight: '90px' }}
                   >
                     <Image
@@ -363,7 +399,7 @@ export default function HomePage() {
                         client="Narmak Originals"
                         category={item.type}
                         year="2024"
-                        image={item.homeImg}
+                        image={item.mediaUrl}
                         id={item.id.toString()}
                       />
                     </Link>
@@ -379,7 +415,7 @@ export default function HomePage() {
                         client="Narmak Originals"
                         category={item.type}
                         year="2024"
-                        image={item.homeImg}
+                        image={item.mediaUrl}
                         id={item.id.toString()}
                       />
                     </Link>

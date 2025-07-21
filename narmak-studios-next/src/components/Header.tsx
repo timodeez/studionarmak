@@ -83,7 +83,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${isScrolled ? 'bg-charcoal/95 shadow-lg' : 'bg-transparent'}`} style={{ pointerEvents: 'auto' }}>
+    <header className={`fixed top-0 left-0 right-0 z-[99999] transition-all duration-300 ${isScrolled ? 'bg-charcoal/95 shadow-lg' : 'bg-transparent'}`} style={{ pointerEvents: 'auto' }}>
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <Link href="/" className="font-display text-2xl font-bold text-off-white">
           Studio Narmak
@@ -95,8 +95,8 @@ export default function Header() {
               Work {Icons.chevronDown}
             </Link>
             <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
-              <Link href="/portfolio/creative" className="block px-4 py-2 hover:bg-neon-accent/20">
-                Creative
+              <Link href="/portfolio/campaign" className="block px-4 py-2 hover:bg-neon-accent/20">
+                Campaign
               </Link>
               <Link href="/portfolio/originals" className="block px-4 py-2 hover:bg-neon-accent/20">
                 Originals
@@ -185,8 +185,8 @@ export default function Header() {
                     Work
                   </Link>
                   <div className="pl-4 flex flex-col">
-                    <Link href="/portfolio/creative" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      Creative
+                    <Link href="/portfolio/campaign" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                      Campaign
                     </Link>
                     <Link href="/portfolio/originals" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
                       Originals
