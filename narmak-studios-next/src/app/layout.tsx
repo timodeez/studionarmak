@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://narmakstudios.com'),
   title: "Narmak Studios - Animation & Creative Studio",
   description: "We create animated worlds for brands and our own original stories. A dual-engine creative house: we partner with visionary brands to move their audience, and we craft original worlds to build our own.",
   keywords: "animation, creative studio, brand animation, original content, video production, motion graphics, advertising",
