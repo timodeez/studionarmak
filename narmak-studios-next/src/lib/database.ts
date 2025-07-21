@@ -99,7 +99,45 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
 
 // Create the Supabase client (this is your connection to the database)
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// We'll create a dummy client during build time if credentials are missing
+const createSupabaseClient = () => {
+  if (!supabaseUrl || !supabaseKey) {
+    console.warn('Supabase credentials not found. Database features will be disabled.');
+    // Return a mock client that won't crash during build
+    return {
+      from: () => ({
+        insert: () => Promise.resolve({ data: null, error: new Error('Database not configured') }),
+        select: () => ({
+          eq: () => ({
+            single: () => Promise.resolve({ data: null, error: new Error('Database not configured') }),
+            order: () => Promise.resolve({ data: [], error: new Error('Database not configured') })
+          }),
+          order: () => Promise.resolve({ data: [], error: new Error('Database not configured') }),
+          single: () => Promise.resolve({ data: null, error: new Error('Database not configured') })
+        }),
+        update: () => ({
+          eq: () => ({
+            select: () => ({
+              single: () => Promise.resolve({ data: null, error: new Error('Database not configured') })
+            })
+          })
+        }),
+        upsert: () => ({
+          select: () => ({
+            single: () => Promise.resolve({ data: null, error: new Error('Database not configured') })
+          })
+        }),
+        delete: () => ({
+          eq: () => Promise.resolve({ error: new Error('Database not configured') })
+        })
+      })
+    } as any;
+  }
+  
+  return createClient(supabaseUrl, supabaseKey);
+};
+
+export const supabase = createSupabaseClient();
 
 // ============================================================================
 // DATABASE OPERATIONS
