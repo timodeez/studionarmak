@@ -5,7 +5,7 @@ export const creativePortfolio = [
     client: 'HoyoFair Genshin Impact',
     description: 'A fan animation project for the Genshin Impact community event.',
     services: ['Fan Animation', '2D Animation'],
-    mediaUrl: '/genshin-ezgif.com-video-to-gif-converter.gif',
+    mediaUrl: '/genshin-impact.mp4',
     staticImg: '/genshin-ezgif.com-video-to-gif-converter.gif',
     gifUrl: '/genshin-ezgif.com-video-to-gif-converter.gif',
     caseStudy: {
@@ -22,7 +22,7 @@ export const creativePortfolio = [
     client: 'G-Fuel',
     description: 'Animated campaign for the G-Fuel energy drink brand.',
     services: ['Commercial', '2D Animation'],
-    mediaUrl: '/dbzgfuel-ezgif.com-video-to-gif-converter.gif',
+    mediaUrl: '/gfuel-dbz.mp4',
     staticImg: '/dbzgfuel-ezgif.com-video-to-gif-converter.gif',
     gifUrl: '/dbzgfuel-ezgif.com-video-to-gif-converter.gif',
     caseStudy: {
@@ -39,7 +39,7 @@ export const creativePortfolio = [
     client: 'NordVPN',
     description: 'Explainer animation for NordVPN\'s security features.',
     services: ['Explainer', '2D Animation'],
-    mediaUrl: '/NordVPN-ezgif.com-video-to-gif-converter(1).gif',
+    mediaUrl: '/nordvpn.mp4',
     staticImg: '/NordVPN-ezgif.com-video-to-gif-converter(1).gif',
     gifUrl: '/NordVPN-ezgif.com-video-to-gif-converter(1).gif',
     caseStudy: {
@@ -56,7 +56,7 @@ export const creativePortfolio = [
     client: 'Black Clover',
     description: 'Animated short for the Black Clover gaming brand.',
     services: ['Short', '2D Animation'],
-    mediaUrl: '/blackclover-ezgif.com-video-to-gif-converter.gif',
+    mediaUrl: '/black-clover.mp4',
     staticImg: '/blackclover-ezgif.com-video-to-gif-converter.gif',
     gifUrl: '/blackclover-ezgif.com-video-to-gif-converter.gif',
     caseStudy: {
@@ -73,7 +73,7 @@ export const creativePortfolio = [
     client: 'Shrekfest',
     description: 'Promotional animation for the annual Shrekfest event.',
     services: ['Promo', '2D Animation'],
-    mediaUrl: '/shrekfest2-ezgif.com-video-to-gif-converter.gif',
+    mediaUrl: '/shrekfest.mp4',
     staticImg: '/shrekfest2-ezgif.com-video-to-gif-converter.gif',
     gifUrl: '/shrekfest2-ezgif.com-video-to-gif-converter.gif',
     caseStudy: {

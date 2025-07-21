@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useState, useRef } from 'react';
 
 interface PortfolioItemProps {
   title: string;
@@ -19,16 +20,53 @@ export default function PortfolioItem({
   year,
   id
 }: PortfolioItemProps) {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const isVideo = image.endsWith('.mp4');
+
+  const handleVideoHover = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(console.error);
+    }
+  };
+
+  const handleVideoLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
   return (
-    <div className="group relative overflow-hidden rounded-lg">
+    <div 
+      className="group relative overflow-hidden rounded-lg"
+      onMouseEnter={isVideo ? handleVideoHover : undefined}
+      onMouseLeave={isVideo ? handleVideoLeave : undefined}
+    >
       <div className="aspect-w-16 aspect-h-9">
-        <Image
-          src={image}
-          alt={title}
-          width={640}
-          height={360}
-          className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
-        />
+        {isVideo ? (
+          <video
+            ref={videoRef}
+            className={`object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ${
+              isVideoLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onLoadedData={() => setIsVideoLoaded(true)}
+          >
+            <source src={image} type="video/mp4" />
+          </video>
+        ) : (
+          <Image
+            src={image}
+            alt={title}
+            width={640}
+            height={360}
+            className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
+          />
+        )}
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="absolute bottom-0 left-0 right-0 p-6">
