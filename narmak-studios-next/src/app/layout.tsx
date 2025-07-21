@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff2",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff2",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Narmak Studios - Animation & Creative Studio",
@@ -63,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <head>
         {/* Preload critical video resources */}
         <link
@@ -100,7 +90,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-charcoal text-off-white`}
+        className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased bg-charcoal text-off-white`}
       >
         <Header />
         <main className="min-h-screen">

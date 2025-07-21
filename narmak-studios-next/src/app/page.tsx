@@ -158,7 +158,7 @@ export default function HomePage() {
             }
           }}
           onCanPlay={() => {
-            if (videoRef.current && (hasInteracted || videoRef.current.muted)) {
+            if (videoRef.current && videoRef.current.muted) {
               videoRef.current.play().catch(console.error);
             }
           }}
