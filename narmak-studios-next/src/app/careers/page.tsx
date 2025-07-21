@@ -16,12 +16,12 @@ const culturePillars = [
   {
     title: 'Curiosity',
     icon: () => <span className="text-4xl" role="img" aria-label="Curiosity">🔍</span>,
-    copy: 'We love imagination. The next big idea could come from you! Don&apos;t be scared to throw your input'
+    copy: 'We love imagination. The next big idea could come from you! Share your wildest ideas and let your creativity run wild.'
   },
   {
     title: 'Collaboration',
     icon: () => <span className="text-4xl" role="img" aria-label="Collaboration">🤝</span>,
-    copy: 'The only way it all works is if we all work together. Let&apos;s build, create, and challenge each other.'
+    copy: 'The only way it all works is if we all work together. We build, create, and challenge each other to reach new heights.'
   }
 ];
 
@@ -254,8 +254,8 @@ export default function CareersPage() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h1 className="text-5xl font-display mb-4">Join the <span className="text-neon-accent">Adventure</span></h1>
           <p className="text-lg text-off-white/70">
-            We&apos;re building a new kind of animation studio&mdash;one that balances client work with original stories.
-            Below are our three pillars of culture. If they resonate with you, we&apos;d love to see your work.
+            We're passionate about creating work that moves people and brands alike. Our team is made up of dreamers, 
+            storytellers, and craftspeople who pour their hearts into every frame. If that sounds like you, we'd love to see your work.
           </p>
         </div>
 
@@ -273,7 +273,7 @@ export default function CareersPage() {
         {/* Application form */}
         <div className="max-w-4xl mx-auto bg-[#1a1a1c] p-8 rounded-2xl">
           <div className="md:w-full">
-            <h2 className="text-3xl font-display mb-4">Join the <span className="text-neon-accent">Narmak</span> Family</h2>
+            <h2 className="text-3xl font-display mb-4">Join the <span className="text-neon-accent">Team</span></h2>
             <p className="mb-8 text-off-white/80">
               We&apos;re always looking for talented folks to collaborate with on a per-project basis. If you&apos;re a skilled animator, designer, or storyteller, we&apos;d love to see your work.
             </p>

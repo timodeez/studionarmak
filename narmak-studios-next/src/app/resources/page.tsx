@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import LockedOverlay from '@/components/LockedOverlay';
 
 const featuredPosts = [
   {
@@ -30,7 +31,12 @@ const faqs = [
 
 export default function ResourcesPage() {
   return (
-    <main className="container mx-auto px-4 py-20 min-h-[60vh] space-y-16">
+    <>
+      <LockedOverlay 
+        title="Resources Coming Soon" 
+        message="We're building a comprehensive resource hub with tutorials, press kits, FAQs, and more. Check back soon for amazing content and tools!"
+      />
+      <main className="container mx-auto px-4 py-20 min-h-[60vh] space-y-16">
       <h1 className="text-4xl font-display mb-8">Resources</h1>
       {/* Journal Highlights */}
       <section>
@@ -98,6 +104,7 @@ export default function ResourcesPage() {
           <a href="https://www.instagram.com/narmakyt/" target="_blank" rel="noopener" className="text-neon-accent underline">Instagram</a>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 } 

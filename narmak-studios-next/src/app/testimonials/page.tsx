@@ -1,9 +1,15 @@
 import AnimatedSection from '@/components/AnimatedSection';
+import LockedOverlay from '@/components/LockedOverlay';
 import { testimonials } from '@/data/testimonials';
 
 export default function TestimonialsPage() {
   return (
-    <div className="pt-20">
+    <>
+      <LockedOverlay 
+        title="Testimonials Coming Soon" 
+        message="We're gathering amazing feedback from our clients and partners. This section will showcase the incredible relationships we've built through our work."
+      />
+      <div className="pt-20">
       <AnimatedSection customClass="container mx-auto px-4 py-20 md:py-28">
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-5xl font-display mb-4">People Love Us</h1>
@@ -21,6 +27,7 @@ export default function TestimonialsPage() {
           ))}
         </div>
       </AnimatedSection>
-    </div>
+      </div>
+    </>
   );
 } 

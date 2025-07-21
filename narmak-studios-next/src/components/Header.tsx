@@ -133,13 +133,10 @@ export default function Header() {
             </div>
           </div>
           <div className="group relative">
-            <Link href="/about" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
+            <Link href="/studio" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
               Studio {Icons.chevronDown}
             </Link>
             <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
-              <Link href="/about" className="block px-4 py-2 hover:bg-neon-accent/20">
-                About
-              </Link>
               <Link href="/process" className="block px-4 py-2 hover:bg-neon-accent/20">
                 Process
               </Link>
@@ -224,12 +221,12 @@ export default function Header() {
                   </div>
                 </div>
                 <div className="border-b border-off-white/10 pb-2 mb-2">
-                  <Link href="/about" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                  <Link href="/studio" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
                     Studio
                   </Link>
                   <div className="pl-4 flex flex-col">
-                    <Link href="/about" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      About
+                    <Link href="/studio" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                      Studio
                     </Link>
                     <Link href="/process" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
                       Process

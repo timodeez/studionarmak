@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import LockedOverlay from '@/components/LockedOverlay';
 
 const journalEntries = [
   {
@@ -17,7 +18,12 @@ const journalEntries = [
 
 export default function JournalPage() {
   return (
-    <section className="container mx-auto px-4 py-20 min-h-[60vh]">
+    <>
+      <LockedOverlay 
+        title="Journal Coming Soon" 
+        message="We're crafting amazing stories and insights to share with you. Our journal will feature behind-the-scenes content, creative processes, and industry insights."
+      />
+      <section className="container mx-auto px-4 py-20 min-h-[60vh]">
       <h1 className="text-4xl font-display mb-8">Journal</h1>
       <p className="text-lg text-off-white/80 mb-12 max-w-2xl">Insights, stories, and behind-the-scenes from the Studio Narmak team.</p>
       <div className="space-y-8">
@@ -34,6 +40,7 @@ export default function JournalPage() {
           </article>
         ))}
       </div>
-    </section>
+      </section>
+    </>
   );
 } 

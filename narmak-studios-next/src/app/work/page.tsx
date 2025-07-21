@@ -58,45 +58,6 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Portfolio Navigation Section */}
-      <section className="py-16 px-4 md:px-8 bg-gray-900">
-        <div className="max-w-7xl mx-auto">
-          <AnimatedSection>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
-              Explore Our Work
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white/5 backdrop-blur p-8 rounded-xl border border-white/10 hover:border-neon-accent/50 transition-all duration-300">
-                <h3 className="text-2xl font-bold text-neon-accent mb-4">Campaigns</h3>
-                <p className="text-white/80 mb-6 leading-relaxed">
-                  Work we create for brands - bringing their vision to life through stunning animation, 
-                  compelling storytelling, and strategic creative direction.
-                </p>
-                <a 
-                  href="/portfolio/campaign" 
-                  className="inline-block bg-neon-accent text-charcoal font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                >
-                  View Campaigns
-                </a>
-              </div>
-              <div className="bg-white/5 backdrop-blur p-8 rounded-xl border border-white/10 hover:border-neon-accent/50 transition-all duration-300">
-                <h3 className="text-2xl font-bold text-neon-accent mb-4">Originals</h3>
-                <p className="text-white/80 mb-6 leading-relaxed">
-                  Our own stories and creative worlds - original series, characters, and narratives 
-                  that showcase our passion for storytelling and animation.
-                </p>
-                <a 
-                  href="/portfolio/originals" 
-                  className="inline-block bg-neon-accent text-charcoal font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                >
-                  View Originals
-                </a>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* Capabilities Section */}
       <section className="py-16 px-4 md:px-8">
         <div className="max-w-7xl mx-auto">
@@ -146,6 +107,45 @@ export default function WorkPage() {
                   End-to-end production services that handle every aspect of your project from 
                   pre-production to final delivery.
                 </p>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Portfolio Navigation Section */}
+      <section className="py-16 px-4 md:px-8 bg-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <AnimatedSection>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+              Explore Our Work
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white/5 backdrop-blur p-8 rounded-xl border border-white/10 hover:border-neon-accent/50 transition-all duration-300">
+                <h3 className="text-2xl font-bold text-neon-accent mb-4">Campaigns</h3>
+                <p className="text-white/80 mb-6 leading-relaxed">
+                  Work we create for brands - bringing their vision to life through stunning animation, 
+                  compelling storytelling, and strategic creative direction.
+                </p>
+                <a 
+                  href="/portfolio/campaign" 
+                  className="inline-block bg-neon-accent text-charcoal font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  View Campaigns
+                </a>
+              </div>
+              <div className="bg-white/5 backdrop-blur p-8 rounded-xl border border-white/10 hover:border-neon-accent/50 transition-all duration-300">
+                <h3 className="text-2xl font-bold text-neon-accent mb-4">Originals</h3>
+                <p className="text-white/80 mb-6 leading-relaxed">
+                  Our own stories and creative worlds - original series, characters, and narratives 
+                  that showcase our passion for storytelling and animation.
+                </p>
+                <a 
+                  href="/portfolio/originals" 
+                  className="inline-block bg-neon-accent text-charcoal font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  View Originals
+                </a>
               </div>
             </div>
           </AnimatedSection>
