@@ -151,26 +151,30 @@ export default function Header() {
         </nav>
         {/* Hamburger for mobile */}
         <button
-          className="block md:hidden p-2 text-off-white focus:outline-none z-[100001] relative"
-          aria-label="Open menu"
+          className="block md:hidden p-3 text-off-white focus:outline-none z-[100001] relative bg-transparent border-none"
+          aria-label={sidebarOpen ? "Close menu" : "Open menu"}
           onClick={toggleSidebar}
+          type="button"
         >
-          <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          {sidebarOpen ? (
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
         </button>
         {/* Sidebar drawer */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-[100000] bg-black/60 backdrop-blur-sm" onClick={() => { closeSidebar(); }}>
-            <div
-              ref={sidebarRef}
-              className="fixed top-0 right-0 w-80 sm:w-96 bg-charcoal h-full shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto text-lg font-semibold text-off-white transform transition-transform duration-300 ease-in-out"
-              style={{ 
-                boxShadow: '-10px 0 25px -5px rgba(0,0,0,0.3)',
-                transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)'
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
+        <div className={`fixed inset-0 z-[100000] transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeSidebar} />
+          <div
+            ref={sidebarRef}
+            className={`absolute top-0 right-0 h-full bg-charcoal shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto text-lg font-semibold text-off-white transition-transform duration-300 ease-in-out w-[85vw] max-w-sm ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
+            style={{ boxShadow: '-10px 0 25px -5px rgba(0,0,0,0.3)' }}
+            onClick={(e) => e.stopPropagation()}
+          >
               <button
                 className="absolute top-4 right-4 p-2 text-off-white"
                 aria-label="Close menu"
@@ -178,10 +182,10 @@ export default function Header() {
               >
                 <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
-              <Link href="/" className="font-display text-2xl font-bold text-off-white mb-6 mt-2 tracking-tight" onClick={() => { closeSidebar(); }}>
+              <Link href="/" className="font-display text-xl font-bold text-off-white mb-4 mt-8 tracking-tight block" onClick={closeSidebar}>
                 Studio Narmak
               </Link>
-              <div className="flex flex-col gap-4">
+              <nav className="flex flex-col gap-3">
                 <div className="border-b border-off-white/10 pb-2 mb-2">
                   <Link href="/work" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
                     Work
@@ -241,13 +245,13 @@ export default function Header() {
                     </Link>
                   </div>
                 </div>
-                <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-4 text-center hover:scale-105 transition-transform duration-300 text-lg" onClick={() => { closeSidebar(); }}>
+                <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-6 text-center hover:scale-105 transition-transform duration-300 text-base block" onClick={closeSidebar}>
                   Get a Quote
                 </Link>
-              </div>
+              </nav>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );
