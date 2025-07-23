@@ -42,17 +42,42 @@ export default function HomePage() {
     setIsVimeoModalOpen(true);
   };
 
+  // Performance optimization: pause video when tab is not visible
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && videoRef.current) {
+        videoRef.current.pause();
+      } else if (!document.hidden && videoRef.current && videoRef.current.paused) {
+        videoRef.current.play().catch(() => {});
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
   // Handle video initialization and navigation handling
   useEffect(() => {
     if (!videoRef.current) return;
 
     const video = videoRef.current;
     
-    const playVideo = () => {
-      if (video.paused) {
-        video.play().catch((error) => {
-          console.log('Video autoplay blocked, user interaction required');
-        });
+    const playVideo = async () => {
+      try {
+        // Ensure video is muted for autoplay
+        video.muted = true;
+        
+        if (video.paused) {
+          await video.play();
+        }
+      } catch (error) {
+        console.log('Video autoplay blocked:', error);
+        // Try playing again after a small delay
+        setTimeout(() => {
+          video.play().catch(() => {
+            console.log('Video autoplay still blocked');
+          });
+        }, 1000);
       }
     };
 
@@ -68,6 +93,11 @@ export default function HomePage() {
       playVideo();
     };
 
+    // Handle loaded metadata
+    const handleLoadedMetadata = () => {
+      playVideo();
+    };
+
     // Handle visibility changes (when returning from another page/tab)
     const handleVisibilityChange = () => {
       if (!document.hidden && video.readyState >= 3) {
@@ -77,15 +107,24 @@ export default function HomePage() {
 
     // Add event listeners
     video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('canplaythrough', handleCanPlay);
     video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('loadedmetadata', handleLoadedMetadata);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Force load
+    // Force load and play
     video.load();
+    
+    // Try to play immediately if ready
+    if (video.readyState >= 3) {
+      playVideo();
+    }
 
     return () => {
       video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('canplaythrough', handleCanPlay);
       video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []); // Only run on mount
@@ -148,9 +187,14 @@ export default function HomePage() {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
-          style={{ filter: "brightness(0.6)" }}
+          style={{ 
+            filter: "brightness(0.6)",
+            willChange: "transform",
+            backfaceVisibility: "hidden",
+            perspective: "1000px"
+          }}
           onLoadedData={() => {
             if (videoRef.current) {
               videoRef.current.style.opacity = '1';

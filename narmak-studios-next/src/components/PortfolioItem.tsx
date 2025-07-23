@@ -25,7 +25,7 @@ export default function PortfolioItem({
   const isVideo = image.endsWith('.mp4');
 
   const handleVideoHover = () => {
-    if (videoRef.current) {
+    if (videoRef.current && videoRef.current.readyState >= 3) {
       videoRef.current.play().catch(console.error);
     }
   };
@@ -43,17 +43,19 @@ export default function PortfolioItem({
       onMouseEnter={isVideo ? handleVideoHover : undefined}
       onMouseLeave={isVideo ? handleVideoLeave : undefined}
     >
-      <div className="aspect-w-16 aspect-h-9">
+      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
         {isVideo ? (
           <video
             ref={videoRef}
-            className={`object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ${
+            className={`absolute inset-0 object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
+            poster={image.replace('.mp4', '-poster.jpg')}
+            onMouseEnter={() => videoRef.current?.load()}
             onLoadedData={() => setIsVideoLoaded(true)}
           >
             <source src={image} type="video/mp4" />
@@ -64,7 +66,8 @@ export default function PortfolioItem({
             alt={title}
             width={640}
             height={360}
-            className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
+            className="absolute inset-0 object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
           />
         )}
       </div>
