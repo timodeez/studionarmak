@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ConditionalBottomCTA from "@/components/ConditionalBottomCTA";
 import SplashWrapper from "@/components/SplashWrapper";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://narmakstudios.com'),
@@ -103,6 +104,7 @@ export default function RootLayout({
           <ConditionalBottomCTA />
           <Footer />
         </SplashWrapper>
+        <Analytics />
       </body>
     </html>
   );

@@ -89,126 +89,136 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-[99999] transition-all duration-300 ${isScrolled ? 'bg-charcoal/95 shadow-lg' : 'bg-transparent'}`} style={{ pointerEvents: 'auto' }}>
-      <div className="container mx-auto px-4 flex justify-between items-center h-20">
-        <Link href="/" className="font-display text-2xl font-bold text-off-white">
-          Studio Narmak
-        </Link>
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <div className="group relative">
-            <Link href="/work" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
-              Work {Icons.chevronDown}
-            </Link>
-            <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
-              <Link href="/portfolio/campaign" className="block px-4 py-2 hover:bg-neon-accent/20">
-                Campaign
-              </Link>
-              <Link href="/portfolio/originals" className="block px-4 py-2 hover:bg-neon-accent/20">
-                Originals
-              </Link>
-            </div>
-          </div>
-          <div className="group relative">
-            <Link href="/services" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
-              Services {Icons.chevronDown}
-            </Link>
-            <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-64 border-t-8 border-transparent max-h-96 overflow-y-auto text-base md:text-sm">
-              {servicesCardData.map((service, idx) => (
-                <Link
-                  key={service.title}
-                  href={`/services/${slugMap[idx]}`}
-                  className="block px-4 py-3 hover:bg-neon-accent/20 whitespace-normal text-base md:text-sm rounded transition-colors"
-                >
-                  {service.title}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="group relative">
-            <Link href="/resources" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
-              Resources {Icons.chevronDown}
-            </Link>
-            <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
-              <Link href="/journal" className="block px-4 py-2 hover:bg-neon-accent/20">
-                Journal
-              </Link>
-              <Link href="/careers" className="block px-4 py-2 hover:bg-neon-accent/20">
-                Careers
-              </Link>
-            </div>
-          </div>
-          <div className="group relative">
-            <Link href="/studio" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
-              Studio {Icons.chevronDown}
-            </Link>
-            <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
-              <Link href="/process" className="block px-4 py-2 hover:bg-neon-accent/20">
-                Process
-              </Link>
-              <Link href="/testimonials" className="block px-4 py-2 hover:bg-neon-accent/20">
-                People Love Us
-              </Link>
-            </div>
-          </div>
-          <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-2 px-5 rounded-lg transition-transform duration-300 hover:scale-105">
-            Get a Quote
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-[99999] transition-all duration-300 ${isScrolled ? 'bg-charcoal/95 shadow-lg' : 'bg-transparent'}`} style={{ pointerEvents: 'auto' }}>
+        <div className="container mx-auto px-4 flex justify-between items-center h-20">
+          <Link href="/" className="font-display text-2xl font-bold text-off-white">
+            Studio Narmak
           </Link>
-        </nav>
-        {/* Hamburger for mobile */}
-        <button
-          className="block md:hidden p-3 text-off-white focus:outline-none z-[100003] relative bg-transparent border-none"
-          aria-label={sidebarOpen ? "Close menu" : "Open menu"}
-          onClick={toggleSidebar}
-          type="button"
-        >
-          {sidebarOpen ? (
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          )}
-        </button>
-        {/* Sidebar drawer */}
-        <div className={`fixed inset-0 z-[100001] transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <div className="group relative">
+              <Link href="/work" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
+                Work {Icons.chevronDown}
+              </Link>
+              <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
+                <Link href="/portfolio/campaign" className="block px-4 py-2 hover:bg-neon-accent/20">
+                  Campaign
+                </Link>
+                <Link href="/portfolio/originals" className="block px-4 py-2 hover:bg-neon-accent/20">
+                  Originals
+                </Link>
+              </div>
+            </div>
+            <div className="group relative">
+              <Link href="/services" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
+                Services {Icons.chevronDown}
+              </Link>
+              <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-64 border-t-8 border-transparent max-h-96 overflow-y-auto text-base md:text-sm">
+                {servicesCardData.map((service, idx) => (
+                  <Link
+                    key={service.title}
+                    href={`/services/${slugMap[idx]}`}
+                    className="block px-4 py-3 hover:bg-neon-accent/20 whitespace-normal text-base md:text-sm rounded transition-colors"
+                  >
+                    {service.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="group relative">
+              <Link href="/resources" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
+                Resources {Icons.chevronDown}
+              </Link>
+              <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
+                <Link href="/journal" className="block px-4 py-2 hover:bg-neon-accent/20">
+                  Journal
+                </Link>
+                <Link href="/careers" className="block px-4 py-2 hover:bg-neon-accent/20">
+                  Careers
+                </Link>
+              </div>
+            </div>
+            <div className="group relative">
+              <Link href="/studio" className="flex items-center gap-1 hover:text-neon-accent transition-colors">
+                Studio {Icons.chevronDown}
+              </Link>
+              <div className="dropdown-menu absolute hidden group-hover:block top-full -left-4 bg-[#1a1a1c] rounded-md shadow-xl py-2 w-40 border-t-8 border-transparent">
+                <Link href="/process" className="block px-4 py-2 hover:bg-neon-accent/20">
+                  Process
+                </Link>
+                <Link href="/testimonials" className="block px-4 py-2 hover:bg-neon-accent/20">
+                  People Love Us
+                </Link>
+              </div>
+            </div>
+            <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-2 px-5 rounded-lg transition-transform duration-300 hover:scale-105">
+              Get a Quote
+            </Link>
+          </nav>
+          
+          {/* Hamburger for mobile */}
+          <button
+            className="block md:hidden p-3 text-off-white focus:outline-none z-[100003] relative bg-transparent border-none hover:bg-white/10 rounded-md transition-colors"
+            aria-label={sidebarOpen ? "Close menu" : "Open menu"}
+            onClick={toggleSidebar}
+            type="button"
+            style={{ touchAction: 'manipulation' }}
+          >
+            {sidebarOpen ? (
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Sidebar - Outside header for proper positioning */}
+      {sidebarOpen && (
+        <div className="mobile-sidebar-overlay opacity-100 pointer-events-auto transition-opacity duration-300">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeSidebar} />
           <div
             ref={sidebarRef}
-            className={`absolute top-0 right-0 h-full bg-charcoal shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto text-lg font-semibold text-off-white transition-transform duration-300 ease-in-out w-[85vw] max-w-sm z-[100002] ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
-            style={{ boxShadow: '-10px 0 25px -5px rgba(0,0,0,0.3)' }}
+            className="mobile-sidebar-drawer bg-charcoal shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto text-lg font-semibold text-off-white transition-transform duration-300 ease-in-out w-[85vw] max-w-sm translate-x-0"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-4 right-4 p-2 text-off-white"
+              className="absolute top-4 right-4 p-2 text-off-white hover:bg-white/10 rounded"
               aria-label="Close menu"
-              onClick={() => { closeSidebar(); }}
+              onClick={closeSidebar}
             >
               <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+            
             <Link href="/" className="font-display text-xl font-bold text-off-white mb-4 mt-8 tracking-tight block" onClick={closeSidebar}>
               Studio Narmak
             </Link>
+            
             <nav className="flex flex-col gap-3">
               <div className="border-b border-off-white/10 pb-2 mb-2">
-                <Link href="/work" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                <Link href="/work" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={closeSidebar}>
                   Work
                 </Link>
                 <div className="pl-4 flex flex-col">
-                  <Link href="/portfolio/campaign" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                  <Link href="/portfolio/campaign" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={closeSidebar}>
                     Campaign
                   </Link>
-                  <Link href="/portfolio/originals" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                  <Link href="/portfolio/originals" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={closeSidebar}>
                     Originals
                   </Link>
                 </div>
               </div>
+              
               <div className="border-b border-off-white/10 pb-2 mb-2">
-                <Link href="/services" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                <Link href="/services" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={closeSidebar}>
                   Services
                 </Link>
                 <div className="pl-4 flex flex-col">
@@ -217,49 +227,52 @@ export default function Header() {
                       key={service.title}
                       href={`/services/${slugMap[idx]}`}
                       className="py-2 px-3 rounded hover:bg-neon-accent/10 text-base sm:text-lg transition-colors"
-                      onClick={() => { closeSidebar(); }}
+                      onClick={closeSidebar}
                     >
                       {service.title}
                     </Link>
                   ))}
                 </div>
               </div>
+              
               <div className="border-b border-off-white/10 pb-2 mb-2">
-                <Link href="/resources" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                <Link href="/resources" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={closeSidebar}>
                   Resources
                 </Link>
                 <div className="pl-4 flex flex-col">
-                  <Link href="/journal" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                  <Link href="/journal" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={closeSidebar}>
                     Journal
                   </Link>
-                  <Link href="/careers" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                  <Link href="/careers" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={closeSidebar}>
                     Careers
                   </Link>
                 </div>
               </div>
+              
               <div className="border-b border-off-white/10 pb-2 mb-2">
-                <Link href="/studio" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                <Link href="/studio" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={closeSidebar}>
                   Studio
                 </Link>
                 <div className="pl-4 flex flex-col">
-                  <Link href="/studio" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                  <Link href="/studio" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={closeSidebar}>
                     Studio
                   </Link>
-                  <Link href="/process" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                  <Link href="/process" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={closeSidebar}>
                     Process
                   </Link>
-                  <Link href="/testimonials" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                  <Link href="/testimonials" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={closeSidebar}>
                     People Love Us
                   </Link>
                 </div>
               </div>
+              
               <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-6 text-center hover:scale-105 transition-transform duration-300 text-base block" onClick={closeSidebar}>
                 Get a Quote
               </Link>
             </nav>
           </div>
         </div>
-      </div>
-    </header>
+      )}
+    </>
   );
 } 
