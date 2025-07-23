@@ -50,7 +50,7 @@ export default function PortfolioItem({
       onMouseEnter={isVideo ? handleVideoHover : undefined}
       onMouseLeave={isVideo ? handleVideoLeave : undefined}
     >
-      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+      <div className="relative w-full" style={{ paddingBottom: '75%' }}>
         {isVideo ? (
           <video
             ref={videoRef}
