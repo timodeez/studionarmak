@@ -305,7 +305,7 @@ export default function HomePage() {
 
       <LazyStatsSection>
         <div ref={statsRef} className="bg-[#141416] py-12 sm:py-16">
-          <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-center">
+          <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
             <div 
               className="transition-all duration-700" 
               style={{ 
