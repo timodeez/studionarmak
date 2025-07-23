@@ -66,16 +66,27 @@ export default function HomePage() {
       try {
         // Ensure video is muted for autoplay
         video.muted = true;
+        video.volume = 0;
+        
+        // Set playsInline for mobile compatibility
+        video.playsInline = true;
         
         if (video.paused) {
           await video.play();
+          console.log('Video autoplay successful');
         }
       } catch (error) {
         console.log('Video autoplay blocked:', error);
         // Try playing again after a small delay
         setTimeout(() => {
-          video.play().catch(() => {
-            console.log('Video autoplay still blocked');
+          video.play().catch((retryError) => {
+            console.log('Video autoplay retry failed:', retryError);
+            // Try one more time with user interaction simulation
+            setTimeout(() => {
+              video.play().catch((finalError) => {
+                console.log('Final video autoplay attempt failed:', finalError);
+              });
+            }, 2000);
           });
         }, 1000);
       }
@@ -83,11 +94,13 @@ export default function HomePage() {
 
     // Try to play when video can play
     const handleCanPlay = () => {
+      console.log('Video can play, attempting autoplay');
       playVideo();
     };
 
     // Handle loaded data
     const handleLoadedData = () => {
+      console.log('Video data loaded');
       setIsVideoLoaded(true);
       video.style.opacity = '1';
       playVideo();
@@ -95,12 +108,14 @@ export default function HomePage() {
 
     // Handle loaded metadata
     const handleLoadedMetadata = () => {
+      console.log('Video metadata loaded');
       playVideo();
     };
 
     // Handle visibility changes (when returning from another page/tab)
     const handleVisibilityChange = () => {
       if (!document.hidden && video.readyState >= 3) {
+        console.log('Page visible, attempting to play video');
         playVideo();
       }
     };
@@ -478,7 +493,7 @@ export default function HomePage() {
                         client="Narmak Originals"
                         category={item.type}
                         year="2024"
-                        image={item.mediaUrl}
+                        image={item.homeImg}
                         id={item.id.toString()}
                       />
                     </Link>
@@ -494,7 +509,7 @@ export default function HomePage() {
                         client="Narmak Originals"
                         category={item.type}
                         year="2024"
-                        image={item.mediaUrl}
+                        image={item.homeImg}
                         id={item.id.toString()}
                       />
                     </Link>

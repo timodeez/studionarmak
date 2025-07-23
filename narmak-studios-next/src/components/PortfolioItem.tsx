@@ -21,8 +21,10 @@ export default function PortfolioItem({
   id
 }: PortfolioItemProps) {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isVideo = image.endsWith('.mp4');
+  const isGif = image.endsWith('.gif');
 
   const handleVideoHover = () => {
     if (videoRef.current && videoRef.current.readyState >= 3) {
@@ -35,6 +37,11 @@ export default function PortfolioItem({
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
+  };
+
+  const handleImageError = () => {
+    console.error('Image failed to load:', image);
+    setImageError(true);
   };
 
   return (
@@ -57,6 +64,10 @@ export default function PortfolioItem({
             poster={image.replace('.mp4', '-poster.jpg')}
             onMouseEnter={() => videoRef.current?.load()}
             onLoadedData={() => setIsVideoLoaded(true)}
+            onError={(e) => {
+              console.error('Video failed to load:', image, e);
+              setImageError(true);
+            }}
           >
             <source src={image} type="video/mp4" />
           </video>
@@ -68,7 +79,19 @@ export default function PortfolioItem({
             height={360}
             className="absolute inset-0 object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
+            onError={handleImageError}
+            unoptimized={isGif} // Don't optimize GIFs to preserve animation
           />
+        )}
+        
+        {/* Fallback for failed images */}
+        {imageError && (
+          <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
+            <div className="text-white text-center p-4">
+              <div className="text-2xl mb-2">📹</div>
+              <div className="text-sm">{title}</div>
+            </div>
+          </div>
         )}
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
