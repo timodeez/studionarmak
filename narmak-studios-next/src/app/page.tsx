@@ -71,7 +71,7 @@ export default function HomePage() {
         // Set playsInline for mobile compatibility
         video.playsInline = true;
         
-        if (video.paused) {
+        if (video.paused && video.readyState >= 3) {
           await video.play();
           console.log('Video autoplay successful');
         }
@@ -79,15 +79,11 @@ export default function HomePage() {
         console.log('Video autoplay blocked:', error);
         // Try playing again after a small delay
         setTimeout(() => {
-          video.play().catch((retryError) => {
-            console.log('Video autoplay retry failed:', retryError);
-            // Try one more time with user interaction simulation
-            setTimeout(() => {
-              video.play().catch((finalError) => {
-                console.log('Final video autoplay attempt failed:', finalError);
-              });
-            }, 2000);
-          });
+          if (video.paused && video.readyState >= 3) {
+            video.play().catch((retryError) => {
+              console.log('Video autoplay retry failed:', retryError);
+            });
+          }
         }, 1000);
       }
     };
@@ -95,6 +91,8 @@ export default function HomePage() {
     // Try to play when video can play
     const handleCanPlay = () => {
       console.log('Video can play, attempting autoplay');
+      setIsVideoLoaded(true);
+      video.style.opacity = '1';
       playVideo();
     };
 
@@ -109,12 +107,12 @@ export default function HomePage() {
     // Handle loaded metadata
     const handleLoadedMetadata = () => {
       console.log('Video metadata loaded');
-      playVideo();
+      // Don't auto-play on metadata, wait for canplay
     };
 
     // Handle visibility changes (when returning from another page/tab)
     const handleVisibilityChange = () => {
-      if (!document.hidden && video.readyState >= 3) {
+      if (!document.hidden && video.readyState >= 3 && video.paused) {
         console.log('Page visible, attempting to play video');
         playVideo();
       }
@@ -127,13 +125,8 @@ export default function HomePage() {
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Force load and play
+    // Force load
     video.load();
-    
-    // Try to play immediately if ready
-    if (video.readyState >= 3) {
-      playVideo();
-    }
 
     return () => {
       video.removeEventListener('canplay', handleCanPlay);
@@ -217,34 +210,39 @@ export default function HomePage() {
             }
           }}
           onCanPlay={() => {
-            if (videoRef.current && videoRef.current.muted) {
+            if (videoRef.current && videoRef.current.muted && videoRef.current.paused) {
               videoRef.current.play().catch(console.error);
             }
           }}
           onError={(e) => {
             const videoElement = e.currentTarget;
+            const error = videoElement.error;
             console.error('Video error:', {
-              error: videoElement.error,
-              errorCode: videoElement.error?.code,
-              errorMessage: videoElement.error?.message,
-              src: videoElement.currentSrc,
+              error: error,
+              errorCode: error?.code || 'unknown',
+              errorMessage: error?.message || 'unknown error',
+              src: videoElement.currentSrc || videoElement.src,
               readyState: videoElement.readyState,
               networkState: videoElement.networkState
             });
-            // Fallback: try to reload the video
-            if (videoRef.current) {
-              videoRef.current.load();
-            }
+            // Fallback: try to reload the video after a delay
+            setTimeout(() => {
+              if (videoRef.current && videoRef.current.error) {
+                console.log('Attempting to reload video...');
+                videoRef.current.load();
+              }
+            }, 2000);
           }}
           poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjMUExQTFDIi8+Cjwvc3ZnPgo="
         >
-          {/* WebM versions for better compression */}
-          <source src="/website_reel_1-mobile.webm" media="(max-width: 768px)" type="video/webm" />
-          <source src="/website_reel_1-web.webm" media="(min-width: 769px)" type="video/webm" />
-          {/* MP4 versions - Mobile version - smaller file, lower resolution */}
-          <source src="/website_reel_1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
-          {/* MP4 - Desktop version - higher quality */}
-          <source src="/website_reel_1-web.mp4" media="(min-width: 769px)" type="video/mp4" />
+          {/* WebM versions for better compression - Desktop first */}
+          <source src="/website_reel_1-web.webm" type="video/webm" media="(min-width: 769px)" />
+          <source src="/website_reel_1-mobile.webm" type="video/webm" media="(max-width: 768px)" />
+          {/* MP4 fallbacks - Desktop first */}
+          <source src="/website_reel_1-web.mp4" type="video/mp4" media="(min-width: 769px)" />
+          <source src="/website_reel_1-mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+          {/* Fallback MP4 without media query */}
+          <source src="/website_reel_1-web.mp4" type="video/mp4" />
         </video>
 
         {/* Vimeo Modal */}
