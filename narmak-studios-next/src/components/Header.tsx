@@ -6,15 +6,13 @@ import { Icons } from './Icons';
 import { servicesCardData as servicesData } from '@/data/services';
 import { useRef } from 'react';
 
-
-
 // Add slugMap for correct service slugs
 const slugMapData = [
   'brand-and-marketing-animation',
   'entertainment-and-original-ip',
   'pre-to-post-production-a-la-carte-or-full-stack',
   'creative-strategy-and-consulting',
-      'design-and-collateral',
+  'design-and-collateral',
   'graphic-design-subscription'
 ];
 
@@ -60,10 +58,17 @@ export default function Header() {
     };
     
     const handleClick = (e: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target as Node)) {
+      if (sidebarRef.current && e.target && !sidebarRef.current.contains(e.target as Node)) {
         setSidebarOpen(false);
       }
     };
+    
+    // Prevent body scroll when sidebar is open
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
     
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('mousedown', handleClick);
@@ -71,6 +76,7 @@ export default function Header() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClick);
+      document.body.style.overflow = '';
     };
   }, [sidebarOpen]);
 
@@ -151,7 +157,7 @@ export default function Header() {
         </nav>
         {/* Hamburger for mobile */}
         <button
-          className="block md:hidden p-3 text-off-white focus:outline-none z-[100001] relative bg-transparent border-none"
+          className="block md:hidden p-3 text-off-white focus:outline-none z-[100003] relative bg-transparent border-none"
           aria-label={sidebarOpen ? "Close menu" : "Open menu"}
           onClick={toggleSidebar}
           type="button"
@@ -167,89 +173,90 @@ export default function Header() {
           )}
         </button>
         {/* Sidebar drawer */}
-        <div className={`fixed inset-0 z-[100000] transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className={`fixed inset-0 z-[100001] transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeSidebar} />
           <div
             ref={sidebarRef}
-            className={`absolute top-0 right-0 h-full bg-charcoal shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto text-lg font-semibold text-off-white transition-transform duration-300 ease-in-out w-[85vw] max-w-sm ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
+            className={`absolute top-0 right-0 h-full bg-charcoal shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto text-lg font-semibold text-off-white transition-transform duration-300 ease-in-out w-[85vw] max-w-sm z-[100002] ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
             style={{ boxShadow: '-10px 0 25px -5px rgba(0,0,0,0.3)' }}
             onClick={(e) => e.stopPropagation()}
           >
-              <button
-                className="absolute top-4 right-4 p-2 text-off-white"
-                aria-label="Close menu"
-                onClick={() => { closeSidebar(); }}
-              >
-                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
-              <Link href="/" className="font-display text-xl font-bold text-off-white mb-4 mt-8 tracking-tight block" onClick={closeSidebar}>
-                Studio Narmak
-              </Link>
-              <nav className="flex flex-col gap-3">
-                <div className="border-b border-off-white/10 pb-2 mb-2">
-                  <Link href="/work" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
-                    Work
+            <button
+              className="absolute top-4 right-4 p-2 text-off-white"
+              aria-label="Close menu"
+              onClick={() => { closeSidebar(); }}
+            >
+              <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <Link href="/" className="font-display text-xl font-bold text-off-white mb-4 mt-8 tracking-tight block" onClick={closeSidebar}>
+              Studio Narmak
+            </Link>
+            <nav className="flex flex-col gap-3">
+              <div className="border-b border-off-white/10 pb-2 mb-2">
+                <Link href="/work" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                  Work
+                </Link>
+                <div className="pl-4 flex flex-col">
+                  <Link href="/portfolio/campaign" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                    Campaign
                   </Link>
-                  <div className="pl-4 flex flex-col">
-                    <Link href="/portfolio/campaign" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      Campaign
-                    </Link>
-                    <Link href="/portfolio/originals" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      Originals
-                    </Link>
-                  </div>
-                </div>
-                <div className="border-b border-off-white/10 pb-2 mb-2">
-                  <Link href="/services" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
-                    Services
+                  <Link href="/portfolio/originals" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                    Originals
                   </Link>
-                  <div className="pl-4 flex flex-col">
-                    {servicesCardData.map((service, idx) => (
-                      <Link
-                        key={service.title}
-                        href={`/services/${slugMap[idx]}`}
-                        className="py-2 px-3 rounded hover:bg-neon-accent/10 text-base sm:text-lg transition-colors"
-                        onClick={() => { closeSidebar(); }}
-                      >
-                        {service.title}
-                      </Link>
-                    ))}
-                  </div>
                 </div>
-                <div className="border-b border-off-white/10 pb-2 mb-2">
-                  <Link href="/resources" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
-                    Resources
+              </div>
+              <div className="border-b border-off-white/10 pb-2 mb-2">
+                <Link href="/services" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                  Services
+                </Link>
+                <div className="pl-4 flex flex-col">
+                  {servicesCardData.map((service, idx) => (
+                    <Link
+                      key={service.title}
+                      href={`/services/${slugMap[idx]}`}
+                      className="py-2 px-3 rounded hover:bg-neon-accent/10 text-base sm:text-lg transition-colors"
+                      onClick={() => { closeSidebar(); }}
+                    >
+                      {service.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div className="border-b border-off-white/10 pb-2 mb-2">
+                <Link href="/resources" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                  Resources
+                </Link>
+                <div className="pl-4 flex flex-col">
+                  <Link href="/journal" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                    Journal
                   </Link>
-                  <div className="pl-4 flex flex-col">
-                    <Link href="/journal" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      Journal
-                    </Link>
-                    <Link href="/careers" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      Careers
-                    </Link>
-                  </div>
+                  <Link href="/careers" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                    Careers
+                  </Link>
                 </div>
-                <div className="border-b border-off-white/10 pb-2 mb-2">
-                  <Link href="/studio" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+              </div>
+              <div className="border-b border-off-white/10 pb-2 mb-2">
+                <Link href="/studio" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                  Studio
+                </Link>
+                <div className="pl-4 flex flex-col">
+                  <Link href="/studio" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
                     Studio
                   </Link>
-                  <div className="pl-4 flex flex-col">
-                    <Link href="/studio" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      Studio
-                    </Link>
-                    <Link href="/process" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      Process
-                    </Link>
-                    <Link href="/testimonials" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
-                      People Love Us
-                    </Link>
-                  </div>
+                  <Link href="/process" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                    Process
+                  </Link>
+                  <Link href="/testimonials" className="py-2 px-3 rounded hover:bg-neon-accent/10 transition-colors text-base sm:text-lg" onClick={() => { closeSidebar(); }}>
+                    People Love Us
+                  </Link>
                 </div>
-                <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-6 text-center hover:scale-105 transition-transform duration-300 text-base block" onClick={closeSidebar}>
-                  Get a Quote
-                </Link>
-              </nav>
-            </div>
+              </div>
+              <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-6 text-center hover:scale-105 transition-transform duration-300 text-base block" onClick={closeSidebar}>
+                Get a Quote
+              </Link>
+            </nav>
           </div>
         </div>
       </div>

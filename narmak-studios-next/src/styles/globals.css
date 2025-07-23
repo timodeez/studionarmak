@@ -6,4 +6,30 @@
 }
 .animate-slide-in-left {
   animation: slideInLeft 0.3s cubic-bezier(0.4,0,0.2,1);
-} 
+}
+
+/* Video quality optimizations for mobile */
+video {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Ensure crisp video rendering on high-DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  video {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* iOS Safari specific video optimizations */
+@supports (-webkit-touch-callout: none) {
+  video {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+ 

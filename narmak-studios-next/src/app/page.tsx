@@ -71,6 +71,11 @@ export default function HomePage() {
         // Set playsInline for mobile compatibility
         video.playsInline = true;
         
+        // iOS Safari specific optimizations
+        video.setAttribute('webkit-playsinline', 'true');
+        video.setAttribute('playsinline', 'true');
+        video.setAttribute('muted', 'true');
+        
         if (video.paused && video.readyState >= 3) {
           await video.play();
           console.log('Video autoplay successful');
@@ -198,10 +203,10 @@ export default function HomePage() {
           preload="metadata"
           className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
           style={{ 
-            filter: "brightness(0.6)",
             willChange: "transform",
             backfaceVisibility: "hidden",
-            perspective: "1000px"
+            perspective: "1000px",
+            imageRendering: "crisp-edges"
           }}
           onLoadedData={() => {
             if (videoRef.current) {
@@ -237,9 +242,13 @@ export default function HomePage() {
         >
           {/* WebM versions for better compression - Desktop first */}
           <source src="/website_reel_1-web.webm" type="video/webm" media="(min-width: 769px)" />
+          {/* High-resolution mobile screens */}
+          <source src="/website_reel_1-web.webm" type="video/webm" media="(max-width: 768px) and (-webkit-min-device-pixel-ratio: 2)" />
           <source src="/website_reel_1-mobile.webm" type="video/webm" media="(max-width: 768px)" />
           {/* MP4 fallbacks - Desktop first */}
           <source src="/website_reel_1-web.mp4" type="video/mp4" media="(min-width: 769px)" />
+          {/* High-resolution mobile screens get higher quality */}
+          <source src="/website_reel_1-web.mp4" type="video/mp4" media="(max-width: 768px) and (-webkit-min-device-pixel-ratio: 2)" />
           <source src="/website_reel_1-mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
           {/* Fallback MP4 without media query */}
           <source src="/website_reel_1-web.mp4" type="video/mp4" />
@@ -252,7 +261,7 @@ export default function HomePage() {
         />
         
         {/* Subtle overlay for text readability */}
-        <div className="absolute inset-0 bg-black/20 z-[-5]"></div>
+        <div className="absolute inset-0 bg-black/40 z-[-5]"></div>
         
         <div className="relative z-10 container mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
           <div className="md:w-3/5 w-full">
