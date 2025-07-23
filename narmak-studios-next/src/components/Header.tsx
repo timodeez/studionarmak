@@ -151,19 +151,24 @@ export default function Header() {
         </nav>
         {/* Hamburger for mobile */}
         <button
-          className="block md:hidden p-2 text-off-white focus:outline-none"
+          className="block md:hidden p-2 text-off-white focus:outline-none z-[100001] relative"
           aria-label="Open menu"
-          onClick={() => { toggleSidebar(); }}
+          onClick={toggleSidebar}
         >
-          <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
         </button>
         {/* Sidebar drawer */}
         {sidebarOpen && (
-          <div className="fixed inset-0 z-[9999] bg-black/60 flex justify-end" onClick={() => { closeSidebar(); }}>
+          <div className="fixed inset-0 z-[100000] bg-black/60 backdrop-blur-sm" onClick={() => { closeSidebar(); }}>
             <div
               ref={sidebarRef}
-              className="w-full max-w-xs sm:max-w-sm bg-charcoal h-full shadow-2xl p-5 sm:p-8 flex flex-col gap-5 sm:gap-7 animate-slide-in-right relative overflow-y-auto text-lg sm:text-xl font-semibold text-off-white"
-              style={{ minWidth: '80vw', maxWidth: 420, boxShadow: '0 0 24px 0 rgba(0,0,0,0.5)' }}
+              className="fixed top-0 right-0 w-80 sm:w-96 bg-charcoal h-full shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto text-lg font-semibold text-off-white transform transition-transform duration-300 ease-in-out"
+              style={{ 
+                boxShadow: '-10px 0 25px -5px rgba(0,0,0,0.3)',
+                transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)'
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -173,10 +178,10 @@ export default function Header() {
               >
                 <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
-              <Link href="/" className="font-display text-3xl font-bold text-off-white mb-8 mt-2 tracking-tight" onClick={() => { closeSidebar(); }}>
+              <Link href="/" className="font-display text-2xl font-bold text-off-white mb-6 mt-2 tracking-tight" onClick={() => { closeSidebar(); }}>
                 Studio Narmak
               </Link>
-              <div className="flex flex-col gap-4 sm:gap-5">
+              <div className="flex flex-col gap-4">
                 <div className="border-b border-off-white/10 pb-2 mb-2">
                   <Link href="/work" className="flex items-center gap-2 py-3 px-3 rounded hover:bg-neon-accent/10 transition-colors text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
                     Work
@@ -236,13 +241,11 @@ export default function Header() {
                     </Link>
                   </div>
                 </div>
-                <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-4 text-center hover:scale-105 transition-transform duration-300 text-lg sm:text-xl" onClick={() => { closeSidebar(); }}>
+                <Link href="/get-a-quote" className="bg-neon-accent text-charcoal font-semibold py-3 px-5 rounded-lg mt-4 text-center hover:scale-105 transition-transform duration-300 text-lg" onClick={() => { closeSidebar(); }}>
                   Get a Quote
                 </Link>
               </div>
             </div>
-            {/* Clickable overlay to close */}
-            <div className="flex-1" />
           </div>
         )}
       </div>
