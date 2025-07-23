@@ -35,7 +35,8 @@ export default function PortfolioItem({
   const handleVideoLeave = () => {
     if (videoRef.current) {
       videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+      // Don't reset currentTime - let it continue from where it left off
+      // This allows the video to loop naturally when played again
     }
   };
 
@@ -60,9 +61,8 @@ export default function PortfolioItem({
             muted
             loop
             playsInline
-            preload="none"
+            preload="metadata"
             poster={image.replace('.mp4', '-poster.jpg')}
-            onMouseEnter={() => videoRef.current?.load()}
             onLoadedData={() => setIsVideoLoaded(true)}
             onError={(e) => {
               console.error('Video failed to load:', image, e);
