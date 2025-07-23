@@ -26,19 +26,7 @@ export default function PortfolioItem({
   const isVideo = image.endsWith('.mp4');
   const isGif = image.endsWith('.gif');
 
-  const handleVideoHover = () => {
-    if (videoRef.current && videoRef.current.readyState >= 3) {
-      videoRef.current.play().catch(console.error);
-    }
-  };
-
-  const handleVideoLeave = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      // Don't reset currentTime - let it continue from where it left off
-      // This allows the video to loop naturally when played again
-    }
-  };
+  // No hover handlers needed - videos will autoplay and loop continuously
 
   const handleImageError = () => {
     console.error('Image failed to load:', image);
@@ -48,16 +36,15 @@ export default function PortfolioItem({
   return (
     <div 
       className="group relative overflow-hidden rounded-lg"
-      onMouseEnter={isVideo ? handleVideoHover : undefined}
-      onMouseLeave={isVideo ? handleVideoLeave : undefined}
     >
-      <div className="relative w-full" style={{ paddingBottom: '66.67%' }}>
+      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
         {isVideo ? (
           <video
             ref={videoRef}
             className={`absolute inset-0 object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
+            autoPlay
             muted
             loop
             playsInline
