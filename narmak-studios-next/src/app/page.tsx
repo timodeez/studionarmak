@@ -305,39 +305,39 @@ export default function HomePage() {
 
       <LazyStatsSection>
         <div ref={statsRef} className="bg-[#141416] py-12 sm:py-16">
-          <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
+          <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center">
             <div 
-              className="transition-all duration-700" 
+              className="transition-all duration-700 min-w-0 px-2" 
               style={{ 
                 opacity: isStatsVisible ? 1 : 0, 
                 transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
               }}
             >
-              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display text-neon-accent">
+              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words">
                 {views.toLocaleString()}+
               </p>
               <p className="mt-2 text-off-white/70 text-xs sm:text-sm md:text-base">Video Views</p>
             </div>
             <div 
-              className="transition-all duration-700 delay-200" 
+              className="transition-all duration-700 delay-200 min-w-0 px-2" 
               style={{ 
                 opacity: isStatsVisible ? 1 : 0, 
                 transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
               }}
             >
-              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display text-neon-accent">
+              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words">
                 {subs.toLocaleString()}+
               </p>
               <p className="mt-2 text-off-white/70 text-xs sm:text-sm md:text-base">Subscribers</p>
             </div>
             <div 
-              className="transition-all duration-700 delay-400" 
+              className="transition-all duration-700 delay-400 min-w-0 px-2" 
               style={{ 
                 opacity: isStatsVisible ? 1 : 0, 
                 transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
               }}
             >
-              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display text-neon-accent">
+              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words">
                 {Math.floor(projects)}+
               </p>
               <p className="mt-2 text-off-white/70 text-xs sm:text-sm md:text-base">Projects Delivered</p>
