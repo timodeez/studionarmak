@@ -4,6 +4,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ConditionalBottomCTA from "@/components/ConditionalBottomCTA";
 import SplashWrapper from "@/components/SplashWrapper";
 
 export const metadata: Metadata = {
@@ -99,6 +100,7 @@ export default function RootLayout({
           <main className="min-h-screen">
             {children}
           </main>
+          <ConditionalBottomCTA />
           <Footer />
         </SplashWrapper>
       </body>
