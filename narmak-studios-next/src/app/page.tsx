@@ -352,10 +352,10 @@ export default function HomePage() {
           <p className="text-base sm:text-lg text-off-white/70 max-w-3xl mx-auto mb-8 sm:mb-12">
             A Dual-Engine Creative House: we partner with visionary brands to move their audience, and we craft original worlds to build our own.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <LazyLoad>
               <Link href="/portfolio/campaign" className="group relative block overflow-hidden rounded-lg">
-                <div className="aspect-square w-full">
+                <div className="aspect-[4/3] w-full">
                   <OptimizedImage 
                     src="/LOGO/3GIINDlogo.webp" 
                     alt="Client Work"
@@ -373,7 +373,7 @@ export default function HomePage() {
             </LazyLoad>
             <LazyLoad>
               <Link href="/portfolio/originals" className="group relative block overflow-hidden rounded-lg">
-                <div className="aspect-square w-full">
+                <div className="aspect-[4/3] w-full">
                   <OptimizedImage 
                     src="/LOGO/newmemelandcover_resized.jpg" 
                     alt="Narmak Originals Cover"
@@ -401,7 +401,7 @@ export default function HomePage() {
               Products become characters. Messages become moments.
             </p>
             <div className="flex flex-col items-center gap-6 sm:gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-4xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-5xl">
                 {creativePortfolio.slice(0, 3).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/creative#creative-${item.id}`}>
@@ -417,7 +417,7 @@ export default function HomePage() {
                   </LazyLoad>
                 ))}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-5xl justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl justify-center">
                 {creativePortfolio.slice(3, 5).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/creative#creative-${item.id}`}>
@@ -482,8 +482,8 @@ export default function HomePage() {
           <div className="container mx-auto px-4 sm:px-6">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-center mb-8 sm:mb-12">Narmak Originals</h2>
             <div className="flex flex-col items-center gap-6 sm:gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-4xl">
-                {originalsPortfolio.slice(0, 2).map((item, index) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-5xl">
+                {originalsPortfolio.slice(0, 3).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
                       <PortfolioItem
@@ -498,8 +498,8 @@ export default function HomePage() {
                   </LazyLoad>
                 ))}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-5xl justify-center">
-                {originalsPortfolio.slice(2, 5).map((item, index) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl justify-center">
+                {originalsPortfolio.slice(3, 5).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
                       <PortfolioItem
