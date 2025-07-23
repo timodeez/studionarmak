@@ -348,9 +348,9 @@ export default function HomePage() {
 
       <AnimatedSection id="fork" customClass="py-16 sm:py-20 md:py-28 bg-charcoal">
         <div className="container mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display mb-3 sm:mb-4">Two Engines. One Drive.</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display mb-3 sm:mb-4">Impact Today. Imagination Always.</h2>
           <p className="text-base sm:text-lg text-off-white/70 max-w-3xl mx-auto mb-8 sm:mb-12">
-            A Dual-Engine Creative House: we partner with visionary brands to move their audience, and we craft original worlds to build our own.
+            We handle <em>everything</em> in‑house: animation, design, voice, <em>original</em> music, and finish. Beginning to end. One team, one pipeline, zero dilution.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <LazyLoad>
