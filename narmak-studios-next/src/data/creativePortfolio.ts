@@ -83,5 +83,22 @@ export const creativePortfolio = [
       craft: 'High-contrast anime lighting, heroic Stallion-Shrek poses, and Dutch angles dialed to eleven.',
       impact: '4M views on our standalone cut; the full Shrek Retold film tops 11M, with thousands of fans singling out our scene and GIF-looping it across X year after year.'
     }
+  },
+  {
+    id: 6,
+    title: 'Narmak Campaigns',
+    client: 'Narmak',
+    description: 'A showcase of Narmak Studios campaign work.',
+    services: ['Campaign', '2D Animation'],
+    mediaUrl: '',
+    staticImg: '/LOGO/narmakcampaigns.png',
+    gifUrl: '/LOGO/narmakcampaigns.png',
+    caseStudy: {
+      title: 'Narmak Studios | Campaigns',
+      role: 'Creative direction, animation, production',
+      challenge: 'Highlight the breadth and creativity of Narmak Studios campaigns.',
+      craft: 'A curated selection of campaign visuals and animation styles.',
+      impact: 'Demonstrates the studio’s versatility and creative impact across multiple brands.'
+    }
   }
 ]; 
