@@ -10,23 +10,23 @@ import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://narmakstudios.com'),
-  title: "Narmak Studios - Animation & Creative Studio",
+  title: "Studio Narmak - Animation & Creative Studio",
   description: "We create animated worlds for brands and our own original stories. A dual-engine creative house: we partner with visionary brands to move their audience, and we craft original worlds to build our own.",
   keywords: "animation, creative studio, brand animation, original content, video production, motion graphics, advertising",
-  authors: [{ name: "Narmak Studios" }],
-  creator: "Narmak Studios",
-  publisher: "Narmak Studios",
+  authors: [{ name: "Studio Narmak" }],
+  creator: "Studio Narmak",
+  publisher: "Studio Narmak",
   openGraph: {
-    title: "Narmak Studios - Animation & Creative Studio",
+    title: "Studio Narmak - Animation & Creative Studio",
     description: "We create animated worlds for brands and our own original stories.",
     url: "https://narmakstudios.com",
-    siteName: "Narmak Studios",
+    siteName: "Studio Narmak",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Narmak Studios Logo",
+        alt: "Studio Narmak Logo",
       },
     ],
     locale: "en_US",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Narmak Studios - Animation & Creative Studio",
+    title: "Studio Narmak - Animation & Creative Studio",
     description: "We create animated worlds for brands and our own original stories.",
     images: ["/og-image.png"],
   },
