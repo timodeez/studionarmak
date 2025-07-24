@@ -12,7 +12,7 @@ export default function CreativeStrategyAndConsulting() {
             Creative Strategy & Consulting
           </h1>
           <p className="text-base md:text-lg text-off-white/90 max-w-2xl mx-auto leading-relaxed">
-            Roadmaps, creativity, and building blocks. We help ideas grow—<span className="text-neon-accent font-semibold">500 million views didn't come from thin air</span> ;)
+            Roadmaps, creativity, and building blocks. We help ideas grow—<span className="text-neon-accent font-semibold">500 million views didn&apos;t come from thin air</span> ;)
           </p>
         </div>
       </div>

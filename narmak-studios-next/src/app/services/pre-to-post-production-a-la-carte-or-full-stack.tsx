@@ -251,7 +251,7 @@ export default function PreToPostProduction() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-white leading-tight mb-1">
-                  Campaigns that can't afford hand-off delays
+                  Campaigns that can&apos;t afford hand-off delays
                 </h3>
                 <p className="text-off-white/60 text-sm">
                   Streamlined process eliminates communication gaps
@@ -291,7 +291,7 @@ export default function PreToPostProduction() {
             <div className="text-left">
               <h3 className="font-bold text-neon-accent text-lg mb-2">Why this matters for you</h3>
               <p className="text-off-white/90 text-sm leading-relaxed">
-                One partner, one pipeline, zero creative drift. By keeping pre‑production, production and finishing under a single roof we lock vision early, catch problems while they're cheap, and deliver a master file that's ready for every screen—without the telephone‑game revisions that burn budget and morale.
+                One partner, one pipeline, zero creative drift. By keeping pre‑production, production and finishing under a single roof we lock vision early, catch problems while they&apos;re cheap, and deliver a master file that&apos;s ready for every screen—without the telephone‑game revisions that burn budget and morale.
               </p>
             </div>
           </div>
