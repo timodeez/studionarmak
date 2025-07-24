@@ -23,10 +23,10 @@ export const metadata: Metadata = {
     siteName: "Narmak Studios",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/LOGO/narmaklogo.png",
         width: 1200,
         height: 630,
-        alt: "Narmak Studios",
+        alt: "Narmak Studios Logo",
       },
     ],
     locale: "en_US",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Narmak Studios - Animation & Creative Studio",
     description: "We create animated worlds for brands and our own original stories.",
-    images: ["/og-image.jpg"],
+    images: ["/LOGO/narmaklogo.png"],
   },
   robots: {
     index: true,
@@ -92,6 +92,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//player.vimeo.com" />
         {/* Viewport meta tag for mobile optimization */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        {/* Favicon for browser and preview */}
+        <link rel="icon" href="/LOGO/narmaklogo.png" type="image/png" />
       </head>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased bg-charcoal text-off-white`}
