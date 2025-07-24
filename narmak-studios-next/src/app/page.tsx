@@ -366,8 +366,8 @@ export default function HomePage() {
               <Link href="/portfolio/campaign" className="group relative block overflow-hidden rounded-lg">
                 <div className="aspect-[3/2] w-full">
                   <OptimizedImage 
-                    src="/LOGO/3GIINDlogo.webp" 
-                    alt="Client Work"
+                    src="/LOGO/narmaklogo.png" 
+                    alt="Narmak Campaigns"
                     width={1000}
                     height={600}
                     className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" 
