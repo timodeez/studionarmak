@@ -364,9 +364,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <LazyLoad>
               <Link href="/portfolio/campaign" className="group relative block overflow-hidden rounded-lg">
-                <div className="aspect-[3/2] w-full">
+                <div className="aspect-[16/9] w-full">
                   <OptimizedImage 
-                    src="/LOGO/narmakcampaigns.png" 
+                    src="/LOGO/narmakcampaigns-v2.png" 
                     alt="Narmak Campaigns"
                     width={1000}
                     height={600}
@@ -382,7 +382,7 @@ export default function HomePage() {
             </LazyLoad>
             <LazyLoad>
               <Link href="/portfolio/originals" className="group relative block overflow-hidden rounded-lg">
-                <div className="aspect-[3/2] w-full">
+                <div className="aspect-[16/9] w-full">
                   <OptimizedImage 
                     src="/LOGO/newmemelandcover_resized.jpg" 
                     alt="Narmak Originals Cover"
