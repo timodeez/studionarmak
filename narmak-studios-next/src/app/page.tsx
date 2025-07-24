@@ -226,7 +226,7 @@ export default function HomePage() {
     <>
       <section className="h-screen w-full relative flex items-center overflow-hidden">
         {/* Lightweight background with fallback */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-charcoal via-[#1a1a1c] to-black z-[-10]"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-charcoal via-[#1a1a1c] to-black z-[-15]"></div>
         
         {/* Autoplay video with performance optimizations */}
         <video
@@ -236,7 +236,7 @@ export default function HomePage() {
           muted
           playsInline
           preload="metadata"
-          className="absolute top-0 left-0 w-full h-full object-cover z-[-10] opacity-0 transition-opacity duration-1000"
+          className="absolute top-0 left-0 w-full h-full object-cover md:object-cover z-[-10] opacity-0 transition-opacity duration-1000 mobile-video-fit"
           style={{ 
             willChange: "transform",
             backfaceVisibility: "hidden",

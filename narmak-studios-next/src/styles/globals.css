@@ -32,6 +32,51 @@ video {
   }
 }
 
+/* 
+ * Mobile video fit adjustments
+ * Reduces the zoom/crop on mobile to show more of the video content
+ * 
+ * Scale values guide:
+ * 1.0 = Normal (same as desktop)
+ * 0.9 = Shows 10% more content (slight zoom out)
+ * 0.8 = Shows 20% more content (moderate zoom out)
+ * 0.7 = Shows 30% more content (significant zoom out)
+ * 
+ * Lower values show more content but may reveal video edges
+ */
+@media (max-width: 768px) {
+  .mobile-video-fit {
+    object-fit: cover;
+    object-position: center;
+    --mobile-video-scale: 0.85; /* Default: shows 15% more content */
+    transform: translateZ(0) scale(var(--mobile-video-scale));
+    transform-origin: center;
+    transition: transform 0.3s ease-out;
+  }
+}
+
+/* For very tall mobile screens (like iPhone X and newer) */
+@media (max-width: 768px) and (min-aspect-ratio: 9/19) {
+  .mobile-video-fit {
+    /* More aggressive scaling for very tall screens to show more vertical content */
+    --mobile-video-scale: 0.75; /* Shows 25% more content */
+  }
+}
+
+/* For standard mobile screens */
+@media (max-width: 768px) and (max-aspect-ratio: 9/19) and (min-aspect-ratio: 9/16) {
+  .mobile-video-fit {
+    --mobile-video-scale: 0.85; /* Shows 15% more content */
+  }
+}
+
+/* For wider mobile screens (landscape or tablets in portrait) */
+@media (max-width: 768px) and (max-aspect-ratio: 9/16) {
+  .mobile-video-fit {
+    --mobile-video-scale: 0.95; /* Shows 5% more content */
+  }
+}
+
 /* Mobile sidebar full screen overlay */
 @media (max-width: 768px) {
   /* Ensure mobile sidebar appears on top of everything */
