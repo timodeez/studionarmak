@@ -62,8 +62,8 @@ export const creativePortfolio = [
     caseStudy: {
       title: 'Studio Pierrot | Black Clover Episode Assist',
       role: 'Key animation & spell FX on a climactic battle scene',
-      challenge: 'Slip seamlessly into Pierrot\'s TV pipeline while leaving our signature impact frames intact.',
-      craft: '42 high-speed cuts in four weeks—dynamic smears, custom magic FX, and camera shakes synced to score cues.',
+      challenge: 'Meet Studio Pierrot\'s razor‑tight broadcast deadline without sacrificing an ounce of Black Clover\'s signature polish.',
+      craft: 'In just three weeks we roughed, cleaned, and shipped multiple cuts - dynamic smear frames, bespoke magic‑spell FX, and camera shakes perfectly timed to the score - ready for air on first pass.',
       impact: 'Gave high quality work ahead of deadline, with zero redraw notes, aired exactly as delivered. Consistency, quality, and fast turn-around were highlighted by Studio Pierrot.'
     }
   },
