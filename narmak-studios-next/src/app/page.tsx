@@ -77,14 +77,13 @@ export default function HomePage() {
     // Enhanced device and browser detection for debugging
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    const isLowPowerMode = navigator.getBattery ? navigator.getBattery().then(battery => battery.charging === false && battery.level < 0.2) : false;
     
     console.log('Device detection:', {
       isIOS,
       isSafari,
       userAgent: navigator.userAgent,
-      connection: navigator.connection,
-      deviceMemory: navigator.deviceMemory,
+      connection: (navigator as any).connection,
+      deviceMemory: (navigator as any).deviceMemory,
       hardwareConcurrency: navigator.hardwareConcurrency
     });
     
