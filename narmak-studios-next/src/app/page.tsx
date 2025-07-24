@@ -8,6 +8,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import OptimizedImage from '@/components/OptimizedImage';
 import LazyLoad from '@/components/LazyLoad';
 import VimeoModal from '@/components/VimeoModal';
+import { VideoDebugTrigger } from '@/components/VideoDebugger';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { creativePortfolio } from '@/data/creativePortfolio';
 import { originalsPortfolio } from '@/data/originalsPortfolio';
@@ -37,9 +38,20 @@ export default function HomePage() {
   const [isStatsVisible, setIsStatsVisible] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isVimeoModalOpen, setIsVimeoModalOpen] = useState(false);
+  const [autoplayFailed, setAutoplayFailed] = useState(false);
 
   const handlePlay = () => {
     setIsVimeoModalOpen(true);
+  };
+
+  const handleVideoPlayClick = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play().catch(() => {
+        console.log('Manual play also failed');
+      });
+      setAutoplayFailed(false);
+    }
   };
 
   // Performance optimization: pause video when tab is not visible
@@ -62,6 +74,20 @@ export default function HomePage() {
 
     const video = videoRef.current;
     
+    // Enhanced device and browser detection for debugging
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isLowPowerMode = navigator.getBattery ? navigator.getBattery().then(battery => battery.charging === false && battery.level < 0.2) : false;
+    
+    console.log('Device detection:', {
+      isIOS,
+      isSafari,
+      userAgent: navigator.userAgent,
+      connection: navigator.connection,
+      deviceMemory: navigator.deviceMemory,
+      hardwareConcurrency: navigator.hardwareConcurrency
+    });
+    
     const playVideo = async () => {
       try {
         // Ensure video is muted for autoplay
@@ -76,17 +102,26 @@ export default function HomePage() {
         video.setAttribute('playsinline', 'true');
         video.setAttribute('muted', 'true');
         
+        // Additional iOS-specific attributes for better compatibility
+        if (isIOS) {
+          video.setAttribute('x-webkit-airplay', 'allow');
+          video.setAttribute('preload', 'metadata');
+        }
+        
         if (video.paused && video.readyState >= 3) {
           await video.play();
           console.log('Video autoplay successful');
+          setAutoplayFailed(false);
         }
       } catch (error) {
         console.log('Video autoplay blocked:', error);
+        setAutoplayFailed(true);
         // Try playing again after a small delay
         setTimeout(() => {
           if (video.paused && video.readyState >= 3) {
             video.play().catch((retryError) => {
               console.log('Video autoplay retry failed:', retryError);
+              setAutoplayFailed(true);
             });
           }
         }, 1000);
@@ -259,6 +294,24 @@ export default function HomePage() {
           isOpen={isVimeoModalOpen} 
           onClose={() => setIsVimeoModalOpen(false)} 
         />
+        
+        {/* Fallback play button for devices where autoplay fails */}
+        {autoplayFailed && (
+          <div className="absolute inset-0 flex items-center justify-center z-[5]">
+            <button
+              onClick={handleVideoPlayClick}
+              className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center text-white transition-all duration-300 hover:bg-white/30 hover:scale-110"
+            >
+              <svg 
+                className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 ml-1" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+          </div>
+        )}
         
         {/* Subtle overlay for text readability */}
         <div className="absolute inset-0 bg-black/40 z-[-5]"></div>
@@ -536,6 +589,9 @@ export default function HomePage() {
           </p>
         </div>
       </AnimatedSection>
+      
+      {/* Debug component - only shows in development or with ?debug=video */}
+      <VideoDebugTrigger />
     </>
   );
 }
