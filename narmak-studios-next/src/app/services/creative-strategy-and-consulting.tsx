@@ -28,7 +28,8 @@ export default function CreativeStrategyAndConsulting() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Top row - 3 items */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           {/* Brand Storytelling Roadmap */}
           <div className="group relative">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-600/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
@@ -87,7 +88,10 @@ export default function CreativeStrategyAndConsulting() {
               </p>
             </div>
           </div>
+        </div>
 
+        {/* Bottom row - 2 items centered */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
           {/* Production Pipeline Audits */}
           <div className="group relative">
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-yellow-600/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
@@ -110,7 +114,7 @@ export default function CreativeStrategyAndConsulting() {
           </div>
 
           {/* Project Budgeting & Scheduling */}
-          <div className="group relative lg:col-span-2">
+          <div className="group relative">
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
             <div className="relative bg-gradient-to-br from-charcoal/80 to-charcoal/60 border border-green-500/30 rounded-xl p-4 text-center hover:border-green-500/60 transition-all duration-300 backdrop-blur-sm h-full flex flex-col">
               <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/40 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
