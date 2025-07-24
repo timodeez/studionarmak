@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     siteName: "Narmak Studios",
     images: [
       {
-        url: "/LOGO/narmaklogo.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Narmak Studios Logo",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Narmak Studios - Animation & Creative Studio",
     description: "We create animated worlds for brands and our own original stories.",
-    images: ["/LOGO/narmaklogo.png"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -92,8 +92,15 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//player.vimeo.com" />
         {/* Viewport meta tag for mobile optimization */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        {/* Theme color for mobile browsers */}
+        <meta name="theme-color" content="#2D2D2D" />
+        <meta name="msapplication-TileColor" content="#2D2D2D" />
         {/* Favicon for browser and preview */}
-        <link rel="icon" href="/LOGO/narmaklogo.png" type="image/png" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png" />
+        <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased bg-charcoal text-off-white`}
