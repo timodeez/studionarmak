@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { servicesCardData } from "@/data/services";
-
+import BrandAndMarketingAnimation from "../brand-and-marketing-animation";
 
 const slugMap = [
   "brand-and-marketing-animation",
@@ -30,6 +30,11 @@ export default async function IndividualServicePage({ params }: { params: Promis
         </div>
       </div>
     );
+  }
+
+  // Use custom component for brand-and-marketing-animation
+  if (slug === "brand-and-marketing-animation") {
+    return <BrandAndMarketingAnimation />;
   }
 
   const serviceData = servicesCardData[serviceIndex];
