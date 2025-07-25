@@ -56,14 +56,14 @@ export default function EmailSubscription({
               setEmail(e.target.value);
             }}
             placeholder="Enter your email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-charcoal border border-off-white/20 rounded-lg text-off-white placeholder-off-white/50 focus:outline-none focus:border-neon-accent transition-colors"
             required
           />
         </div>
         <button
           type="submit"
           disabled={status === 'loading'}
-          className={`w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+          className={`w-full px-4 py-2 bg-neon-accent text-charcoal font-bold rounded-lg hover:bg-gradient-to-r hover:from-neon-accent hover:to-purple-500 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none ${
             status === 'loading' ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
@@ -71,7 +71,7 @@ export default function EmailSubscription({
         </button>
       </form>
       {message && (
-        <p className={`mt-2 text-sm ${status === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+        <p className={`mt-2 text-sm ${status === 'success' ? 'text-neon-accent' : 'text-red-400'}`}>
           {message}
         </p>
       )}

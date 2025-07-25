@@ -30,7 +30,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Save to database
-    db.createEmailSubscriber(email);
+    try {
+      await db.createEmailSubscriber(email);
+      console.log('Email subscriber saved successfully:', email);
+    } catch (dbError) {
+      console.error('Database error saving email subscriber:', dbError);
+      throw dbError; // Re-throw to fail the request if database fails
+    }
 
     // Send welcome email
     try {

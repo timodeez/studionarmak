@@ -96,7 +96,7 @@ export interface EmailSubscriber {
 // Get your Supabase credentials from environment variables
 // You need to add these to your .env.local file:
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
 // Create the Supabase client (this is your connection to the database)
 // We'll create a dummy client during build time if credentials are missing

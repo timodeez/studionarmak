@@ -77,7 +77,7 @@ const validate = (form: typeof initialForm) => ({
     name: form.name.length > 1,                                    // Name must be at least 2 characters
     email: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email),        // Basic email format validation
     location: !!form.location,                                     // Location must be selected
-    portfolio: /^https?:\/\//.test(form.portfolio),               // Portfolio must be a valid URL
+    portfolio: form.portfolio.includes('.com'),                   // Portfolio must contain .com
     discipline: !!form.discipline,                                 // Discipline must be selected
     why: form.why.length > 10 && form.why.length <= 400,          // Cover letter: 10-400 characters
     consent: form.consent,                                         // GDPR consent must be given
@@ -320,14 +320,15 @@ export default function CareersPage() {
                 <select
                   id="location"
                   name="location"
-                  className={`w-full bg-charcoal-light p-3 rounded-lg border-2 ${touched.location && !errors.location ? 'border-red-500' : 'border-charcoal-light'}`}
+                  className={`w-full bg-charcoal-light p-3 rounded-lg border-2 text-off-white ${touched.location && !errors.location ? 'border-red-500' : 'border-charcoal-light'} focus:outline-none focus:border-neon-accent`}
                   value={form.location}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
+                  style={{ color: '#f5f5f5' }}
                 >
-                  <option value="">Select your timezone</option>
-                  {timezones.map(tz => <option key={tz} value={tz}>{tz}</option>)}
+                  <option value="" style={{ color: '#888', backgroundColor: '#2a2a2c' }}>Select your timezone</option>
+                  {timezones.map(tz => <option key={tz} value={tz} style={{ color: '#f5f5f5', backgroundColor: '#2a2a2c' }}>{tz}</option>)}
                 </select>
                 {touched.location && !errors.location && (
                   <p className="text-sm text-red-400 mt-1">Please select your location.</p>
@@ -339,14 +340,15 @@ export default function CareersPage() {
                 <select
                   id="discipline"
                   name="discipline"
-                  className={`w-full bg-charcoal-light p-3 rounded-lg border-2 ${touched.discipline && !errors.discipline ? 'border-red-500' : 'border-charcoal-light'}`}
+                  className={`w-full bg-charcoal-light p-3 rounded-lg border-2 text-off-white ${touched.discipline && !errors.discipline ? 'border-red-500' : 'border-charcoal-light'} focus:outline-none focus:border-neon-accent`}
                   value={form.discipline}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
+                  style={{ color: '#f5f5f5' }}
                 >
-                  <option value="">Select your discipline</option>
-                  {disciplines.map(d => <option key={d} value={d}>{d}</option>)}
+                  <option value="" style={{ color: '#888', backgroundColor: '#2a2a2c' }}>Select your discipline</option>
+                  {disciplines.map(d => <option key={d} value={d} style={{ color: '#f5f5f5', backgroundColor: '#2a2a2c' }}>{d}</option>)}
                 </select>
                 {touched.discipline && !errors.discipline && (
                   <p className="text-sm text-red-400 mt-1">Please select your discipline.</p>
@@ -358,8 +360,8 @@ export default function CareersPage() {
                 <input
                   id="portfolio"
                   name="portfolio"
-                  type="url"
-                  placeholder="https://yourportfolio.com"
+                  type="text"
+                  placeholder="yourportfolio.com or behance.com/yourname"
                   className={`w-full bg-charcoal-light p-3 rounded-lg border-2 ${touched.portfolio && !errors.portfolio ? 'border-red-500' : 'border-charcoal-light'}`}
                   value={form.portfolio}
                   onChange={handleChange}
@@ -367,7 +369,7 @@ export default function CareersPage() {
                   required
                 />
                 {touched.portfolio && !errors.portfolio && (
-                  <p className="text-sm text-red-400 mt-1">A link to your work is required.</p>
+                  <p className="text-sm text-red-400 mt-1">Please enter a .com link to your work.</p>
                 )}
               </div>
 
