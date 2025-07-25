@@ -157,9 +157,23 @@ CREATE POLICY "Allow public inserts" ON email_subscribers
 3. Ensure database tables exist
 4. Test with the test script: `node test-database.js`
 
+### If RLS (Row Level Security) is blocking access:
+1. **Run the RLS fix**: Copy and paste `supabase-rls-policies-fix.sql` into your Supabase SQL Editor
+2. **Check policies exist**: Run the verification queries in the SQL file
+3. **Common RLS issues**:
+   - Using wrong API key (service role vs anon key)
+   - Policies too restrictive or missing
+   - Old conflicting policies
+4. **Test access**: Try the test queries in the SQL file
+
 ### If local development doesn't work:
 1. Update `.env.local` with your actual Supabase values
 2. Restart your development server: `npm run dev`
+
+### If forms submit but don't save to database:
+1. Check Supabase logs in dashboard for errors
+2. Verify RLS policies allow inserts
+3. Run `supabase-rls-policies-fix.sql` to reset policies
 
 ## 🎉 Success!
 
