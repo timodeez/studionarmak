@@ -29,7 +29,7 @@ interface EmailData {
 // MAIN EMAIL SENDING FUNCTION
 // ============================================================================
 // This function actually sends emails using Resend
-export function sendEmail(emailData: EmailData) {
+export async function sendEmail(emailData: EmailData) {
   try {
     // ============================================================================
     // IMPORTANT: UNCOMMENT THIS SECTION AFTER SETTING UP RESEND
@@ -69,7 +69,7 @@ export function sendEmail(emailData: EmailData) {
       subject: emailData.subject,
       html: emailData.html
     });
-    return { success: true };
+    return Promise.resolve({ success: true });
     
   } catch (error) {
     console.error('Email service error:', error);

@@ -49,24 +49,25 @@ export async function POST(request: NextRequest) {
       throw dbError; // Re-throw to fail the request if database fails
     }
 
-    // Send welcome email
+    // Send welcome email (temporarily disabled to isolate database issues)
     try {
-      await sendEmail({
-        to: email,
-        subject: 'Welcome to Studio Narmak Updates!',
-        html: `
-          <h2>Welcome to Studio Narmak!</h2>
-          <p>Thank you for subscribing to our updates. You'll be the first to know about:</p>
-          <ul>
-            <li>New projects and behind-the-scenes content</li>
-            <li>Industry insights and tips</li>
-            <li>Job opportunities and team updates</li>
-            <li>Latest blog posts and tutorials</li>
-          </ul>
-          <p>Stay creative!</p>
-          <p>- The Studio Narmak Team</p>
-        `
-      });
+      // await sendEmail({
+      //   to: email,
+      //   subject: 'Welcome to Studio Narmak Updates!',
+      //   html: `
+      //     <h2>Welcome to Studio Narmak!</h2>
+      //     <p>Thank you for subscribing to our updates. You'll be the first to know about:</p>
+      //     <ul>
+      //       <li>New projects and behind-the-scenes content</li>
+      //       <li>Industry insights and tips</li>
+      //       <li>Job opportunities and team updates</li>
+      //       <li>Latest blog posts and tutorials</li>
+      //     </ul>
+      //     <p>Stay creative!</p>
+      //     <p>- The Studio Narmak Team</p>
+      //   `
+      // });
+      console.log('Email sending temporarily disabled for debugging');
     } catch (emailError) {
       console.error('Welcome email error:', emailError);
       // Don't fail the subscription if email fails
@@ -79,8 +80,9 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Subscription error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     return NextResponse.json(
-      { error: 'Failed to subscribe. Please try again.' },
+      { error: 'Failed to subscribe. Please try again.', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
