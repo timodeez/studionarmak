@@ -7,9 +7,18 @@ A modern, animated website for Studio Narmak built with Next.js, TypeScript, and
 - **Splash Screen** - Professional loading experience with Narmak branding
 - **Performance Optimized** - Fast loading times with video compression and lazy loading
 - **Responsive Design** - Works perfectly on all devices
-- **Contact Forms** - Integrated contact and subscription forms
+- **Contact Forms** - Integrated contact and subscription forms with Supabase backend
 - **API Routes** - Backend functionality for forms and blog
 - **Modern UI** - Beautiful animations and transitions
+- **Database Integration** - Fully configured Supabase database with all tables
+
+## Current Status ✅
+
+- **Database**: Supabase integrated (Project ID: `bnxekywwfgyobsfemiwl`)
+- **Tables**: All created with proper security policies
+- **Vercel**: Environment variables configured via integration
+- **Forms**: Contact, jobs, and email subscription forms working
+- **Deployment**: Live and functional
 
 ## Getting Started
 
@@ -18,43 +27,72 @@ A modern, animated website for Studio Narmak built with Next.js, TypeScript, and
    npm install
    ```
 
-2. Run the development server:
+2. Set up local environment (for development):
+   ```bash
+   cp .env.example .env.local
+   ```
+   Then update `.env.local` with your Supabase API keys from:
+   https://supabase.com/dashboard/project/bnxekywwfgyobsfemiwl/settings/api
+
+3. Run the development server:
    ```bash
    npm run dev
    ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Environment Configuration
 
-The website can run without environment variables, but to enable database and email features:
+### Production (Vercel)
+✅ **Already configured** - Environment variables set via Vercel-Supabase integration
 
-1. Copy `.env.example` to `.env.local`:
-   ```bash
-   cp .env.example .env.local
-   ```
+### Local Development
+Update `.env.local` with your API keys:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://bnxekywwfgyobsfemiwl.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+```
 
-2. Fill in your credentials (see `.env.example` for details)
+## Database Setup ✅
+
+The Supabase database is fully configured with:
+- ✅ `contact_submissions` - Contact form data
+- ✅ `job_applications` - Career applications  
+- ✅ `email_subscribers` - Newsletter subscribers
+- ✅ `blog_posts` - Blog/journal content
+- ✅ Row Level Security policies
+- ✅ Performance indexes
 
 ## Deployment
 
-### Vercel Deployment
+### Vercel Deployment ✅
 
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel project settings:
-   - `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
-   - `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key
-   - `RESEND_API_KEY` - Your Resend API key (optional)
-3. Deploy automatically on push to main branch
+**Already deployed and configured!**
 
-**Note:** The website will build and deploy successfully even without environment variables. Database and email features will be disabled until you add the required credentials.
+The website is connected to Vercel with:
+- ✅ Automatic deployments on push to main
+- ✅ Environment variables configured via Supabase integration
+- ✅ Database fully functional
+- ✅ All forms working
 
-## Backend Setup
+## Testing
 
-For complete backend functionality (database, email), see [BACKEND-SETUP.md](./BACKEND-SETUP.md)
+Test your database connection:
+```bash
+node test-database.js
+```
+
+## Documentation
+
+- [VERCEL-SUPABASE-CONNECTION.md](./VERCEL-SUPABASE-CONNECTION.md) - Complete setup guide
+- [BACKEND-SETUP.md](./BACKEND-SETUP.md) - Backend configuration details
+- [SUPABASE-SETUP.md](./SUPABASE-SETUP.md) - Database setup instructions
 
 ## Latest Update
 
-- Fixed Supabase initialization to handle missing environment variables during build
-- Added `.env.example` for environment variable documentation
-- Website now builds successfully on Vercel without requiring immediate database setup
+- ✅ **NEW**: Connected to integrated Supabase database (bnxekywwfgyobsfemiwl)
+- ✅ **NEW**: All database tables created with proper security
+- ✅ **NEW**: Vercel environment variables configured automatically
+- ✅ **NEW**: Contact forms fully functional
+- ✅ **FIXED**: Duplicate database issue resolved
