@@ -94,7 +94,7 @@ export interface EmailSubscriber {
 // This connects your website to your Supabase database
 
 // Get your Supabase credentials from environment variables
-// You need to add these to your .env.local file:
+// These should be set in Vercel environment variables or .env.local for local development
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
@@ -105,8 +105,14 @@ const createSupabaseClient = () => {
   console.log('URL:', supabaseUrl ? 'Set' : 'Missing');
   console.log('Key:', supabaseKey ? 'Set (length: ' + supabaseKey.length + ')' : 'Missing');
   
-  if (!supabaseUrl || !supabaseKey) {
-    console.warn('Supabase credentials not found. Database features will be disabled.');
+  // Check if we have placeholder values or missing credentials
+  const isPlaceholder = supabaseUrl.includes('your_supabase_project_url') || 
+                       supabaseUrl.includes('your-project-id') ||
+                       supabaseKey.includes('your_supabase_anon_key') ||
+                       supabaseKey.includes('your-anon-key');
+  
+  if (!supabaseUrl || !supabaseKey || isPlaceholder) {
+    console.warn('Supabase credentials not found or using placeholder values. Database features will be disabled.');
     // Return a mock client that won't crash during build
     return {
       from: () => ({
