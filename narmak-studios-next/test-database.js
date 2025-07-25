@@ -1,5 +1,5 @@
 // Test script to check Supabase database connection
-// NEW DATABASE: bnxekywwfgyobsfemiwl
+// ACTIVE DATABASE: uwtzgzrfjvatqsgpbodq
 require('dotenv').config({ path: '.env.local' });
 
 const { createClient } = require('@supabase/supabase-js');
@@ -8,7 +8,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 console.log('=== Database Connection Test ===');
-console.log('Target Database: bnxekywwfgyobsfemiwl');
+console.log('Target Database: uwtzgzrfjvatqsgpbodq');
 console.log('URL:', supabaseUrl ? supabaseUrl : 'Missing');
 console.log('Key:', supabaseKey ? 'Set (length: ' + supabaseKey.length + ')' : 'Missing');
 
@@ -17,15 +17,15 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('');
   console.error('To fix this:');
   console.error('1. Update your .env.local file with:');
-  console.error('   NEXT_PUBLIC_SUPABASE_URL=https://bnxekywwfgyobsfemiwl.supabase.co');
+  console.error('   NEXT_PUBLIC_SUPABASE_URL=https://uwtzgzrfjvatqsgpbodq.supabase.co');
   console.error('   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here');
   console.error('2. Get your API keys from:');
-  console.error('   https://supabase.com/dashboard/project/bnxekywwfgyobsfemiwl/settings/api');
+  console.error('   https://supabase.com/dashboard/project/uwtzgzrfjvatqsgpbodq/settings/api');
   process.exit(1);
 }
 
 // Verify we're connecting to the correct database
-const expectedProjectId = 'bnxekywwfgyobsfemiwl';
+const expectedProjectId = 'uwtzgzrfjvatqsgpbodq';
 if (!supabaseUrl.includes(expectedProjectId)) {
   console.warn('⚠️  Warning: URL does not contain expected project ID:', expectedProjectId);
   console.warn('   Current URL:', supabaseUrl);
@@ -37,7 +37,7 @@ async function testConnection() {
   try {
     console.log('\n=== Testing Database Connection ===');
     
-    // Test 1: Check if we can connect to the new database
+    // Test 1: Check if we can connect to the database
     const { data, error } = await supabase
       .from('email_subscribers')
       .select('count', { count: 'exact', head: true });
@@ -52,7 +52,7 @@ async function testConnection() {
     }
     
     console.log('✅ Database connection successful');
-    console.log('✅ Connected to correct database (bnxekywwfgyobsfemiwl)');
+    console.log('✅ Connected to correct database (uwtzgzrfjvatqsgpbodq)');
     console.log('Email subscribers count:', data);
     
     // Test 2: Try to insert a test email
