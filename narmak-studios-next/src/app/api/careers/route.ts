@@ -4,6 +4,7 @@ import { db, FileInfo } from '@/lib/database';
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Careers form submission started');
     // Parse FormData instead of JSON
     const formData = await request.formData();
     
@@ -56,7 +57,8 @@ export async function POST(request: NextRequest) {
 
     // Save to database with file information
     try {
-      await db.createJobApplication({
+      console.log('Attempting to save job application to database...');
+      const savedApplication = await db.createJobApplication({
         name,
         email,
         phone,
@@ -67,6 +69,7 @@ export async function POST(request: NextRequest) {
         resume,
         files: fileInfo, // Store file metadata in database
       });
+      console.log('Job application saved successfully:', savedApplication.id);
     } catch (dbError) {
       console.error("Database submission failed:", dbError);
       // Decide if you want to fail the whole request or just log the error

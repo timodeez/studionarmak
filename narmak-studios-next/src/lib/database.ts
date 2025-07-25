@@ -101,6 +101,10 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 // Create the Supabase client (this is your connection to the database)
 // We'll create a dummy client during build time if credentials are missing
 const createSupabaseClient = () => {
+  console.log('Creating Supabase client...');
+  console.log('URL:', supabaseUrl ? 'Set' : 'Missing');
+  console.log('Key:', supabaseKey ? 'Set (length: ' + supabaseKey.length + ')' : 'Missing');
+  
   if (!supabaseUrl || !supabaseKey) {
     console.warn('Supabase credentials not found. Database features will be disabled.');
     // Return a mock client that won't crash during build
@@ -134,6 +138,7 @@ const createSupabaseClient = () => {
     } as any;
   }
   
+  console.log('Creating real Supabase client with credentials');
   return createClient(supabaseUrl, supabaseKey);
 };
 

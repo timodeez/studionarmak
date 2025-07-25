@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     try {
       console.log('Attempting to save to Supabase...');
       console.log('Environment check - SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set');
-      console.log('Environment check - SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Set' : 'Not set');
+      console.log('Environment check - ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not set');
       
       const savedSubmission = await db.createContactSubmission(submissionData);
       

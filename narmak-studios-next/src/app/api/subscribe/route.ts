@@ -9,10 +9,13 @@ interface SubscriptionPayload {
 // POST - Subscribe to email updates
 export async function POST(request: NextRequest) {
   try {
+    console.log('Newsletter subscription attempt started');
     const { email } = (await request.json()) as SubscriptionPayload;
+    console.log('Email received:', email);
 
     // Validate email
     if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      console.log('Email validation failed:', email);
       return NextResponse.json(
         { error: 'Valid email address is required' },
         { status: 400 }
@@ -20,13 +23,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Check for duplicate subscriber
-    const subscribers = await db.getEmailSubscribers();
-    const existingSubscriber = subscribers.find(sub => sub.email === email);
-    if (existingSubscriber && existingSubscriber.subscribed) {
-      return NextResponse.json(
-        { error: 'This email is already subscribed.' },
-        { status: 409 } // 409 Conflict
-      );
+    console.log('Checking for existing subscribers...');
+    try {
+      const subscribers = await db.getEmailSubscribers();
+      console.log('Found subscribers:', subscribers.length);
+      const existingSubscriber = subscribers.find(sub => sub.email === email);
+      if (existingSubscriber && existingSubscriber.subscribed) {
+        console.log('Email already subscribed:', email);
+        return NextResponse.json(
+          { error: 'This email is already subscribed.' },
+          { status: 409 } // 409 Conflict
+        );
+      }
+    } catch (subscriberCheckError) {
+      console.error('Error checking existing subscribers:', subscriberCheckError);
+      // Continue anyway - don't fail on duplicate check
     }
 
     // Save to database
