@@ -209,14 +209,27 @@ export const db = {
   
   // Save a new job application to the database
   async createJobApplication(data: JobApplication) {
+    // Map camelCase fields to database snake_case fields
+    const dbData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      position: data.position,
+      experience: data.experience,
+      portfolio: data.portfolio,
+      cover_letter: data.coverLetter, // Map coverLetter to cover_letter
+      resume: data.resume,
+      files: data.files
+    };
+
     const { data: result, error } = await supabase
       .from('job_applications')     // Table name in your database
-      .insert([data])               // Insert the application data
-      .select()
-      .single();
+      .insert([dbData])             // Insert the mapped application data
+      .select()                     // Get back the saved data
+      .single();                    // Return just one record
     
-    if (error) throw error;
-    return result as JobApplication;
+    if (error) throw error;         // If something goes wrong, throw an error
+    return result as JobApplication;                  // Return the saved application
   },
 
   // Get all job applications (for HR/admin review)
