@@ -94,16 +94,23 @@ export interface EmailSubscriber {
 // This connects your website to your Supabase database
 
 // Get your Supabase credentials from environment variables
-// These should be set in Vercel environment variables or .env.local for local development
+// For server-side operations (API routes), use service role key for full access
+// For client-side operations, use anon key for limited access
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+
+// Use service role key if available (server-side), otherwise use anon key (client-side)
+const supabaseKey = supabaseServiceKey || supabaseAnonKey;
 
 // Create the Supabase client (this is your connection to the database)
 // We'll create a dummy client during build time if credentials are missing
 const createSupabaseClient = () => {
   console.log('Creating Supabase client...');
   console.log('URL:', supabaseUrl ? 'Set' : 'Missing');
-  console.log('Key:', supabaseKey ? 'Set (length: ' + supabaseKey.length + ')' : 'Missing');
+  console.log('Service Key:', supabaseServiceKey ? 'Set (length: ' + supabaseServiceKey.length + ')' : 'Missing');
+  console.log('Anon Key:', supabaseAnonKey ? 'Set (length: ' + supabaseAnonKey.length + ')' : 'Missing');
+  console.log('Using Key Type:', supabaseServiceKey ? 'Service Role (Server-side)' : 'Anonymous (Client-side)');
   
   // Check if we have placeholder values or missing credentials
   const isPlaceholder = supabaseUrl.includes('your_supabase_project_url') || 

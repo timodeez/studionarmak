@@ -19,12 +19,29 @@ export async function GET() {
       environment: 'production',
       supabaseUrl: supabaseUrl ? supabaseUrl : 'Missing',
       projectId: projectId,
-      anonKeyLength: supabaseAnonKey ? supabaseAnonKey.length : 0,
-      serviceKeyLength: supabaseServiceKey ? supabaseServiceKey.length : 0,
-      anonKeySet: !!supabaseAnonKey,
-      serviceKeySet: !!supabaseServiceKey,
+      
+      // Client-side variables (NEXT_PUBLIC_*)
+      clientSide: {
+        anonKeyLength: supabaseAnonKey ? supabaseAnonKey.length : 0,
+        anonKeySet: !!supabaseAnonKey,
+        urlSet: !!supabaseUrl
+      },
+      
+      // Server-side variables (no NEXT_PUBLIC_ prefix)
+      serverSide: {
+        serviceKeyLength: supabaseServiceKey ? supabaseServiceKey.length : 0,
+        serviceKeySet: !!supabaseServiceKey
+      },
+      
+      // Analysis
       expectedProjectId: 'uwtzgzrfjvatqsgpbodq',
       isCorrectDatabase: projectId === 'uwtzgzrfjvatqsgpbodq',
+      canUseClientSide: !!supabaseUrl && !!supabaseAnonKey,
+      canUseServerSide: !!supabaseUrl && !!supabaseServiceKey,
+      
+      // Recommendations
+      issues: [],
+      
       timestamp: new Date().toISOString()
     });
 
