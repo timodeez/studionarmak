@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     console.log('File info prepared:', fileInfo.map(f => ({ name: f.name, size: f.size })));
 
     // Save to database with file information
-    let savedApplicationId: string | null = null;
+    let savedApplicationId: string | undefined;
     try {
       console.log('=== ATTEMPTING DATABASE SAVE ===');
       const savedApplication = await db.createJobApplication({
@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
         success: true, 
         message: 'Thank you for your application! We\'ll review it and get back to you soon.',
         filesUploaded: files.length,
-        applicationId: savedApplicationId,
+        applicationId: savedApplicationId || 'unknown',
         debug: {
           databaseConnected: true,
           applicationSaved: true,
