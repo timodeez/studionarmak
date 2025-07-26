@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import AnimatedSection from '@/components/AnimatedSection';
 import { originalsPortfolio as portfolioData } from '@/data/originalsPortfolio';
 import { useEffect, useCallback, useMemo } from 'react';
@@ -50,10 +51,24 @@ export default function OriginalsPage() {
       <div className="container mx-auto px-4 py-20 md:py-28">
         <AnimatedSection customClass="text-center mb-16">
           <h1 className="text-5xl font-display mb-4">Originals Portfolio</h1>
-          <p className="text-lg text-off-white/70 text-center max-w-3xl mx-auto">
+          <p className="text-lg text-off-white/70 text-center max-w-3xl mx-auto mb-8">
             Worlds, characters, and stories born from our own creative spark.
           </p>
+          
+          {/* Navigation button to work page */}
+          <div className="flex justify-center mb-8">
+            <Link 
+              href="/work"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-gradient-start to-gradient-end text-white font-bold px-6 py-3 rounded-full hover:from-gradient-end hover:to-gradient-start transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1m4-10H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2z" />
+              </svg>
+              Watch Our Reel
+            </Link>
+          </div>
         </AnimatedSection>
+        
         <div className="space-y-24">
           {originalsPortfolio.map((item, index) => {
             const isReversed = index % 2 !== 0;

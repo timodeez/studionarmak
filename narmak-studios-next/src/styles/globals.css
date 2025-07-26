@@ -34,7 +34,7 @@ video {
 
 /* 
  * Mobile video fit adjustments
- * Reduces the zoom/crop on mobile to show more of the video content
+ * Reduces the zoom/crop on mobile to show more of the video content horizontally
  * 
  * Scale values guide:
  * 1.0 = Normal (same as desktop)
@@ -42,13 +42,13 @@ video {
  * 0.8 = Shows 20% more content (moderate zoom out)
  * 0.7 = Shows 30% more content (significant zoom out)
  * 
- * Lower values show more content but may reveal video edges
+ * Updated to show more horizontal content while maintaining video quality
  */
 @media (max-width: 768px) {
   .mobile-video-fit {
     object-fit: cover;
     object-position: center;
-    --mobile-video-scale: 0.85; /* Default: shows 15% more content */
+    --mobile-video-scale: 0.75; /* Updated: shows 25% more content */
     transform: translateZ(0) scale(var(--mobile-video-scale));
     transform-origin: center;
     transition: transform 0.3s ease-out;
@@ -58,22 +58,30 @@ video {
 /* For very tall mobile screens (like iPhone X and newer) */
 @media (max-width: 768px) and (min-aspect-ratio: 9/19) {
   .mobile-video-fit {
-    /* More aggressive scaling for very tall screens to show more vertical content */
-    --mobile-video-scale: 0.75; /* Shows 25% more content */
+    /* More aggressive scaling for very tall screens to show more horizontal content */
+    --mobile-video-scale: 0.65; /* Updated: shows 35% more content */
   }
 }
 
 /* For standard mobile screens */
 @media (max-width: 768px) and (max-aspect-ratio: 9/19) and (min-aspect-ratio: 9/16) {
   .mobile-video-fit {
-    --mobile-video-scale: 0.85; /* Shows 15% more content */
+    --mobile-video-scale: 0.75; /* Updated: shows 25% more content */
   }
 }
 
 /* For wider mobile screens (landscape or tablets in portrait) */
 @media (max-width: 768px) and (max-aspect-ratio: 9/16) {
   .mobile-video-fit {
-    --mobile-video-scale: 0.95; /* Shows 5% more content */
+    --mobile-video-scale: 0.9; /* Slight zoom out for wider screens */
+  }
+}
+
+/* Landscape orientation - maintain full view as requested */
+@media (max-width: 768px) and (orientation: landscape) {
+  .mobile-video-fit {
+    --mobile-video-scale: 1.0; /* Full view in landscape */
+    transform: translateZ(0) scale(1.0);
   }
 }
 
