@@ -366,7 +366,7 @@ export default function HomePage() {
 
       <LazyStatsSection>
         <div ref={statsRef} className="bg-[#141416] py-16 sm:py-20 md:py-24">
-          <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center">
+          <div className="container mx-auto px-2 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 text-center">
             <div 
               className="transition-all duration-700 min-w-0 px-3 py-4 rounded-xl transform hover:scale-105 transition-all duration-300" 
               style={{ 
@@ -374,7 +374,7 @@ export default function HomePage() {
                 transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
               }}
             >
-              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words font-bold tracking-tight drop-shadow-[0_0_25px_rgba(220,38,38,0.4)] hover:drop-shadow-[0_0_35px_rgba(220,38,38,0.6)] transition-all duration-300 [text-shadow:0_0_20px_rgba(220,38,38,0.3)] hover:[text-shadow:0_0_30px_rgba(220,38,38,0.5)]">
+              <p className="text-4xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words font-bold tracking-tight drop-shadow-[0_0_25px_rgba(220,38,38,0.4)] hover:drop-shadow-[0_0_35px_rgba(220,38,38,0.6)] transition-all duration-300 [text-shadow:0_0_20px_rgba(220,38,38,0.3)] hover:[text-shadow:0_0_30px_rgba(220,38,38,0.5)]">
                 {views.toLocaleString()}+
               </p>
               <p className="mt-3 text-off-white/80 text-sm sm:text-base md:text-lg font-medium">Video Views</p>
@@ -386,7 +386,7 @@ export default function HomePage() {
                 transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
               }}
             >
-              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words font-bold tracking-tight drop-shadow-[0_0_25px_rgba(59,130,246,0.4)] hover:drop-shadow-[0_0_35px_rgba(59,130,246,0.6)] transition-all duration-300 [text-shadow:0_0_20px_rgba(59,130,246,0.3)] hover:[text-shadow:0_0_30px_rgba(59,130,246,0.5)]">
+              <p className="text-4xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words font-bold tracking-tight drop-shadow-[0_0_25px_rgba(59,130,246,0.4)] hover:drop-shadow-[0_0_35px_rgba(59,130,246,0.6)] transition-all duration-300 [text-shadow:0_0_20px_rgba(59,130,246,0.3)] hover:[text-shadow:0_0_30px_rgba(59,130,246,0.5)]">
                 {subs.toLocaleString()}+
               </p>
               <p className="mt-3 text-off-white/80 text-sm sm:text-base md:text-lg font-medium">Subscribers</p>
@@ -398,7 +398,7 @@ export default function HomePage() {
                 transform: `translateY(${isStatsVisible ? '0' : '20px'})` 
               }}
             >
-              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words font-bold tracking-tight drop-shadow-[0_0_25px_rgba(22,163,74,0.4)] hover:drop-shadow-[0_0_35px_rgba(22,163,74,0.6)] transition-all duration-300 [text-shadow:0_0_20px_rgba(22,163,74,0.3)] hover:[text-shadow:0_0_30px_rgba(22,163,74,0.5)]">
+              <p className="text-4xl sm:text-3xl md:text-4xl lg:text-5xl font-display text-neon-accent break-words font-bold tracking-tight drop-shadow-[0_0_25px_rgba(22,163,74,0.4)] hover:drop-shadow-[0_0_35px_rgba(22,163,74,0.6)] transition-all duration-300 [text-shadow:0_0_20px_rgba(22,163,74,0.3)] hover:[text-shadow:0_0_30px_rgba(22,163,74,0.5)]">
                 {Math.floor(projects)}+
               </p>
               <p className="mt-3 text-off-white/80 text-sm sm:text-base md:text-lg font-medium">Projects Delivered</p>
