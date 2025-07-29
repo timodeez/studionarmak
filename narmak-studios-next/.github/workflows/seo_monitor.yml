@@ -5,8 +5,7 @@ name: Weekly SEO monitor
 # It verifies that each priority URL returns a 200 response and that no
 # crawl‑blocking directives (x‑robots‑tag or meta robots noindex) are
 # present.  On failure the workflow will exit early and send a
-# notification via a Slack webhook configured in the repository
-# secrets as `SLACK_WEBHOOK_URL`.
+# notification via email using Gmail.
 
 on:
   schedule:
@@ -50,19 +49,25 @@ jobs:
               exit 1
             fi
             # Check for meta robots noindex tag in the HTML
-            if curl -s "$clean_url" | grep -i '<meta[^>]*name=["'"'']robots["'"'']' | grep -i 'noindex' >/dev/null; then
+            if curl -s "$clean_url" | grep -i '<meta[^>]*name=["'\''']robots["'\''']' | grep -i 'noindex' >/dev/null; then
               echo "meta robots noindex tag found on $clean_url" >&2
               exit 1
             fi
           done < gsc_priority_urls.txt
           echo "All URLs passed the health checks."
 
-      - name: Send failure notification to Slack
+      - name: Send failure email notification
         if: failure()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          if [ -n "$SLACK_WEBHOOK_URL" ]; then
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"SEO monitor workflow failed on '${{ github.repository }}' commit '${{ github.sha }}'. Please investigate the logs."}' "$SLACK_WEBHOOK_URL"
-          else
-            echo "SLACK_WEBHOOK_URL secret is not configured; skipping notification."
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "SEO monitor workflow failed on ${{ github.repository }}"
+          to: narmakstudios@gmail.com
+          from: ${{ secrets.GMAIL_USERNAME }}
+          body: |
+            The SEO monitor workflow for repository ${{ github.repository }} failed.
+            Commit: ${{ github.sha }}
+            Details: ${{ github.run_url }}
