@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import AnimatedSection from '@/components/AnimatedSection';
 import { processSteps } from '@/data/processSteps';
+
+export const metadata: Metadata = {
+  title: "Our Creative Process",
+  description: "Learn about Studio Narmak's proven creative process for delivering exceptional animation and creative content.",
+  openGraph: {
+    title: "Our Creative Process – Studio Narmak",
+    description: "Learn about Studio Narmak's proven creative process for delivering exceptional animation and creative content.",
+    url: "https://studionarmak.com/process",
+  },
+  twitter: {
+    title: "Our Creative Process – Studio Narmak",
+    description: "Learn about Studio Narmak's proven creative process for delivering exceptional animation and creative content.",
+  }
+};
 
 export default function ProcessPage() {
   return (

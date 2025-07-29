@@ -9,17 +9,20 @@ import SplashWrapper from "@/components/SplashWrapper";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://narmakstudios.com'),
-  title: "Studio Narmak - Animation & Creative Studio",
-  description: "We create animated worlds for brands and our own original stories. A dual-engine creative house: we partner with visionary brands to move their audience, and we craft original worlds to build our own.",
+  metadataBase: new URL('https://studionarmak.com'),
+  title: {
+    template: 'Studio Narmak – %s',
+    default: 'Studio Narmak – Imagination in Motion'
+  },
+  description: "Animated worlds for visionary brands and our own original stories—one team, end‑to‑end.",
   keywords: "animation, creative studio, brand animation, original content, video production, motion graphics, advertising",
   authors: [{ name: "Studio Narmak" }],
   creator: "Studio Narmak",
   publisher: "Studio Narmak",
   openGraph: {
-    title: "Studio Narmak - Animation & Creative Studio",
-    description: "We create animated worlds for brands and our own original stories.",
-    url: "https://narmakstudios.com",
+    title: "Studio Narmak – Imagination in Motion",
+    description: "Animated worlds for visionary brands and our own original stories—one team, end‑to‑end.",
+    url: "https://studionarmak.com",
     siteName: "Studio Narmak",
     images: [
       {
@@ -34,8 +37,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Studio Narmak - Animation & Creative Studio",
-    description: "We create animated worlds for brands and our own original stories.",
+    title: "Studio Narmak – Imagination in Motion",
+    description: "Animated worlds for visionary brands and our own original stories—one team, end‑to‑end.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -101,6 +104,26 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Studio Narmak",
+              "url": "https://studionarmak.com",
+              "logo": "https://studionarmak.com/og-image.png",
+              "email": "hello@studionarmak.com",
+              "description": "Animated worlds for visionary brands and our own original stories—one team, end‑to‑end.",
+              "sameAs": [
+                "https://www.youtube.com/@studionarmak",
+                "https://www.instagram.com/studionarmak",
+                "https://twitter.com/studionarmak"
+              ]
+            })
+          }}
+        />
       </head>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased bg-charcoal text-off-white`}
