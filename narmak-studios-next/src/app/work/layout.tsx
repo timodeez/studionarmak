@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Our Creative Work & Showreel",
   description: "Watch Studio Narmak's creative reel featuring brand campaigns, original content, and animation work.",
+  alternates: {
+    canonical: '/work',
+  },
   openGraph: {
     title: "Our Creative Work & Showreel – Studio Narmak",
     description: "Watch Studio Narmak's creative reel featuring brand campaigns, original content, and animation work.",

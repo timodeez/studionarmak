@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/careers',
+  },
   title: "Join Our Creative Team",
   description: "Join Studio Narmak's passionate team of creators, animators, and storytellers. Explore career opportunities.",
   openGraph: {

@@ -58,6 +58,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: meta.title,
     description: meta.description,
+    alternates: {
+      canonical: `/services/${slug}`,
+    },
     openGraph: {
       title: `${meta.title} – Studio Narmak`,
       description: meta.description,

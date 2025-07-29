@@ -5,6 +5,9 @@ import { processSteps } from '@/data/processSteps';
 export const metadata: Metadata = {
   title: "Our Creative Process",
   description: "Learn about Studio Narmak's proven creative process for delivering exceptional animation and creative content.",
+  alternates: {
+    canonical: '/process',
+  },
   openGraph: {
     title: "Our Creative Process – Studio Narmak",
     description: "Learn about Studio Narmak's proven creative process for delivering exceptional animation and creative content.",

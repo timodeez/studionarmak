@@ -5,6 +5,9 @@ import LockedOverlay from '@/components/LockedOverlay';
 export const metadata: Metadata = {
   title: "Creative Journal & Insights",
   description: "Behind-the-scenes insights, creative process breakdowns, and industry thoughts from the Studio Narmak team.",
+  alternates: {
+    canonical: '/journal',
+  },
   openGraph: {
     title: "Creative Journal & Insights – Studio Narmak",
     description: "Behind-the-scenes insights, creative process breakdowns, and industry thoughts from the Studio Narmak team.",

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/portfolio/originals',
+  },
   title: "Narmak Originals – Viral Series & Shorts",
   description: "Original shorts and music videos with 500 M+ views and #1 trending on YouTube.",
   openGraph: {

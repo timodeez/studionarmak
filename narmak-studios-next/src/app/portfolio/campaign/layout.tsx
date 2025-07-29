@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Client Campaigns",
   description: "Products become characters. Messages become moments. View our creative campaign portfolio.",
+  alternates: {
+    canonical: '/portfolio/campaign',
+  },
   openGraph: {
     title: "Client Campaigns – Studio Narmak",
     description: "Products become characters. Messages become moments. View our creative campaign portfolio.",

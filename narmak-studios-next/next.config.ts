@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   // Enable React Strict Mode for better development experience
   reactStrictMode: true,
   
+  // Ensure URLs match sitemap entries (no trailing slash)
+  trailingSlash: false,
+  
   // swcMinify is deprecated and enabled by default in Next.js 13+
   
   // Optimize images

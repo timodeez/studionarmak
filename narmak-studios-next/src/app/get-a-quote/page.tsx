@@ -5,6 +5,9 @@ import ContactForm from '@/components/ContactForm';
 export const metadata: Metadata = {
   title: "Get a Quote",
   description: "Ready to create something amazing? Get a custom quote for your animation and creative project from Studio Narmak.",
+  alternates: {
+    canonical: '/get-a-quote',
+  },
   openGraph: {
     title: "Get a Quote – Studio Narmak",
     description: "Ready to create something amazing? Get a custom quote for your animation and creative project from Studio Narmak.",
