@@ -1,19 +1,3 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Unlimited Graphic Design Subscription",
-  description: "Flat monthly fee, unlimited requests, fast turnaround—design help on tap.",
-  openGraph: {
-    title: "Unlimited Graphic Design Subscription – Studio Narmak",
-    description: "Flat monthly fee, unlimited requests, fast turnaround—design help on tap.",
-    url: "https://studionarmak.com/services/graphic-design-subscription",
-  },
-  twitter: {
-    title: "Unlimited Graphic Design Subscription – Studio Narmak",
-    description: "Flat monthly fee, unlimited requests, fast turnaround—design help on tap.",
-  }
-};
-
 export default function GraphicDesignSubscription() {
   return (
     <div className="pt-20 min-h-screen bg-charcoal text-off-white relative overflow-hidden">

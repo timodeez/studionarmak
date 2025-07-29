@@ -1,19 +1,3 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Creative Strategy & Pitch Polish",
-  description: "Positioning, story road‑maps and decks that land funding and win audiences.",
-  openGraph: {
-    title: "Creative Strategy & Pitch Polish – Studio Narmak",
-    description: "Positioning, story road‑maps and decks that land funding and win audiences.",
-    url: "https://studionarmak.com/services/creative-strategy-and-consulting",
-  },
-  twitter: {
-    title: "Creative Strategy & Pitch Polish – Studio Narmak",
-    description: "Positioning, story road‑maps and decks that land funding and win audiences.",
-  }
-};
-
 export default function CreativeStrategyAndConsulting() {
   return (
     <div className="pt-20 min-h-screen bg-charcoal text-off-white relative overflow-hidden">

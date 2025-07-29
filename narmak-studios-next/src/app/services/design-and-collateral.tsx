@@ -1,19 +1,3 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Design & Collateral for IP & Brands",
-  description: "Key art, merch, decks and album covers that lock in visual identity.",
-  openGraph: {
-    title: "Design & Collateral for IP & Brands – Studio Narmak",
-    description: "Key art, merch, decks and album covers that lock in visual identity.",
-    url: "https://studionarmak.com/services/design-and-collateral",
-  },
-  twitter: {
-    title: "Design & Collateral for IP & Brands – Studio Narmak",
-    description: "Key art, merch, decks and album covers that lock in visual identity.",
-  }
-};
-
 export default function DesignAndCollateral() {
   return (
     <div className="pt-20 min-h-screen bg-charcoal text-off-white relative overflow-hidden">

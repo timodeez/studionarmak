@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { servicesCardData } from "@/data/services";
 import BrandAndMarketingAnimation from "../brand-and-marketing-animation";
 import CreativeStrategyAndConsulting from "../creative-strategy-and-consulting";
@@ -15,6 +16,59 @@ const slugMap = [
   "design-and-collateral",
   "graphic-design-subscription"
 ];
+
+const serviceMetadata: Record<string, { title: string; description: string }> = {
+  "brand-and-marketing-animation": {
+    title: "Brand & Marketing Animation Services",
+    description: "Explainers, product launches and commercials that convert and stick."
+  },
+  "entertainment-and-original-ip": {
+    title: "Entertainment & Original IP Production", 
+    description: "Original IP that builds long‑tail engagement and fandom."
+  },
+  "pre-to-post-production-a-la-carte-or-full-stack": {
+    title: "À‑La‑Carte or Full‑Stack Animation",
+    description: "Strategy, design, animation, edit and mix—pick stages or all‑in‑one."
+  },
+  "creative-strategy-and-consulting": {
+    title: "Creative Strategy & Pitch Polish",
+    description: "Positioning, story road‑maps and decks that land funding and win audiences."
+  },
+  "design-and-collateral": {
+    title: "Design & Collateral for IP & Brands",
+    description: "Key art, merch, decks and album covers that lock in visual identity."
+  },
+  "graphic-design-subscription": {
+    title: "Unlimited Graphic Design Subscription",
+    description: "Flat monthly fee, unlimited requests, fast turnaround—design help on tap."
+  }
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const meta = serviceMetadata[slug];
+  
+  if (!meta) {
+    return {
+      title: "Service Not Found",
+      description: "The service you're looking for doesn't exist."
+    };
+  }
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    openGraph: {
+      title: `${meta.title} – Studio Narmak`,
+      description: meta.description,
+      url: `https://studionarmak.com/services/${slug}`,
+    },
+    twitter: {
+      title: `${meta.title} – Studio Narmak`,
+      description: meta.description,
+    }
+  };
+}
 
 export default async function IndividualServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

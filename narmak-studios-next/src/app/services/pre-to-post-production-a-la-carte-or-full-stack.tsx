@@ -1,19 +1,3 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "À‑La‑Carte or Full‑Stack Animation",
-  description: "Strategy, design, animation, edit and mix—pick stages or all‑in‑one.",
-  openGraph: {
-    title: "À‑La‑Carte or Full‑Stack Animation – Studio Narmak",
-    description: "Strategy, design, animation, edit and mix—pick stages or all‑in‑one.",
-    url: "https://studionarmak.com/services/pre-to-post-production",
-  },
-  twitter: {
-    title: "À‑La‑Carte or Full‑Stack Animation – Studio Narmak",
-    description: "Strategy, design, animation, edit and mix—pick stages or all‑in‑one.",
-  }
-};
-
 export default function PreToPostProduction() {
   return (
     <div className="pt-20 min-h-screen bg-charcoal text-off-white relative overflow-hidden">

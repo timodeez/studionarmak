@@ -48,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/services/pre-to-post-production`,
+      url: `${baseUrl}/services/pre-to-post-production-a-la-carte-or-full-stack`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.7,

@@ -1,19 +1,3 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Brand & Marketing Animation Services",
-  description: "Explainers, product launches and commercials that convert and stick.",
-  openGraph: {
-    title: "Brand & Marketing Animation Services – Studio Narmak",
-    description: "Explainers, product launches and commercials that convert and stick.",
-    url: "https://studionarmak.com/services/brand-and-marketing-animation",
-  },
-  twitter: {
-    title: "Brand & Marketing Animation Services – Studio Narmak",
-    description: "Explainers, product launches and commercials that convert and stick.",
-  }
-};
-
 export default function BrandAndMarketingAnimation() {
   return (
     <div className="pt-20 min-h-screen bg-charcoal text-off-white relative overflow-hidden">

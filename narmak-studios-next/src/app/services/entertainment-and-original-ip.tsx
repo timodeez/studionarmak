@@ -1,19 +1,3 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Entertainment & Original IP Production",
-  description: "Original IP that builds long‑tail engagement and fandom.",
-  openGraph: {
-    title: "Entertainment & Original IP Production – Studio Narmak",
-    description: "Original IP that builds long‑tail engagement and fandom.",
-    url: "https://studionarmak.com/services/entertainment-and-original-ip",
-  },
-  twitter: {
-    title: "Entertainment & Original IP Production – Studio Narmak",
-    description: "Original IP that builds long‑tail engagement and fandom.",
-  }
-};
-
 export default function EntertainmentAndOriginalIP() {
   return (
     <div className="pt-20 min-h-screen bg-charcoal text-off-white relative overflow-hidden">
