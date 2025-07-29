@@ -1,0 +1,68 @@
+name: Weekly SEO monitor
+
+# This workflow runs a set of lightweight SEO health checks against
+# the Studio Narmak site every Sunday at 09:00 UTC (02:00 AM PT).
+# It verifies that each priority URL returns a 200 response and that no
+# crawl‑blocking directives (x‑robots‑tag or meta robots noindex) are
+# present.  On failure the workflow will exit early and send a
+# notification via a Slack webhook configured in the repository
+# secrets as `SLACK_WEBHOOK_URL`.
+
+on:
+  schedule:
+    # 09:00 UTC every Sunday → 02:00 AM Pacific Time
+    - cron: '0 9 * * 0'
+  workflow_dispatch:
+    # Allow manual runs of the workflow for ad‑hoc checks
+    inputs:
+      reason:
+        description: 'Reason for manual run'
+        required: false
+
+jobs:
+  seo-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install curl
+        run: sudo apt-get update && sudo apt-get install -y curl
+
+      - name: Run crawlability health checks
+        id: crawl
+        run: |
+          set -e
+          echo "Checking priority URLs…"
+          while read -r url; do
+            # Trim trailing checkbox or whitespace
+            clean_url="${url%% *}"
+            echo "Testing $clean_url"
+            # Check for HTTP 200 OK
+            status=$(curl -s -o /dev/null -w '%{http_code}' "$clean_url")
+            if [ "$status" != "200" ]; then
+              echo "URL $clean_url returned status $status" >&2
+              exit 1
+            fi
+            # Check for x‑robots-tag: noindex header
+            if curl -s -I "$clean_url" | grep -i '^x-robots-tag:.*noindex' >/dev/null; then
+              echo "x‑robots-tag noindex header found on $clean_url" >&2
+              exit 1
+            fi
+            # Check for meta robots noindex tag in the HTML
+            if curl -s "$clean_url" | grep -i '<meta[^>]*name=["'"'']robots["'"'']' | grep -i 'noindex' >/dev/null; then
+              echo "meta robots noindex tag found on $clean_url" >&2
+              exit 1
+            fi
+          done < gsc_priority_urls.txt
+          echo "All URLs passed the health checks."
+
+      - name: Send failure notification to Slack
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -n "$SLACK_WEBHOOK_URL" ]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"SEO monitor workflow failed on '${{ github.repository }}' commit '${{ github.sha }}'. Please investigate the logs."}' "$SLACK_WEBHOOK_URL"
+          else
+            echo "SLACK_WEBHOOK_URL secret is not configured; skipping notification."
