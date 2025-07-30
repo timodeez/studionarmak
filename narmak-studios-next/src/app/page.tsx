@@ -462,8 +462,8 @@ export default function HomePage() {
               Products become characters. Messages become moments.
             </p>
             <div className="flex flex-col items-center gap-6 sm:gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-5xl">
-                {creativePortfolio.slice(0, 2).map((item, index) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-5xl">
+                {creativePortfolio.slice(0, 3).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/creative#creative-${item.id}`}>
                       <PortfolioItem
@@ -479,24 +479,8 @@ export default function HomePage() {
                 ))}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-5xl justify-center">
-                {creativePortfolio.slice(2, 4).map((item, index) => (
-                  <LazyLoad key={item.id} style={{ transitionDelay: `${(index + 2) * 150}ms` }}>
-                    <Link href={`/portfolio/creative#creative-${item.id}`}>
-                      <PortfolioItem
-                        title={item.title}
-                        client={item.client}
-                        category={item.services[0]}
-                        year="2024"
-                        image={item.staticImg}
-                        id={item.id.toString()}
-                      />
-                    </Link>
-                  </LazyLoad>
-                ))}
-              </div>
-              <div className="grid grid-cols-1 justify-center w-full max-w-xl">
-                {creativePortfolio.slice(4, 5).map((item, index) => (
-                  <LazyLoad key={item.id} style={{ transitionDelay: `${(index + 4) * 150}ms` }}>
+                {creativePortfolio.slice(3, 5).map((item, index) => (
+                  <LazyLoad key={item.id} style={{ transitionDelay: `${(index + 3) * 150}ms` }}>
                     <Link href={`/portfolio/creative#creative-${item.id}`}>
                       <PortfolioItem
                         title={item.title}
@@ -559,8 +543,8 @@ export default function HomePage() {
           <div className="container mx-auto px-4 sm:px-6">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-center mb-8 sm:mb-12">Narmak Originals</h2>
             <div className="flex flex-col items-center gap-6 sm:gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-5xl">
-                {originalsPortfolio.slice(0, 2).map((item, index) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-5xl">
+                {originalsPortfolio.slice(0, 3).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
                       <PortfolioItem
@@ -576,24 +560,8 @@ export default function HomePage() {
                 ))}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-5xl justify-center">
-                {originalsPortfolio.slice(2, 4).map((item, index) => (
-                  <LazyLoad key={item.id} style={{ transitionDelay: `${(index + 2) * 150}ms` }}>
-                    <Link href={`/portfolio/originals#originals-${item.id}`}>
-                      <PortfolioItem
-                        title={item.title}
-                        client="Narmak Originals"
-                        category={item.type}
-                        year="2024"
-                        image={item.homeImg}
-                        id={item.id.toString()}
-                      />
-                    </Link>
-                  </LazyLoad>
-                ))}
-              </div>
-              <div className="grid grid-cols-1 justify-center w-full max-w-xl">
-                {originalsPortfolio.slice(4, 5).map((item, index) => (
-                  <LazyLoad key={item.id} style={{ transitionDelay: `${(index + 4) * 150}ms` }}>
+                {originalsPortfolio.slice(3, 5).map((item, index) => (
+                  <LazyLoad key={item.id} style={{ transitionDelay: `${(index + 3) * 150}ms` }}>
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
                       <PortfolioItem
                         title={item.title}
