@@ -462,7 +462,7 @@ export default function HomePage() {
               Products become characters. Messages become moments.
             </p>
             <div className="flex flex-col items-center gap-6 sm:gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-5xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 w-full max-w-7xl">
                 {creativePortfolio.slice(0, 3).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/creative#creative-${item.id}`}>
@@ -478,7 +478,7 @@ export default function HomePage() {
                   </LazyLoad>
                 ))}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-5xl justify-center">
                 {creativePortfolio.slice(3, 5).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/creative#creative-${item.id}`}>
@@ -543,7 +543,7 @@ export default function HomePage() {
           <div className="container mx-auto px-4 sm:px-6">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-center mb-8 sm:mb-12">Narmak Originals</h2>
             <div className="flex flex-col items-center gap-6 sm:gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-5xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 w-full max-w-7xl">
                 {originalsPortfolio.slice(0, 3).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
@@ -559,7 +559,7 @@ export default function HomePage() {
                   </LazyLoad>
                 ))}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-5xl justify-center">
                 {originalsPortfolio.slice(3, 5).map((item, index) => (
                   <LazyLoad key={item.id} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Link href={`/portfolio/originals#originals-${item.id}`}>
